@@ -19,10 +19,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = "SUPPLIER")
 public class Supplier extends Base {
-
-	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 	
     @Column(name="supplier_type", nullable = false)
     @Enumerated(EnumType.ORDINAL)

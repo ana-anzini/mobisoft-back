@@ -1,17 +1,25 @@
 package com.mobisoft.mobisoftapi.base;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Data;
 
 @Data
 @MappedSuperclass
 public abstract class Base {
-
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Long id;
+	
 	@Column(name="name", nullable = false)
     private String name;
 	
-    @Column(name="cpfOrCnpj", nullable = false)
+    @Column(name="cpf_cnpj", nullable = false)
     private String cpfOrCnpj;
 	
     @Column(name="phone", nullable = false)

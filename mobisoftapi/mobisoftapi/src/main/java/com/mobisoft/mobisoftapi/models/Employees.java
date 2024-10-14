@@ -21,10 +21,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Table(name = "EMPLOYEES")
 public class Employees extends Base {
-	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    
+
     @Column(name="employees_type", nullable = false)
     @Enumerated(EnumType.ORDINAL)
     private EmployeesType employeesType;
@@ -41,9 +38,9 @@ public class Employees extends Base {
     @Column(name="salary", nullable = false)
     private String salary;
     
-    @Column(name="admission", nullable = false)
+    @Column(name="admission", nullable = true)
     private Calendar admission;
     
-    @Column(name="dismissal", nullable = false)
+    @Column(name="dismissal", nullable = true)
     private Calendar dismissal;
 }
