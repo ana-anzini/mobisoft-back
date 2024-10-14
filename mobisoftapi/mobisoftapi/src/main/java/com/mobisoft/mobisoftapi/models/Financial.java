@@ -3,8 +3,8 @@ package com.mobisoft.mobisoftapi.models;
 import java.math.BigDecimal;
 import java.util.Calendar;
 
-import com.mobisoft.mobisoftapi.enums.costumer.PersonType;
 import com.mobisoft.mobisoftapi.enums.payment.PaymentType;
+import com.mobisoft.mobisoftapi.enums.project.StatusType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -37,6 +37,10 @@ public class Financial {
     @Column(name="payment_type", nullable = false)
     @Enumerated(EnumType.ORDINAL)
     private PaymentType paymentType;
+    
+    @Column(name="project_id", nullable = false)
+    @Enumerated(EnumType.ORDINAL)
+    private Project project;
     
     @Column(name="discount", nullable = false)
     private BigDecimal discount;
@@ -73,4 +77,8 @@ public class Financial {
     
     @Column(name="total_profit", nullable = false)
     private BigDecimal totalProfit;
+    
+    @Column(name="financial_status", nullable = false)
+    @Enumerated(EnumType.ORDINAL)
+    private StatusType statusType;
 }

@@ -2,8 +2,12 @@ package com.mobisoft.mobisoftapi.models;
 
 import java.util.Calendar;
 
+import com.mobisoft.mobisoftapi.enums.project.StatusType;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -48,4 +52,8 @@ public class Deliveries {
 	
     @Column(name="delivery_date", nullable = false)
     private Calendar deliveryDate;
+    
+    @Column(name="delivery_status", nullable = false)
+    @Enumerated(EnumType.ORDINAL)
+    private StatusType statusType;
 }
