@@ -19,7 +19,7 @@ public class FinancialService {
     private ProjectService projectService;
 
     public Financial createFinancial(FinancialDTO financialDTO) {
-    	Project project = projectService.findById(financialDTO.getProjectId());
+    	Project project = projectService.getProjectById(financialDTO.getProjectId());
         Financial financial = new Financial();
         
         financial.setInstallmentsNumber(financialDTO.getInstallmentsNumber());
@@ -49,7 +49,7 @@ public class FinancialService {
     }
 
     public Financial updateFinancial(Long id, FinancialDTO financialDTO) {
-    	Project project = projectService.findById(financialDTO.getProjectId());
+    	Project project = projectService.getProjectById(financialDTO.getProjectId());
         Financial existingFinancial = financialRepository.findById(id)
                 .orElseThrow(() -> new FinancialNotFoundException(id));
 
