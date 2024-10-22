@@ -1,5 +1,6 @@
 package com.mobisoft.mobisoftapi.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +35,30 @@ public class SupplierService {
         supplier.setAdditional(supplierDTO.getAdditional());
 
         return supplierRepository.save(supplier);
+    }
+    
+    public List<Supplier> getAllSuppliers() {
+        return supplierRepository.findAll();
+    }
+
+    public Supplier updateSupplier(Long id, SupplierDTO supplierDTO) {
+        Supplier existingSupplier = findById(id);
+        existingSupplier.setName(supplierDTO.getName());
+        existingSupplier.setCpfOrCnpj(supplierDTO.getCpfOrCnpj());
+        existingSupplier.setPhone(supplierDTO.getPhone());
+        existingSupplier.setEmail(supplierDTO.getEmail());
+        existingSupplier.setCep(supplierDTO.getCep());
+        existingSupplier.setAddress(supplierDTO.getAddress());
+        existingSupplier.setNumber(supplierDTO.getNumber());
+        existingSupplier.setNeighborhood(supplierDTO.getNeighborhood());
+        existingSupplier.setAdditional(supplierDTO.getAdditional());
+        existingSupplier.setSupplierType(supplierDTO.getSupplierType());
+
+        return supplierRepository.save(existingSupplier);
+    }
+
+    public void deleteSupplier(Long id) {
+        Supplier supplier = findById(id);
+        supplierRepository.delete(supplier);
     }
 }
