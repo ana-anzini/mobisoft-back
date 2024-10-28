@@ -25,11 +25,11 @@ public class SupplierController {
 	@Autowired
     private SupplierService supplierService;
 
-    @PostMapping
-    public ResponseEntity<Supplier> createSupplier(@RequestBody SupplierDTO supplierDTO) {
-        Supplier newSupplier = supplierService.createSupplier(supplierDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newSupplier);
-    }
+	@PostMapping
+	public ResponseEntity<List<Supplier>> createSuppliers(@RequestBody List<SupplierDTO> supplierDTOs) {
+	    List<Supplier> newSuppliers = supplierService.createSuppliers(supplierDTOs);
+	    return ResponseEntity.status(HttpStatus.CREATED).body(newSuppliers);
+	}
     
     @GetMapping
     public ResponseEntity<List<Supplier>> getAllSuppliers() {
