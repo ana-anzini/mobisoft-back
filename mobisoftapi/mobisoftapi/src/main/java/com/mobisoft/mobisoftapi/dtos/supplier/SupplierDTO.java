@@ -1,13 +1,11 @@
 package com.mobisoft.mobisoftapi.dtos.supplier;
 
-import com.mobisoft.mobisoftapi.enums.suppliers.SupplierType;
-
 import lombok.Data;
 
 @Data
 public class SupplierDTO {
 	private Long id;
-    private SupplierType supplierType;
+	private Long categoryId;
     private String name;
     private String cpfOrCnpj;
     private String phone;

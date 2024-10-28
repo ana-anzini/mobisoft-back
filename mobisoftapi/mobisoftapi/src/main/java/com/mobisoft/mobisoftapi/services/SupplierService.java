@@ -15,6 +15,9 @@ public class SupplierService {
 
 	@Autowired
     private SupplierRepository supplierRepository;
+	
+	@Autowired
+	private CategoryService categoryService;
 
     public Supplier findById(Long id) {
         Optional<Supplier> supplier = supplierRepository.findById(id);
@@ -23,7 +26,7 @@ public class SupplierService {
     
     public Supplier createSupplier(SupplierDTO supplierDTO) {
         Supplier supplier = new Supplier();
-        supplier.setSupplierType(supplierDTO.getSupplierType());
+        supplier.setCategory(categoryService.findById(supplierDTO.getCategoryId()));
         supplier.setName(supplierDTO.getName());
         supplier.setCpfOrCnpj(supplierDTO.getCpfOrCnpj());
         supplier.setPhone(supplierDTO.getPhone());
@@ -52,7 +55,7 @@ public class SupplierService {
         existingSupplier.setNumber(supplierDTO.getNumber());
         existingSupplier.setNeighborhood(supplierDTO.getNeighborhood());
         existingSupplier.setAdditional(supplierDTO.getAdditional());
-        existingSupplier.setSupplierType(supplierDTO.getSupplierType());
+        existingSupplier.setCategory(categoryService.findById(supplierDTO.getCategoryId()));
 
         return supplierRepository.save(existingSupplier);
     }

@@ -1,5 +1,7 @@
 package com.mobisoft.mobisoftapi.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +41,12 @@ public class CategoryController {
     public ResponseEntity<Category> getCategoryById(@PathVariable Long id) {
         Category category = categoryService.findById(id);
         return ResponseEntity.ok(category);
+    }
+    
+    @GetMapping("/findAll")
+    public ResponseEntity<List<Category>> findAll() {
+        List<Category> categories = categoryService.findAll();
+        return ResponseEntity.ok(categories);
     }
     
     @DeleteMapping("/{id}")

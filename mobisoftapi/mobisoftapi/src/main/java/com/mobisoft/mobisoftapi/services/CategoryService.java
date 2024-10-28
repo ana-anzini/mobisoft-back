@@ -1,5 +1,6 @@
 package com.mobisoft.mobisoftapi.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,5 +41,9 @@ public class CategoryService {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new CategoryNotFoundException(id));
         categoryRepository.delete(category);
+    }
+    
+    public List<Category> findAll() {
+        return categoryRepository.findAll();
     }
 }
