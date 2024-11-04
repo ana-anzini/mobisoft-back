@@ -40,6 +40,6 @@ public abstract class Base {
     @Column(name="neighborhood", nullable = false)
     private String neighborhood;
     
-    @Column(name="additional", nullable = false)
+    @Column(name="additional", nullable = true)
     private String additional;
 }
