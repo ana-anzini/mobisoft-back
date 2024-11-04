@@ -1,12 +1,12 @@
 package com.mobisoft.mobisoftapi.dtos.supplier;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class SupplierDTO {
-	private Long id;
-	private Long categoryId;
-	private String categoryDescription;
+    private Long id;
     private String name;
     private String cpfOrCnpj;
     private String phone;
@@ -16,4 +16,6 @@ public class SupplierDTO {
     private int number;
     private String neighborhood;
     private String additional;
+    private Long categoryId;
+    private String categoryDescription;
 }

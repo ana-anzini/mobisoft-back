@@ -44,10 +44,9 @@ public class SupplierService {
         
         return supplierRepository.save(supplier);
     }
-
     
-    public List<Supplier> getAllSuppliers() {
-        return supplierRepository.findAll();
+    public List<SupplierDTO> getAllSuppliers() {
+        return supplierRepository.findAllSuppliersWithCategoryDescription();
     }
 
     public Supplier updateSupplier(Long id, SupplierDTO supplierDTO) {

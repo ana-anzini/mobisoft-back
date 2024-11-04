@@ -32,9 +32,9 @@ public class SupplierController {
 	    return ResponseEntity.status(HttpStatus.CREATED).body(newSupplier);
 	}
     
-    @GetMapping
-    public ResponseEntity<List<Supplier>> getAllSuppliers() {
-        List<Supplier> suppliers = supplierService.getAllSuppliers();
+	@GetMapping
+    public ResponseEntity<List<SupplierDTO>> getAllSuppliers() {
+        List<SupplierDTO> suppliers = supplierService.getAllSuppliers();
         return ResponseEntity.ok(suppliers);
     }
 
