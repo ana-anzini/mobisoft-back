@@ -26,29 +26,23 @@ public class SupplierService {
         return supplier.orElseThrow();
     }
     
-    public List<Supplier> createSuppliers(List<SupplierDTO> supplierDTOs) {
-        List<Supplier> suppliers = new ArrayList();
-
-        for (SupplierDTO supplierDTO : supplierDTOs) {
-            Supplier supplier = new Supplier();
-            Optional<Category> categoryOpt = Optional.ofNullable(categoryService.findById(supplierDTO.getCategoryId()));
-            if (categoryOpt.isPresent()) {
-                supplier.setCategory(categoryOpt.get());
-            }
-            supplier.setName(supplierDTO.getName());
-            supplier.setCpfOrCnpj(supplierDTO.getCpfOrCnpj());
-            supplier.setPhone(supplierDTO.getPhone());
-            supplier.setEmail(supplierDTO.getEmail());
-            supplier.setCep(supplierDTO.getCep());
-            supplier.setAddress(supplierDTO.getAddress());
-            supplier.setNumber(supplierDTO.getNumber());
-            supplier.setNeighborhood(supplierDTO.getNeighborhood());
-            supplier.setAdditional(supplierDTO.getAdditional());
-
-            suppliers.add(supplierRepository.save(supplier));
+    public Supplier createSupplier(SupplierDTO supplierDTO) {
+        Supplier supplier = new Supplier();
+        Optional<Category> categoryOpt = Optional.ofNullable(categoryService.findById(supplierDTO.getCategoryId()));
+        if (categoryOpt.isPresent()) {
+            supplier.setCategory(categoryOpt.get());
         }
-
-        return suppliers;
+        supplier.setName(supplierDTO.getName());
+        supplier.setCpfOrCnpj(supplierDTO.getCpfOrCnpj());
+        supplier.setPhone(supplierDTO.getPhone());
+        supplier.setEmail(supplierDTO.getEmail());
+        supplier.setCep(supplierDTO.getCep());
+        supplier.setAddress(supplierDTO.getAddress());
+        supplier.setNumber(supplierDTO.getNumber());
+        supplier.setNeighborhood(supplierDTO.getNeighborhood());
+        supplier.setAdditional(supplierDTO.getAdditional());
+        
+        return supplierRepository.save(supplier);
     }
 
     

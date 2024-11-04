@@ -6,6 +6,7 @@ import lombok.Data;
 public class SupplierDTO {
 	private Long id;
 	private Long categoryId;
+	private String categoryDescription;
     private String name;
     private String cpfOrCnpj;
     private String phone;
