@@ -3,6 +3,7 @@ package com.mobisoft.mobisoftapi.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -57,8 +58,17 @@ public class CategoryController {
     }
     
     @DeleteMapping
-    public ResponseEntity<Void> deleteCategories(@RequestParam List<Long> ids) {
-        categoryService.deleteCategories(ids);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<String> deleteCategories(@RequestParam List<Long> ids) {
+        try {
+            categoryService.deleteCategories(ids);
+            return ResponseEntity.ok("Categoria(s) deletada(s) com sucesso.");
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.ok("Não é possível excluir esta categoria, pois ela está em uso.");
+        } catch (Exception e) {
+            return ResponseEntity.ok("Erro ao processar a solicitação.");
+        }
     }
+
+
+
 }
