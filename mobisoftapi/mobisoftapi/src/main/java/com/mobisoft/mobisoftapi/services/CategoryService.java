@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.mobisoft.mobisoftapi.configs.exceptions.CategoryNotFoundException;
 import com.mobisoft.mobisoftapi.dtos.category.CategoryDTO;
 import com.mobisoft.mobisoftapi.models.Category;
+import com.mobisoft.mobisoftapi.models.Supplier;
 import com.mobisoft.mobisoftapi.repositories.CategoryRepository;
 
 @Service
@@ -45,5 +46,10 @@ public class CategoryService {
     
     public List<Category> findAll() {
         return categoryRepository.findAll();
+    }
+    
+    public void deleteCategories(List<Long> ids) {
+        List<Category> categories = categoryRepository.findAllById(ids);
+        categoryRepository.deleteAll(categories);
     }
 }

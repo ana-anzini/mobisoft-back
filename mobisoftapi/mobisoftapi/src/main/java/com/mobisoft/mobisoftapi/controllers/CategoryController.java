@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mobisoft.mobisoftapi.dtos.category.CategoryDTO;
@@ -52,6 +53,12 @@ public class CategoryController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
         categoryService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+    
+    @DeleteMapping
+    public ResponseEntity<Void> deleteCategories(@RequestParam List<Long> ids) {
+        categoryService.deleteCategories(ids);
         return ResponseEntity.noContent().build();
     }
 }
