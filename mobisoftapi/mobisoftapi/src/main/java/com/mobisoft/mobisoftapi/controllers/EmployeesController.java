@@ -31,7 +31,7 @@ public class EmployeesController {
         return ResponseEntity.status(HttpStatus.CREATED).body(newEmployee);
     }
 
-    @GetMapping
+    @GetMapping("/findAll")
     public ResponseEntity<List<Employees>> getAllEmployees() {
         List<Employees> employees = employeesService.getAllEmployees();
         return ResponseEntity.ok(employees);
