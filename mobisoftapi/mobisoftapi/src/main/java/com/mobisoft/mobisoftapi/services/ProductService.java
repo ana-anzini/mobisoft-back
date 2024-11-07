@@ -50,8 +50,8 @@ public class ProductService {
         Product existingProduct = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException(id));
         
-        Supplier supplier = supplierService.findById(productDTO.getSupplierId());
         Category category = categoryService.findById(productDTO.getCategoryId());
+        Supplier supplier = supplierService.findById(productDTO.getSupplierId());
         
         existingProduct.setDescription(productDTO.getDescription());
         existingProduct.setSupplier(supplier);
@@ -66,5 +66,10 @@ public class ProductService {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException(id));
         productRepository.delete(product);
+    }
+    
+    public void deleteProducts(List<Long> ids) {
+        List<Product> products = productRepository.findAllById(ids);
+        productRepository.deleteAll(products);
     }
 }

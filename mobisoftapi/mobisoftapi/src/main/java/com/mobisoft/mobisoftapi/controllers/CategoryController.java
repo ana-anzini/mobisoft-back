@@ -68,7 +68,4 @@ public class CategoryController {
             return ResponseEntity.ok("Erro ao processar a solicitação.");
         }
     }
-
-
-
 }

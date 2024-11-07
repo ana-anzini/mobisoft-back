@@ -38,6 +38,6 @@ public class Product {
 	@Column(name="quantity", nullable = false, columnDefinition = "INTEGER DEFAULT 0")
     private Integer quantity;
 	
-    @Column(name="product_value", nullable = false)
+    @Column(name="product_value", nullable = true)
     private BigDecimal productValue;
 }
