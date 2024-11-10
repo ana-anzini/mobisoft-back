@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.mobisoft.mobisoftapi.configs.exceptions.CostumerNotFoundException;
 import com.mobisoft.mobisoftapi.dtos.costumers.CostumerDTO;
 import com.mobisoft.mobisoftapi.models.Costumer;
+import com.mobisoft.mobisoftapi.models.Supplier;
 import com.mobisoft.mobisoftapi.repositories.CostumerRepository;
 
 @Service
@@ -64,7 +65,8 @@ public class CostumerService {
         return costumerRepository.save(existingCostumer);
     }
 
-    public void deleteCostumer(Long id) {
-        costumerRepository.deleteById(id);
+    public void deleteCostumers(List<Long> ids) {
+        List<Costumer> costumers = costumerRepository.findAllById(ids);
+        costumerRepository.deleteAll(costumers);
     }
 }

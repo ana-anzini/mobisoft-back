@@ -34,7 +34,7 @@ public class Costumer extends Base {
     @Enumerated(EnumType.ORDINAL)
     private PersonType personType;
     
-    @Column(name="notes", nullable = false)
+    @Column(name="notes", nullable = true)
     private String notes;
 	
 }
