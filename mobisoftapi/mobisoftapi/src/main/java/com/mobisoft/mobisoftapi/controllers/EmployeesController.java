@@ -3,6 +3,7 @@ package com.mobisoft.mobisoftapi.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -49,10 +50,16 @@ public class EmployeesController {
         Employees updatedEmployee = employeesService.updateEmployee(id, employeesDTO);
         return ResponseEntity.ok(updatedEmployee);
     }
-
+    
     @DeleteMapping
-    public ResponseEntity<Void> deleteEmployees(@RequestParam List<Long> ids) {
-        employeesService.deleteEmployees(ids);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<String> deleteEmployees(@RequestParam List<Long> ids) {
+        try {
+            employeesService.deleteEmployees(ids);
+            return ResponseEntity.ok("Produto(s) deletada(s) com sucesso.");
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.ok("Não é possível excluir este produto, pois ele está em uso.");
+        } catch (Exception e) {
+            return ResponseEntity.ok("Erro ao processar a solicitação.");
+        }
     }
 }
