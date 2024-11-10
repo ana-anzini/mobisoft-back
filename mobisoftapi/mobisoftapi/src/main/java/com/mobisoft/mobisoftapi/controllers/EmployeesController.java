@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mobisoft.mobisoftapi.dtos.employees.EmployeesDTO;
@@ -49,9 +50,9 @@ public class EmployeesController {
         return ResponseEntity.ok(updatedEmployee);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEmployee(@PathVariable Long id) {
-        employeesService.deleteEmployee(id);
+    @DeleteMapping
+    public ResponseEntity<Void> deleteEmployees(@RequestParam List<Long> ids) {
+        employeesService.deleteEmployees(ids);
         return ResponseEntity.noContent().build();
     }
 }

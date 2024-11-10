@@ -55,6 +55,4 @@ public class SupplierController {
         supplierService.deleteSuppliers(ids);
         return ResponseEntity.noContent().build();
     }
-
-
 }
