@@ -32,7 +32,7 @@ public class Deliveries {
     @JoinColumn(name = "project_id", nullable = false)
     private Project project;
     
-    @Column(name="address_client", nullable = false)
+    @Column(name="address_client", nullable = true)
     private boolean addressClient;
     
     @Column(name="cep", nullable = false)
