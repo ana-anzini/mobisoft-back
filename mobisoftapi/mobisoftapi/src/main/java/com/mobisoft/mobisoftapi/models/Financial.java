@@ -40,10 +40,6 @@ public class Financial {
     @Enumerated(EnumType.ORDINAL)
     private PaymentType paymentType;
     
-    @ManyToOne
-    @JoinColumn(name = "project_id", nullable = false)
-    private Project project;
-    
     @Column(name="discount", nullable = false)
     private BigDecimal discount;
     

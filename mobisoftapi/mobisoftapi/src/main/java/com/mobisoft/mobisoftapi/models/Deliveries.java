@@ -27,10 +27,6 @@ public class Deliveries {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
-	
-    @ManyToOne
-    @JoinColumn(name = "project_id", nullable = false)
-    private Project project;
     
     @Column(name="address_client", nullable = true)
     private boolean addressClient;

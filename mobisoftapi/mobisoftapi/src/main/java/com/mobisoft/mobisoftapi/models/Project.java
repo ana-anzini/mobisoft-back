@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,8 +37,16 @@ public class Project {
     private Employees projectDesigner;
     
     @ManyToOne
+    @JoinColumn(name = "delivery_id", nullable = false)
+    private Deliveries deliveryId;
+    
+    @ManyToOne
     @JoinColumn(name = "seller_id", nullable = false)
     private Employees seller;
+    
+    @OneToOne
+    @JoinColumn(name = "financial_id", nullable = false)
+    private Financial financial;
     
     @Column(name="reference_date", nullable = false)
     private Calendar referenceDate;

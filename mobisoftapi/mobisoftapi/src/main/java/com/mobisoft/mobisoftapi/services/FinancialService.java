@@ -25,7 +25,6 @@ public class FinancialService {
         financial.setInstallmentsNumber(financialDTO.getInstallmentsNumber());
         financial.setFirstPayment(financialDTO.getFirstPayment());
         financial.setPaymentType(financialDTO.getPaymentType());
-        financial.setProject(project);
         financial.setDiscount(financialDTO.getDiscount());
         financial.setAdditionalExpenses(financialDTO.getAdditionalExpenses());
         financial.setAdditional(financialDTO.isAdditional());
@@ -56,7 +55,6 @@ public class FinancialService {
         existingFinancial.setInstallmentsNumber(financialDTO.getInstallmentsNumber());
         existingFinancial.setFirstPayment(financialDTO.getFirstPayment());
         existingFinancial.setPaymentType(financialDTO.getPaymentType());
-        existingFinancial.setProject(project);
         existingFinancial.setDiscount(financialDTO.getDiscount());
         existingFinancial.setAdditionalExpenses(financialDTO.getAdditionalExpenses());
         existingFinancial.setAdditional(financialDTO.isAdditional());
