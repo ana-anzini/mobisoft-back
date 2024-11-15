@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mobisoft.mobisoftapi.dtos.employees.EmployeesDTO;
+import com.mobisoft.mobisoftapi.enums.employees.EmployeesType;
 import com.mobisoft.mobisoftapi.models.Employees;
 import com.mobisoft.mobisoftapi.services.EmployeesService;
 
@@ -61,5 +62,11 @@ public class EmployeesController {
         } catch (Exception e) {
             return ResponseEntity.ok("Erro ao processar a solicitação.");
         }
+    }
+    
+    @GetMapping("/findByType")
+    public ResponseEntity<List<Employees>> findByType(@RequestParam EmployeesType type) {
+        List<Employees> employees = employeesService.findByEmployeesType(type);
+        return ResponseEntity.ok(employees);
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.mobisoft.mobisoftapi.configs.exceptions.EmployeesNotFoundException;
 import com.mobisoft.mobisoftapi.dtos.employees.EmployeesDTO;
+import com.mobisoft.mobisoftapi.enums.employees.EmployeesType;
 import com.mobisoft.mobisoftapi.models.Employees;
 import com.mobisoft.mobisoftapi.models.Supplier;
 import com.mobisoft.mobisoftapi.repositories.EmployeesRepository;
@@ -78,5 +79,9 @@ public class EmployeesService {
     public void deleteEmployees(List<Long> ids) {
         List<Employees> employees = employeesRepository.findAllById(ids);
         employeesRepository.deleteAll(employees);
+    }
+    
+    public List<Employees> findByEmployeesType(EmployeesType employeesType) {
+        return employeesRepository.findByEmployeesType(employeesType);
     }
 }
