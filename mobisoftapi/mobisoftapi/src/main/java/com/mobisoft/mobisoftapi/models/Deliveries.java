@@ -52,4 +52,8 @@ public class Deliveries {
     @Column(name="delivery_status", nullable = false)
     @Enumerated(EnumType.ORDINAL)
     private StatusType statusType;
+    
+    @ManyToOne
+    @JoinColumn(name = "project_id", nullable = false)
+    private Project project;
 }

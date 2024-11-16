@@ -34,9 +34,6 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
-
-	@Column(name="quantity", nullable = false, columnDefinition = "INTEGER DEFAULT 0")
-    private Integer quantity;
 	
     @Column(name="product_value", nullable = true)
     private BigDecimal productValue;

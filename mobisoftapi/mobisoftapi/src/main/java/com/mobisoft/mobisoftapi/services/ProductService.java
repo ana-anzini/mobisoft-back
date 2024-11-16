@@ -29,7 +29,6 @@ public class ProductService {
     public Product createProduct(ProductDTO productDTO) {
         Product product = new Product();
         product.setDescription(productDTO.getDescription());
-        product.setQuantity(productDTO.getQuantity());
         product.setProductValue(productDTO.getProductValue());
         product.setSupplier(supplierService.findById(productDTO.getSupplierId()));
         product.setCategory(categoryService.findById(productDTO.getCategoryId()));
@@ -56,7 +55,6 @@ public class ProductService {
         existingProduct.setDescription(productDTO.getDescription());
         existingProduct.setSupplier(supplier);
         existingProduct.setCategory(category);
-        existingProduct.setQuantity(productDTO.getQuantity());
         existingProduct.setProductValue(productDTO.getProductValue());
 
         return productRepository.save(existingProduct);
