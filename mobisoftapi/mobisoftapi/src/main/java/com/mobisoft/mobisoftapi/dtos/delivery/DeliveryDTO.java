@@ -16,5 +16,4 @@ public class DeliveryDTO {
     private String neighborhood;
     private String additional;
     private Calendar deliveryDate;
-    private StatusType statusType;
 }

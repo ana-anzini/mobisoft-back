@@ -25,7 +25,6 @@ public class DeliveriesService {
         delivery.setNeighborhood(DeliveryDTO.getNeighborhood());
         delivery.setAdditional(DeliveryDTO.getAdditional());
         delivery.setDeliveryDate(DeliveryDTO.getDeliveryDate());
-        delivery.setStatusType(DeliveryDTO.getStatusType());
 
         return deliveriesRepository.save(delivery);
     }
@@ -48,7 +47,6 @@ public class DeliveriesService {
         existingDelivery.setNeighborhood(DeliveryDTO.getNeighborhood());
         existingDelivery.setAdditional(DeliveryDTO.getAdditional());
         existingDelivery.setDeliveryDate(DeliveryDTO.getDeliveryDate());
-        existingDelivery.setStatusType(DeliveryDTO.getStatusType());
 
         return deliveriesRepository.save(existingDelivery);
     }

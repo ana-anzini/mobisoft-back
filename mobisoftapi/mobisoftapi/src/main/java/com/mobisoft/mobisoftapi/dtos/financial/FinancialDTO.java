@@ -27,5 +27,4 @@ public class FinancialDTO {
     private BigDecimal totalProjectDesigner;
     private BigDecimal totalSeller;
     private BigDecimal totalProfit;
-    private StatusType statusType;
 }

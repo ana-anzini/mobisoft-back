@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.mobisoft.mobisoftapi.configs.exceptions.ProjectNotFoundException;
 import com.mobisoft.mobisoftapi.dtos.project.ProjectDTO;
 import com.mobisoft.mobisoftapi.models.Project;
-import com.mobisoft.mobisoftapi.repositories.CostumerRepository;
 import com.mobisoft.mobisoftapi.repositories.ProjectRepository;
 
 @Service
@@ -19,15 +18,23 @@ public class ProjectService {
     private ProjectRepository projectRepository;
     
     @Autowired
-    private CostumerRepository costumerRepository;
+    private CostumerService costumerService;
+    
+    @Autowired
+    private EmployeesService employeesService;
 
 
     public Project createProject(ProjectDTO projectDTO) {
         Project project = new Project();
         project.setDescription(projectDTO.getDescription());
+        project.setCostumer(costumerService.getCostumerById(projectDTO.getCostumerId()));
+        project.setProjectDesigner(employeesService.findById(projectDTO.getProjectDesignerId()));
+        project.setSeller(employeesService.findById(projectDTO.getSellerId()));
         project.setNotes(projectDTO.getNotes());
         project.setReferenceDate(projectDTO.getReferenceDate());
         project.setConclusionPending(projectDTO.isConclusionPending());
+        project.setFinancialStatus(projectDTO.getFinancialStatus());
+        project.setDeliveryStatus(projectDTO.getDeliveryStatus());
 
         return projectRepository.save(project);
     }

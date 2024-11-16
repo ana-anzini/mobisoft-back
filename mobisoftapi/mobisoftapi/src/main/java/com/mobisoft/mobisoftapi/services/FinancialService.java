@@ -37,7 +37,6 @@ public class FinancialService {
         financial.setTotalProjectDesigner(financialDTO.getTotalProjectDesigner());
         financial.setTotalSeller(financialDTO.getTotalSeller());
         financial.setTotalProfit(financialDTO.getTotalProfit());
-        financial.setStatusType(financialDTO.getStatusType());
 
         return financialRepository.save(financial);
     }
@@ -67,7 +66,6 @@ public class FinancialService {
         existingFinancial.setTotalProjectDesigner(financialDTO.getTotalProjectDesigner());
         existingFinancial.setTotalSeller(financialDTO.getTotalSeller());
         existingFinancial.setTotalProfit(financialDTO.getTotalProfit());
-        existingFinancial.setStatusType(financialDTO.getStatusType());
 
         return financialRepository.save(existingFinancial);
     }

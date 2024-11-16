@@ -75,8 +75,4 @@ public class Financial {
     
     @Column(name="total_profit", nullable = false)
     private BigDecimal totalProfit;
-    
-    @Column(name="financial_status", nullable = false)
-    @Enumerated(EnumType.ORDINAL)
-    private StatusType statusType;
 }
