@@ -3,6 +3,7 @@ package com.mobisoft.mobisoftapi.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mobisoft.mobisoftapi.dtos.project.ProjectDTO;
@@ -48,10 +50,16 @@ public class ProjectController {
         Project updatedProject = projectService.updateProject(id, projectDTO);
         return ResponseEntity.ok(updatedProject);
     }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProject(@PathVariable Long id) {
-        projectService.deleteProject(id);
-        return ResponseEntity.noContent().build();
+    
+    @DeleteMapping
+    public ResponseEntity<String> deleteProjects(@RequestParam List<Long> ids) {
+        try {
+        	projectService.deleteProjects(ids);
+            return ResponseEntity.ok("Categoria(s) deletada(s) com sucesso.");
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.ok("Não é possível excluir esta categoria, pois ela está em uso.");
+        } catch (Exception e) {
+            return ResponseEntity.ok("Erro ao processar a solicitação.");
+        }
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.mobisoft.mobisoftapi.configs.exceptions.ProjectNotFoundException;
 import com.mobisoft.mobisoftapi.dtos.project.ProjectDTO;
+import com.mobisoft.mobisoftapi.models.Costumer;
 import com.mobisoft.mobisoftapi.models.Project;
 import com.mobisoft.mobisoftapi.repositories.ProjectRepository;
 
@@ -65,5 +66,10 @@ public class ProjectService {
             throw new ProjectNotFoundException(id);
         }
         projectRepository.deleteById(id);
+    }
+    
+    public void deleteProjects(List<Long> ids) {
+        List<Project> projects = projectRepository.findAllById(ids);
+        projectRepository.deleteAll(projects);
     }
 }
