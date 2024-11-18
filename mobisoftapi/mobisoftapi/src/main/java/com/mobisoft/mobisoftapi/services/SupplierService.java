@@ -15,57 +15,57 @@ import com.mobisoft.mobisoftapi.repositories.SupplierRepository;
 public class SupplierService {
 
 	@Autowired
-    private SupplierRepository supplierRepository;
-	
+	private SupplierRepository supplierRepository;
+
 	@Autowired
 	private CategoryService categoryService;
 
-    public Supplier findById(Long id) {
-        Optional<Supplier> supplier = supplierRepository.findById(id);
-        return supplier.orElseThrow();
-    }
-    
-    public Supplier createSupplier(SupplierDTO supplierDTO) {
-        Supplier supplier = new Supplier();
-        Optional<Category> categoryOpt = Optional.ofNullable(categoryService.findById(supplierDTO.getCategoryId()));
-        if (categoryOpt.isPresent()) {
-            supplier.setCategory(categoryOpt.get());
-        }
-        supplier.setName(supplierDTO.getName());
-        supplier.setCpfOrCnpj(supplierDTO.getCpfOrCnpj());
-        supplier.setPhone(supplierDTO.getPhone());
-        supplier.setEmail(supplierDTO.getEmail());
-        supplier.setCep(supplierDTO.getCep());
-        supplier.setAddress(supplierDTO.getAddress());
-        supplier.setNumber(supplierDTO.getNumber());
-        supplier.setNeighborhood(supplierDTO.getNeighborhood());
-        supplier.setAdditional(supplierDTO.getAdditional());
-        
-        return supplierRepository.save(supplier);
-    }
-    
-    public List<SupplierDTO> getAllSuppliers() {
-        return supplierRepository.findAllSuppliersWithCategoryDescription();
-    }
+	public Supplier findById(Long id) {
+		Optional<Supplier> supplier = supplierRepository.findById(id);
+		return supplier.orElseThrow();
+	}
 
-    public Supplier updateSupplier(Long id, SupplierDTO supplierDTO) {
-        Supplier existingSupplier = findById(id);
-        existingSupplier.setName(supplierDTO.getName());
-        existingSupplier.setCpfOrCnpj(supplierDTO.getCpfOrCnpj());
-        existingSupplier.setPhone(supplierDTO.getPhone());
-        existingSupplier.setEmail(supplierDTO.getEmail());
-        existingSupplier.setCep(supplierDTO.getCep());
-        existingSupplier.setAddress(supplierDTO.getAddress());
-        existingSupplier.setNumber(supplierDTO.getNumber());
-        existingSupplier.setNeighborhood(supplierDTO.getNeighborhood());
-        existingSupplier.setAdditional(supplierDTO.getAdditional());
-        existingSupplier.setCategory(categoryService.findById(supplierDTO.getCategoryId()));
+	public Supplier createSupplier(SupplierDTO supplierDTO) {
+		Supplier supplier = new Supplier();
+		Optional<Category> categoryOpt = Optional.ofNullable(categoryService.findById(supplierDTO.getCategoryId()));
+		if (categoryOpt.isPresent()) {
+			supplier.setCategory(categoryOpt.get());
+		}
+		supplier.setName(supplierDTO.getName());
+		supplier.setCpfOrCnpj(supplierDTO.getCpfOrCnpj());
+		supplier.setPhone(supplierDTO.getPhone());
+		supplier.setEmail(supplierDTO.getEmail());
+		supplier.setCep(supplierDTO.getCep());
+		supplier.setAddress(supplierDTO.getAddress());
+		supplier.setNumber(supplierDTO.getNumber());
+		supplier.setNeighborhood(supplierDTO.getNeighborhood());
+		supplier.setAdditional(supplierDTO.getAdditional());
 
-        return supplierRepository.save(existingSupplier);
-    }
+		return supplierRepository.save(supplier);
+	}
 
-    public void deleteSuppliers(List<Long> ids) {
-        List<Supplier> suppliers = supplierRepository.findAllById(ids);
-        supplierRepository.deleteAll(suppliers);
-    }
+	public List<SupplierDTO> getAllSuppliers() {
+		return supplierRepository.findAllSuppliersWithCategoryDescription();
+	}
+
+	public Supplier updateSupplier(Long id, SupplierDTO supplierDTO) {
+		Supplier existingSupplier = findById(id);
+		existingSupplier.setName(supplierDTO.getName());
+		existingSupplier.setCpfOrCnpj(supplierDTO.getCpfOrCnpj());
+		existingSupplier.setPhone(supplierDTO.getPhone());
+		existingSupplier.setEmail(supplierDTO.getEmail());
+		existingSupplier.setCep(supplierDTO.getCep());
+		existingSupplier.setAddress(supplierDTO.getAddress());
+		existingSupplier.setNumber(supplierDTO.getNumber());
+		existingSupplier.setNeighborhood(supplierDTO.getNeighborhood());
+		existingSupplier.setAdditional(supplierDTO.getAdditional());
+		existingSupplier.setCategory(categoryService.findById(supplierDTO.getCategoryId()));
+
+		return supplierRepository.save(existingSupplier);
+	}
+
+	public void deleteSuppliers(List<Long> ids) {
+		List<Supplier> suppliers = supplierRepository.findAllById(ids);
+		supplierRepository.deleteAll(suppliers);
+	}
 }

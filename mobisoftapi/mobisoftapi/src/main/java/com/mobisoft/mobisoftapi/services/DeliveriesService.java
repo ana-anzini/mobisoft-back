@@ -13,46 +13,45 @@ import com.mobisoft.mobisoftapi.repositories.DeliveriesRepository;
 @Service
 public class DeliveriesService {
 
-    @Autowired
-    private DeliveriesRepository deliveriesRepository;
+	@Autowired
+	private DeliveriesRepository deliveriesRepository;
 
-    public Deliveries createDelivery(DeliveryDTO DeliveryDTO) {
-        Deliveries delivery = new Deliveries();
-        delivery.setAddressClient(DeliveryDTO.isAddressClient());
-        delivery.setCep(DeliveryDTO.getCep());
-        delivery.setAddress(DeliveryDTO.getAddress());
-        delivery.setNumber(DeliveryDTO.getNumber());
-        delivery.setNeighborhood(DeliveryDTO.getNeighborhood());
-        delivery.setAdditional(DeliveryDTO.getAdditional());
-        delivery.setDeliveryDate(DeliveryDTO.getDeliveryDate());
+	public Deliveries createDelivery(DeliveryDTO DeliveryDTO) {
+		Deliveries delivery = new Deliveries();
+		delivery.setAddressClient(DeliveryDTO.isAddressClient());
+		delivery.setCep(DeliveryDTO.getCep());
+		delivery.setAddress(DeliveryDTO.getAddress());
+		delivery.setNumber(DeliveryDTO.getNumber());
+		delivery.setNeighborhood(DeliveryDTO.getNeighborhood());
+		delivery.setAdditional(DeliveryDTO.getAdditional());
+		delivery.setDeliveryDate(DeliveryDTO.getDeliveryDate());
 
-        return deliveriesRepository.save(delivery);
-    }
+		return deliveriesRepository.save(delivery);
+	}
 
-    public List<Deliveries> getAllDeliveries() {
-        return deliveriesRepository.findAll();
-    }
+	public List<Deliveries> getAllDeliveries() {
+		return deliveriesRepository.findAll();
+	}
 
-    public Deliveries findById(Long id) {
-        return deliveriesRepository.findById(id)
-                .orElseThrow(() -> new DeliveryNotFoundException(id));
-    }
+	public Deliveries findById(Long id) {
+		return deliveriesRepository.findById(id).orElseThrow(() -> new DeliveryNotFoundException(id));
+	}
 
-    public Deliveries updateDelivery(Long id, DeliveryDTO DeliveryDTO) {
-        Deliveries existingDelivery = findById(id);
-        existingDelivery.setAddressClient(DeliveryDTO.isAddressClient());
-        existingDelivery.setCep(DeliveryDTO.getCep());
-        existingDelivery.setAddress(DeliveryDTO.getAddress());
-        existingDelivery.setNumber(DeliveryDTO.getNumber());
-        existingDelivery.setNeighborhood(DeliveryDTO.getNeighborhood());
-        existingDelivery.setAdditional(DeliveryDTO.getAdditional());
-        existingDelivery.setDeliveryDate(DeliveryDTO.getDeliveryDate());
+	public Deliveries updateDelivery(Long id, DeliveryDTO DeliveryDTO) {
+		Deliveries existingDelivery = findById(id);
+		existingDelivery.setAddressClient(DeliveryDTO.isAddressClient());
+		existingDelivery.setCep(DeliveryDTO.getCep());
+		existingDelivery.setAddress(DeliveryDTO.getAddress());
+		existingDelivery.setNumber(DeliveryDTO.getNumber());
+		existingDelivery.setNeighborhood(DeliveryDTO.getNeighborhood());
+		existingDelivery.setAdditional(DeliveryDTO.getAdditional());
+		existingDelivery.setDeliveryDate(DeliveryDTO.getDeliveryDate());
 
-        return deliveriesRepository.save(existingDelivery);
-    }
+		return deliveriesRepository.save(existingDelivery);
+	}
 
-    public void deleteDelivery(Long id) {
-        Deliveries delivery = findById(id);
-        deliveriesRepository.delete(delivery);
-    }
+	public void deleteDelivery(Long id) {
+		Deliveries delivery = findById(id);
+		deliveriesRepository.delete(delivery);
+	}
 }

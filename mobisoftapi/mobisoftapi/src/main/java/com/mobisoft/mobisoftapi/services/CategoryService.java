@@ -16,40 +16,39 @@ import com.mobisoft.mobisoftapi.repositories.CategoryRepository;
 public class CategoryService {
 
 	@Autowired
-    private CategoryRepository categoryRepository;
+	private CategoryRepository categoryRepository;
 
-    public Category findById(Long id) {
-        Optional<Category> category = categoryRepository.findById(id);
-        return category.orElseThrow();
-    }
-    
-    public Category create(CategoryDTO categoryDTO) {
-    	Category category = new Category();
-    	category.setDescription(categoryDTO.getDescription());
-    	
-    	return categoryRepository.save(category);
-    }
-    
-    public Category update(Long id, CategoryDTO categoryDTO) {
-    	Category existingCategory = categoryRepository.findById(id)
-                .orElseThrow(() -> new CategoryNotFoundException(id));
+	public Category findById(Long id) {
+		Optional<Category> category = categoryRepository.findById(id);
+		return category.orElseThrow();
+	}
 
-        existingCategory.setDescription(categoryDTO.getDescription());
-        return categoryRepository.save(existingCategory);
-    }
-    
-    public void delete(Long id) {
-        Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new CategoryNotFoundException(id));
-        categoryRepository.delete(category);
-    }
-    
-    public List<Category> findAll() {
-        return categoryRepository.findAll();
-    }
-    
-    public void deleteCategories(List<Long> ids) {
-        List<Category> categories = categoryRepository.findAllById(ids);
-        categoryRepository.deleteAll(categories);
-    }
+	public Category create(CategoryDTO categoryDTO) {
+		Category category = new Category();
+		category.setDescription(categoryDTO.getDescription());
+
+		return categoryRepository.save(category);
+	}
+
+	public Category update(Long id, CategoryDTO categoryDTO) {
+		Category existingCategory = categoryRepository.findById(id)
+				.orElseThrow(() -> new CategoryNotFoundException(id));
+
+		existingCategory.setDescription(categoryDTO.getDescription());
+		return categoryRepository.save(existingCategory);
+	}
+
+	public void delete(Long id) {
+		Category category = categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException(id));
+		categoryRepository.delete(category);
+	}
+
+	public List<Category> findAll() {
+		return categoryRepository.findAll();
+	}
+
+	public void deleteCategories(List<Long> ids) {
+		List<Category> categories = categoryRepository.findAllById(ids);
+		categoryRepository.deleteAll(categories);
+	}
 }

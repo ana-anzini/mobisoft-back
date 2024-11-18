@@ -13,66 +13,65 @@ import com.mobisoft.mobisoftapi.repositories.FinancialRepository;
 public class FinancialService {
 
 	@Autowired
-    private FinancialRepository financialRepository;
-	
+	private FinancialRepository financialRepository;
+
 	@Autowired
-    private ProjectService projectService;
+	private ProjectService projectService;
 
-    public Financial createFinancial(FinancialDTO financialDTO) {
-    	Project project = projectService.getProjectById(financialDTO.getProjectId());
-        Financial financial = new Financial();
-        
-        financial.setInstallmentsNumber(financialDTO.getInstallmentsNumber());
-        financial.setFirstPayment(financialDTO.getFirstPayment());
-        financial.setPaymentType(financialDTO.getPaymentType());
-        financial.setDiscount(financialDTO.getDiscount());
-        financial.setAdditionalExpenses(financialDTO.getAdditionalExpenses());
-        financial.setAdditional(financialDTO.isAdditional());
-        financial.setAdditionalSeller(financialDTO.getAdditionalSeller());
-        financial.setAdditionalProjectDesigner(financialDTO.getAdditionalProjectDesigner());
-        financial.setAdditionalFinancial(financialDTO.getAdditionalFinancial());
-        financial.setFreight(financialDTO.getFreight());
-        financial.setTotalValue(financialDTO.getTotalValue());
-        financial.setTotalCusts(financialDTO.getTotalCusts());
-        financial.setTotalProjectDesigner(financialDTO.getTotalProjectDesigner());
-        financial.setTotalSeller(financialDTO.getTotalSeller());
-        financial.setTotalProfit(financialDTO.getTotalProfit());
+	public Financial createFinancial(FinancialDTO financialDTO) {
+		Project project = projectService.getProjectById(financialDTO.getProjectId());
+		Financial financial = new Financial();
 
-        return financialRepository.save(financial);
-    }
+		financial.setInstallmentsNumber(financialDTO.getInstallmentsNumber());
+		financial.setFirstPayment(financialDTO.getFirstPayment());
+		financial.setPaymentType(financialDTO.getPaymentType());
+		financial.setDiscount(financialDTO.getDiscount());
+		financial.setAdditionalExpenses(financialDTO.getAdditionalExpenses());
+		financial.setAdditional(financialDTO.isAdditional());
+		financial.setAdditionalSeller(financialDTO.getAdditionalSeller());
+		financial.setAdditionalProjectDesigner(financialDTO.getAdditionalProjectDesigner());
+		financial.setAdditionalFinancial(financialDTO.getAdditionalFinancial());
+		financial.setFreight(financialDTO.getFreight());
+		financial.setTotalValue(financialDTO.getTotalValue());
+		financial.setTotalCusts(financialDTO.getTotalCusts());
+		financial.setTotalProjectDesigner(financialDTO.getTotalProjectDesigner());
+		financial.setTotalSeller(financialDTO.getTotalSeller());
+		financial.setTotalProfit(financialDTO.getTotalProfit());
 
-    public Financial findById(Long id) {
-        return financialRepository.findById(id)
-                .orElseThrow(() -> new FinancialNotFoundException(id));
-    }
+		return financialRepository.save(financial);
+	}
 
-    public Financial updateFinancial(Long id, FinancialDTO financialDTO) {
-    	Project project = projectService.getProjectById(financialDTO.getProjectId());
-        Financial existingFinancial = financialRepository.findById(id)
-                .orElseThrow(() -> new FinancialNotFoundException(id));
+	public Financial findById(Long id) {
+		return financialRepository.findById(id).orElseThrow(() -> new FinancialNotFoundException(id));
+	}
 
-        existingFinancial.setInstallmentsNumber(financialDTO.getInstallmentsNumber());
-        existingFinancial.setFirstPayment(financialDTO.getFirstPayment());
-        existingFinancial.setPaymentType(financialDTO.getPaymentType());
-        existingFinancial.setDiscount(financialDTO.getDiscount());
-        existingFinancial.setAdditionalExpenses(financialDTO.getAdditionalExpenses());
-        existingFinancial.setAdditional(financialDTO.isAdditional());
-        existingFinancial.setAdditionalSeller(financialDTO.getAdditionalSeller());
-        existingFinancial.setAdditionalProjectDesigner(financialDTO.getAdditionalProjectDesigner());
-        existingFinancial.setAdditionalFinancial(financialDTO.getAdditionalFinancial());
-        existingFinancial.setFreight(financialDTO.getFreight());
-        existingFinancial.setTotalValue(financialDTO.getTotalValue());
-        existingFinancial.setTotalCusts(financialDTO.getTotalCusts());
-        existingFinancial.setTotalProjectDesigner(financialDTO.getTotalProjectDesigner());
-        existingFinancial.setTotalSeller(financialDTO.getTotalSeller());
-        existingFinancial.setTotalProfit(financialDTO.getTotalProfit());
+	public Financial updateFinancial(Long id, FinancialDTO financialDTO) {
+		Project project = projectService.getProjectById(financialDTO.getProjectId());
+		Financial existingFinancial = financialRepository.findById(id)
+				.orElseThrow(() -> new FinancialNotFoundException(id));
 
-        return financialRepository.save(existingFinancial);
-    }
+		existingFinancial.setInstallmentsNumber(financialDTO.getInstallmentsNumber());
+		existingFinancial.setFirstPayment(financialDTO.getFirstPayment());
+		existingFinancial.setPaymentType(financialDTO.getPaymentType());
+		existingFinancial.setDiscount(financialDTO.getDiscount());
+		existingFinancial.setAdditionalExpenses(financialDTO.getAdditionalExpenses());
+		existingFinancial.setAdditional(financialDTO.isAdditional());
+		existingFinancial.setAdditionalSeller(financialDTO.getAdditionalSeller());
+		existingFinancial.setAdditionalProjectDesigner(financialDTO.getAdditionalProjectDesigner());
+		existingFinancial.setAdditionalFinancial(financialDTO.getAdditionalFinancial());
+		existingFinancial.setFreight(financialDTO.getFreight());
+		existingFinancial.setTotalValue(financialDTO.getTotalValue());
+		existingFinancial.setTotalCusts(financialDTO.getTotalCusts());
+		existingFinancial.setTotalProjectDesigner(financialDTO.getTotalProjectDesigner());
+		existingFinancial.setTotalSeller(financialDTO.getTotalSeller());
+		existingFinancial.setTotalProfit(financialDTO.getTotalProfit());
 
-    public void deleteFinancial(Long id) {
-        Financial existingFinancial = financialRepository.findById(id)
-                .orElseThrow(() -> new FinancialNotFoundException(id));
-        financialRepository.delete(existingFinancial);
-    }
+		return financialRepository.save(existingFinancial);
+	}
+
+	public void deleteFinancial(Long id) {
+		Financial existingFinancial = financialRepository.findById(id)
+				.orElseThrow(() -> new FinancialNotFoundException(id));
+		financialRepository.delete(existingFinancial);
+	}
 }

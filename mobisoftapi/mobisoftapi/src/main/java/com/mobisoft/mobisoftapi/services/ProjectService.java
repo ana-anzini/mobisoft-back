@@ -15,61 +15,59 @@ import com.mobisoft.mobisoftapi.repositories.ProjectRepository;
 @Service
 public class ProjectService {
 
-    @Autowired
-    private ProjectRepository projectRepository;
-    
-    @Autowired
-    private CostumerService costumerService;
-    
-    @Autowired
-    private EmployeesService employeesService;
+	@Autowired
+	private ProjectRepository projectRepository;
 
+	@Autowired
+	private CostumerService costumerService;
 
-    public Project createProject(ProjectDTO projectDTO) {
-        Project project = new Project();
-        project.setDescription(projectDTO.getDescription());
-        project.setCostumer(costumerService.getCostumerById(projectDTO.getCostumerId()));
-        project.setProjectDesigner(employeesService.findById(projectDTO.getProjectDesignerId()));
-        project.setSeller(employeesService.findById(projectDTO.getSellerId()));
-        project.setNotes(projectDTO.getNotes());
-        project.setReferenceDate(projectDTO.getReferenceDate());
-        project.setConclusionPending(projectDTO.isConclusionPending());
-        project.setFinancialStatus(projectDTO.getFinancialStatus());
-        project.setDeliveryStatus(projectDTO.getDeliveryStatus());
+	@Autowired
+	private EmployeesService employeesService;
 
-        return projectRepository.save(project);
-    }
+	public Project createProject(ProjectDTO projectDTO) {
+		Project project = new Project();
+		project.setDescription(projectDTO.getDescription());
+		project.setCostumer(costumerService.getCostumerById(projectDTO.getCostumerId()));
+		project.setProjectDesigner(employeesService.findById(projectDTO.getProjectDesignerId()));
+		project.setSeller(employeesService.findById(projectDTO.getSellerId()));
+		project.setNotes(projectDTO.getNotes());
+		project.setReferenceDate(projectDTO.getReferenceDate());
+		project.setConclusionPending(projectDTO.isConclusionPending());
+		project.setFinancialStatus(projectDTO.getFinancialStatus());
+		project.setDeliveryStatus(projectDTO.getDeliveryStatus());
 
-    public Project getProjectById(Long id) {
-        Optional<Project> project = projectRepository.findById(id);
-        return project.orElseThrow(() -> new ProjectNotFoundException(id));
-    }
+		return projectRepository.save(project);
+	}
 
-    public List<Project> getAllProjects() {
-        return projectRepository.findAll();
-    }
+	public Project getProjectById(Long id) {
+		Optional<Project> project = projectRepository.findById(id);
+		return project.orElseThrow(() -> new ProjectNotFoundException(id));
+	}
 
-    public Project updateProject(Long id, ProjectDTO projectDTO) {
-        Project project = projectRepository.findById(id)
-                .orElseThrow(() -> new ProjectNotFoundException(id));
+	public List<Project> getAllProjects() {
+		return projectRepository.findAll();
+	}
 
-        project.setDescription(projectDTO.getDescription());
-        project.setNotes(projectDTO.getNotes());
-        project.setReferenceDate(projectDTO.getReferenceDate());
-        project.setConclusionPending(projectDTO.isConclusionPending());
+	public Project updateProject(Long id, ProjectDTO projectDTO) {
+		Project project = projectRepository.findById(id).orElseThrow(() -> new ProjectNotFoundException(id));
 
-        return projectRepository.save(project);
-    }
+		project.setDescription(projectDTO.getDescription());
+		project.setNotes(projectDTO.getNotes());
+		project.setReferenceDate(projectDTO.getReferenceDate());
+		project.setConclusionPending(projectDTO.isConclusionPending());
 
-    public void deleteProject(Long id) {
-        if (!projectRepository.existsById(id)) {
-            throw new ProjectNotFoundException(id);
-        }
-        projectRepository.deleteById(id);
-    }
-    
-    public void deleteProjects(List<Long> ids) {
-        List<Project> projects = projectRepository.findAllById(ids);
-        projectRepository.deleteAll(projects);
-    }
+		return projectRepository.save(project);
+	}
+
+	public void deleteProject(Long id) {
+		if (!projectRepository.existsById(id)) {
+			throw new ProjectNotFoundException(id);
+		}
+		projectRepository.deleteById(id);
+	}
+
+	public void deleteProjects(List<Long> ids) {
+		List<Project> projects = projectRepository.findAllById(ids);
+		projectRepository.deleteAll(projects);
+	}
 }
