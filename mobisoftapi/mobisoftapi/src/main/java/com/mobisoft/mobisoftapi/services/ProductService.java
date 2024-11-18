@@ -43,6 +43,11 @@ public class ProductService {
 	public Product getProductById(Long id) {
 		return productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException(id));
 	}
+	
+	public List<Product> getProductsByCategory(Long categoryId) {
+	    Category category = categoryService.findById(categoryId);
+	    return productRepository.findByCategory(category);
+	}
 
 	public Product updateProduct(Long id, ProductDTO productDTO) {
 		Product existingProduct = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException(id));

@@ -59,4 +59,10 @@ public class ProductProjectController {
         productProjectService.deleteProductProjects(ids);
         return ResponseEntity.ok("Produto(s) deletada(s) com sucesso.");
     }
+    
+    @GetMapping("/findByProject/{projectId}")
+    public ResponseEntity<List<ProductProject>> getAllProductsByProject(@PathVariable Long projectId) {
+        List<ProductProject> productProjects = productProjectService.getProductsByProject(projectId);
+        return ResponseEntity.ok(productProjects);
+    }
 }

@@ -63,4 +63,9 @@ public class ProductProjectService {
 		List<ProductProject> productProjects = productProjectRepository.findAllById(ids);
 		productProjectRepository.deleteAll(productProjects);
 	}
+	
+	public List<ProductProject> getProductsByProject(Long projectId) {
+	    Project project = projectService.getProjectById(projectId);
+	    return productProjectRepository.findByProject(project);
+	}
 }
