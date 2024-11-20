@@ -17,7 +17,6 @@ public class FinancialDTO {
     private Long projectId;
     private BigDecimal discount;
     private BigDecimal additionalExpenses;
-    private boolean additional;
     private BigDecimal additionalSeller;
     private BigDecimal additionalProjectDesigner;
     private BigDecimal additionalFinancial;
