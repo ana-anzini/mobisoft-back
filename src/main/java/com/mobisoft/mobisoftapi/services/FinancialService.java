@@ -27,9 +27,6 @@ public class FinancialService {
 		financial.setPaymentType(financialDTO.getPaymentType());
 		financial.setDiscount(financialDTO.getDiscount());
 		financial.setAdditionalExpenses(financialDTO.getAdditionalExpenses());
-		financial.setAdditionalSeller(financialDTO.getAdditionalSeller());
-		financial.setAdditionalProjectDesigner(financialDTO.getAdditionalProjectDesigner());
-		financial.setAdditionalFinancial(financialDTO.getAdditionalFinancial());
 		financial.setFreight(financialDTO.getFreight());
 		financial.setTotalValue(financialDTO.getTotalValue());
 		financial.setTotalCusts(financialDTO.getTotalCusts());
@@ -54,9 +51,6 @@ public class FinancialService {
 		existingFinancial.setPaymentType(financialDTO.getPaymentType());
 		existingFinancial.setDiscount(financialDTO.getDiscount());
 		existingFinancial.setAdditionalExpenses(financialDTO.getAdditionalExpenses());
-		existingFinancial.setAdditionalSeller(financialDTO.getAdditionalSeller());
-		existingFinancial.setAdditionalProjectDesigner(financialDTO.getAdditionalProjectDesigner());
-		existingFinancial.setAdditionalFinancial(financialDTO.getAdditionalFinancial());
 		existingFinancial.setFreight(financialDTO.getFreight());
 		existingFinancial.setTotalValue(financialDTO.getTotalValue());
 		existingFinancial.setTotalCusts(financialDTO.getTotalCusts());

@@ -46,15 +46,6 @@ public class Financial {
     @Column(name="additional_expenses", nullable = false)
     private BigDecimal additionalExpenses;
     
-    @Column(name="additional_seller", nullable = false)
-    private BigDecimal additionalSeller;
-    
-    @Column(name="additional_projectdesigner", nullable = false)
-    private BigDecimal additionalProjectDesigner;
-    
-    @Column(name="additional_financial", nullable = false)
-    private BigDecimal additionalFinancial;
-    
     @Column(name="freight", nullable = false)
     private BigDecimal freight;
     
