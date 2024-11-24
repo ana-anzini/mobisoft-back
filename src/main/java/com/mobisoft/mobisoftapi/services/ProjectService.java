@@ -10,6 +10,7 @@ import com.mobisoft.mobisoftapi.configs.exceptions.ProjectNotFoundException;
 import com.mobisoft.mobisoftapi.dtos.project.ProjectDTO;
 import com.mobisoft.mobisoftapi.models.Costumer;
 import com.mobisoft.mobisoftapi.models.Project;
+import com.mobisoft.mobisoftapi.models.UserGroup;
 import com.mobisoft.mobisoftapi.repositories.ProjectRepository;
 
 @Service
@@ -23,8 +24,12 @@ public class ProjectService {
 
 	@Autowired
 	private EmployeesService employeesService;
+	
+	@Autowired
+	private UserService userService;
 
 	public Project createProject(ProjectDTO projectDTO) {
+		UserGroup userGroup = userService.getLoggedUser().getGroup();
 		Project project = new Project();
 		project.setDescription(projectDTO.getDescription());
 		project.setCostumer(costumerService.getCostumerById(projectDTO.getCostumerId()));
@@ -35,6 +40,7 @@ public class ProjectService {
 		project.setConclusionPending(projectDTO.isConclusionPending());
 		project.setFinancialStatus(projectDTO.getFinancialStatus());
 		project.setDeliveryStatus(projectDTO.getDeliveryStatus());
+		project.setUserGroup(userGroup);
 
 		return projectRepository.save(project);
 	}

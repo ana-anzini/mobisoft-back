@@ -72,6 +72,6 @@ public class Project {
     private StatusType deliveryStatus;
     
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "group_id", nullable = false)
+    private UserGroup userGroup;
 }
