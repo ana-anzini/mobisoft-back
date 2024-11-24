@@ -29,7 +29,8 @@ jobs:
     needs: build
     runs-on: self-hosted
     steps:
-      - name: Pull image from Docker Hub
+      - name: Pull image from docker hub
         run: docker pull anabeanzini/mobisoftapi:latest
       - name: Run docker container
-        run: docker run -d -p 8080:8080 --name deploy_mobisoft anabeanzini/mobisoftapi
+        run: docker run -d -p 8080:8080 --name mobisoftapi anabeanzini/mobisoftapi
+  
