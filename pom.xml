@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.mobisoft</groupId>
     <artifactId>mobisoftapi</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>mobisoftapi</name>
     <description>API do MobiSoft</description>
     <url/>
@@ -62,11 +62,6 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
 	            <groupId>org.springframework.boot</groupId>
 	            <artifactId>spring-boot-starter-actuator</artifactId> <!-- Dependência para Actuator -->
 	        </dependency>
@@ -103,6 +98,11 @@
 		  <groupId>com.auth0</groupId>
 		  <artifactId>java-jwt</artifactId>
 		  <version>4.4.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>test</scope>
 		</dependency>
     </dependencies>
 
