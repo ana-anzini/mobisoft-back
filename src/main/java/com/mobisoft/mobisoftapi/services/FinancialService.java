@@ -45,22 +45,14 @@ public class FinancialService {
 		return financialRepository.findByProjectId(projectId);
 	}
 
-	public Financial updateFinancial(Long id, FinancialDTO financialDTO) {
-		Project project = projectService.getProjectById(financialDTO.getProjectId());
-		Financial existingFinancial = financialRepository.findById(id)
-				.orElseThrow(() -> new FinancialNotFoundException(id));
+	public Financial updateFinancial(Long projectId, FinancialDTO financialDTO) {
+		Financial existingFinancial = financialRepository.findByProjectId(projectId);
 
 		existingFinancial.setInstallmentsNumber(financialDTO.getInstallmentsNumber());
 		existingFinancial.setFirstPayment(financialDTO.getFirstPayment());
 		existingFinancial.setPaymentType(financialDTO.getPaymentType());
 		existingFinancial.setDiscount(financialDTO.getDiscount());
 		existingFinancial.setAdditionalExpenses(financialDTO.getAdditionalExpenses());
-		existingFinancial.setFreight(financialDTO.getFreight());
-		existingFinancial.setTotalValue(financialDTO.getTotalValue());
-		existingFinancial.setTotalCusts(financialDTO.getTotalCusts());
-		existingFinancial.setTotalProjectDesigner(financialDTO.getTotalProjectDesigner());
-		existingFinancial.setTotalSeller(financialDTO.getTotalSeller());
-		existingFinancial.setTotalProfit(financialDTO.getTotalProfit());
 
 		return financialRepository.save(existingFinancial);
 	}

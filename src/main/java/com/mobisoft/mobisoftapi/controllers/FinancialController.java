@@ -41,9 +41,9 @@ public class FinancialController {
         return ResponseEntity.ok(financial);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Financial> updateFinancial(@PathVariable Long id, @RequestBody FinancialDTO financialDTO) {
-        Financial updatedFinancial = financialService.updateFinancial(id, financialDTO);
+    @PutMapping("/{projectId}")
+    public ResponseEntity<Financial> updateFinancial(@PathVariable Long projectId, @RequestBody FinancialDTO financialDTO) {
+        Financial updatedFinancial = financialService.updateFinancial(projectId, financialDTO);
         return ResponseEntity.ok(updatedFinancial);
     }
 
