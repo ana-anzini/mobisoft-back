@@ -33,4 +33,6 @@ jobs:
           run: sudo docker pull anabeanzini/mobisoftapi:latest
         - name: Run docker container
           run: docker run -d -p 8080:8080 --name mobisoftapi anabeanzini/mobisoftapi
+        - name: Run docker container
+          run: sudo docker run -d -p 8080:8080 -e DATABASE_USERNAME=${{secrets.DATABASE_USERNAME}} -e DATABASE_PASSWORD='${{secrets.DATABASE_PASSWORD}}' -e DATABASE_URL=${{secrets.DATABASE_URL}} --name mobisoftapi ${{ secrets.DOCKER_USERNAME }}/mobisoftapi:latest
   
