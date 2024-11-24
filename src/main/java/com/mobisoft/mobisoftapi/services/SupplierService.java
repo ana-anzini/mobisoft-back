@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.mobisoft.mobisoftapi.dtos.supplier.SupplierDTO;
 import com.mobisoft.mobisoftapi.models.Category;
 import com.mobisoft.mobisoftapi.models.Supplier;
+import com.mobisoft.mobisoftapi.models.UserGroup;
 import com.mobisoft.mobisoftapi.repositories.SupplierRepository;
 
 @Service
@@ -19,6 +20,9 @@ public class SupplierService {
 
 	@Autowired
 	private CategoryService categoryService;
+	
+	@Autowired
+	private UserService userService;
 
 	public Supplier findById(Long id) {
 		Optional<Supplier> supplier = supplierRepository.findById(id);
@@ -26,6 +30,7 @@ public class SupplierService {
 	}
 
 	public Supplier createSupplier(SupplierDTO supplierDTO) {
+		UserGroup userGroup = userService.getLoggedUser().getGroup();
 		Supplier supplier = new Supplier();
 		Optional<Category> categoryOpt = Optional.ofNullable(categoryService.findById(supplierDTO.getCategoryId()));
 		if (categoryOpt.isPresent()) {
@@ -40,6 +45,7 @@ public class SupplierService {
 		supplier.setNumber(supplierDTO.getNumber());
 		supplier.setNeighborhood(supplierDTO.getNeighborhood());
 		supplier.setAdditional(supplierDTO.getAdditional());
+		supplier.setUserGroup(userGroup);
 
 		return supplierRepository.save(supplier);
 	}

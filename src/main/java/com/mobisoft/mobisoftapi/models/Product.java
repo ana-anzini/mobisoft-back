@@ -39,6 +39,6 @@ public class Product {
     private BigDecimal productValue;
     
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "group_id", nullable = false)
+    private UserGroup userGroup;
 }

@@ -10,6 +10,7 @@ import com.mobisoft.mobisoftapi.dtos.products.ProductDTO;
 import com.mobisoft.mobisoftapi.models.Category;
 import com.mobisoft.mobisoftapi.models.Product;
 import com.mobisoft.mobisoftapi.models.Supplier;
+import com.mobisoft.mobisoftapi.models.UserGroup;
 import com.mobisoft.mobisoftapi.repositories.ProductRepository;
 
 import jakarta.transaction.Transactional;
@@ -22,16 +23,22 @@ public class ProductService {
 
 	@Autowired
 	private SupplierService supplierService;
+	
 	@Autowired
 	private CategoryService categoryService;
+	
+	@Autowired
+	private UserService userService;
 
 	@Transactional
 	public Product createProduct(ProductDTO productDTO) {
+		UserGroup userGroup = userService.getLoggedUser().getGroup();
 		Product product = new Product();
 		product.setDescription(productDTO.getDescription());
 		product.setProductValue(productDTO.getProductValue());
 		product.setSupplier(supplierService.findById(productDTO.getSupplierId()));
 		product.setCategory(categoryService.findById(productDTO.getCategoryId()));
+		product.setUserGroup(userGroup);
 
 		return productRepository.save(product);
 	}

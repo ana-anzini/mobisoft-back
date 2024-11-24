@@ -10,6 +10,7 @@ import com.mobisoft.mobisoftapi.dtos.employees.EmployeesDTO;
 import com.mobisoft.mobisoftapi.enums.employees.EmployeesType;
 import com.mobisoft.mobisoftapi.models.Employees;
 import com.mobisoft.mobisoftapi.models.Supplier;
+import com.mobisoft.mobisoftapi.models.UserGroup;
 import com.mobisoft.mobisoftapi.repositories.EmployeesRepository;
 
 @Service
@@ -17,8 +18,12 @@ public class EmployeesService {
 
 	@Autowired
 	private EmployeesRepository employeesRepository;
+	
+	@Autowired
+	private UserService userService;
 
 	public Employees createEmployee(EmployeesDTO employeesDTO) {
+		UserGroup userGroup = userService.getLoggedUser().getGroup();
 		Employees employee = new Employees();
 		employee.setName(employeesDTO.getName());
 		employee.setCpfOrCnpj(employeesDTO.getCpfOrCnpj());
@@ -36,6 +41,7 @@ public class EmployeesService {
 		employee.setSalary(employeesDTO.getSalary());
 		employee.setAdmission(employeesDTO.getAdmission());
 		employee.setDismissal(employeesDTO.getDismissal());
+		employee.setUserGroup(userGroup);
 
 		return employeesRepository.save(employee);
 	}
