@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.mobisoft.mobisoftapi.configs.exceptions.DeliveryNotFoundException;
 import com.mobisoft.mobisoftapi.dtos.delivery.DeliveryDTO;
 import com.mobisoft.mobisoftapi.models.Deliveries;
+import com.mobisoft.mobisoftapi.models.Project;
 import com.mobisoft.mobisoftapi.repositories.DeliveriesRepository;
 
 @Service
@@ -15,8 +16,12 @@ public class DeliveriesService {
 
 	@Autowired
 	private DeliveriesRepository deliveriesRepository;
+	
+	@Autowired
+	private ProjectService projectService;
 
 	public Deliveries createDelivery(DeliveryDTO DeliveryDTO) {
+		Project project = projectService.getProjectById(DeliveryDTO.getProjectId());
 		Deliveries delivery = new Deliveries();
 		delivery.setAddressClient(DeliveryDTO.isAddressClient());
 		delivery.setCep(DeliveryDTO.getCep());
@@ -25,6 +30,7 @@ public class DeliveriesService {
 		delivery.setNeighborhood(DeliveryDTO.getNeighborhood());
 		delivery.setAdditional(DeliveryDTO.getAdditional());
 		delivery.setDeliveryDate(DeliveryDTO.getDeliveryDate());
+		delivery.setProject(project);
 
 		return deliveriesRepository.save(delivery);
 	}

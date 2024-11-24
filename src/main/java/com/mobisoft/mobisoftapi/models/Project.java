@@ -43,9 +43,6 @@ public class Project {
     @JoinColumn(name = "project_designer_id", nullable = false)
     private Employees projectDesigner;
     
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Deliveries> deliveries;
-    
     @ManyToOne
     @JoinColumn(name = "seller_id", nullable = false)
     private Employees seller;
