@@ -70,4 +70,8 @@ public class Project {
     @Column(name="delivery_status", nullable = false)
     @Enumerated(EnumType.ORDINAL)
     private StatusType deliveryStatus;
+    
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }

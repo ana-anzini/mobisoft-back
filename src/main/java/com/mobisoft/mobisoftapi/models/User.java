@@ -13,6 +13,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -34,10 +36,15 @@ public class User implements UserDetails {
     private String password;
     private UserRole role;
     
-    public User(String login, String password, UserRole role){
+    @ManyToOne
+    @JoinColumn(name = "group_id")
+    private UserGroup group;
+    
+    public User(String login, String password, UserRole role, UserGroup group){
         this.login = login;
         this.password = password;
         this.role = role;
+        this.group = group;
     }
     
 	@Override

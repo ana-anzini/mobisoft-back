@@ -39,7 +39,6 @@ public class SecurityConfigurations {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED).permitAll()
-                        .requestMatchers(HttpMethod.POST, "/categories").hasRole("ADMIN")
                         //.requestMatchers(ENDPOINTS_TO_ADMIN).hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )

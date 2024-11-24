@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.mobisoft.mobisoftapi.dtos.administration.AdministrationDTO;
 import com.mobisoft.mobisoftapi.models.Administration;
+import com.mobisoft.mobisoftapi.models.UserGroup;
 import com.mobisoft.mobisoftapi.repositories.AdministrationRepository;
 
 @Service
@@ -14,19 +15,30 @@ public class AdministrationService {
 
 	@Autowired
 	private AdministrationRepository administrationRepository;
+	
+	@Autowired
+	private UserService userService;
 
 	public Administration findById(Long id) {
 		Optional<Administration> administration = administrationRepository.findById(id);
 		return administration.orElseThrow();
 	}
+	
+	public Administration findByUserGroup() {
+		UserGroup userGroup = userService.getLoggedUser().getGroup();
+		Administration administration = administrationRepository.findByUserGroup(userGroup);
+		return administration;
+	}
 
 	public Administration create(AdministrationDTO administrationDTO) {
+		UserGroup userGroup = userService.getLoggedUser().getGroup();
 		Administration administration = new Administration();
 		administration.setAdditionalSeller(administrationDTO.getAdditionalSeller());
 		administration.setAdditionalProjectDesigner(administrationDTO.getAdditionalProjectDesigner());
 		administration.setAdditionalFinancial(administrationDTO.getAdditionalFinancial());
 		administration.setAdditionalAssembler(administrationDTO.getAdditionalAssembler());
 		administration.setTax(administrationDTO.getTax());
+		administration.setUserGroup(userGroup);
 		return administrationRepository.save(administration);
 	}
 

@@ -37,4 +37,8 @@ public class Product {
 	
     @Column(name="product_value", nullable = true)
     private BigDecimal productValue;
+    
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }

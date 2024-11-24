@@ -7,6 +7,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -38,4 +41,8 @@ public class Administration {
     
     @Column(name="tax", nullable = false)
     private BigDecimal tax;
+    
+    @OneToOne
+    @JoinColumn(name = "group_id", nullable = false)
+    private UserGroup userGroup;
 }

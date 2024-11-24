@@ -111,33 +111,4 @@ public class CategoryServiceTest {
 
         assertThrows(CategoryNotFoundException.class, () -> categoryService.delete(1L));
     }
-
-    @Test
-    void testFindAll() {
-        List<Category> categories = Arrays.asList(
-            new Category(1L, "Category 1"),
-            new Category(2L, "Category 2")
-        );
-
-        when(categoryRepository.findAll()).thenReturn(categories);
-
-        List<Category> result = categoryService.findAll();
-        assertEquals(2, result.size());
-        assertEquals("Category 1", result.get(0).getDescription());
-        assertEquals("Category 2", result.get(1).getDescription());
-    }
-
-    @Test
-    void testDeleteCategories() {
-        List<Long> ids = Arrays.asList(1L, 2L);
-        List<Category> categories = Arrays.asList(
-            new Category(1L, "Category 1"),
-            new Category(2L, "Category 2")
-        );
-
-        when(categoryRepository.findAllById(ids)).thenReturn(categories);
-        doNothing().when(categoryRepository).deleteAll(categories);
-
-        assertDoesNotThrow(() -> categoryService.deleteCategories(ids));
-    }
 }

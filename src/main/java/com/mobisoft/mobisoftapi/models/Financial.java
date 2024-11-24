@@ -40,10 +40,10 @@ public class Financial {
     @Enumerated(EnumType.ORDINAL)
     private PaymentType paymentType;
     
-    @Column(name="discount", nullable = false)
+    @Column(name="discount", nullable = true)
     private BigDecimal discount;
     
-    @Column(name="additional_expenses", nullable = false)
+    @Column(name="additional_expenses", nullable = true)
     private BigDecimal additionalExpenses;
     
     @Column(name="freight", nullable = false)

@@ -14,6 +14,8 @@ import com.mobisoft.mobisoftapi.dtos.auth.AuthenticationDTO;
 import com.mobisoft.mobisoftapi.dtos.auth.RegisterDTO;
 import com.mobisoft.mobisoftapi.dtos.auth.LoginResponseDTO;
 import com.mobisoft.mobisoftapi.models.User;
+import com.mobisoft.mobisoftapi.models.UserGroup;
+import com.mobisoft.mobisoftapi.repositories.UserGroupRepository;
 import com.mobisoft.mobisoftapi.repositories.UserRepository;
 import com.mobisoft.mobisoftapi.services.TokenService;
 
@@ -28,6 +30,9 @@ public class AuthenticationController {
 	
 	@Autowired
 	private UserRepository repository;
+	
+	@Autowired
+	private UserGroupRepository userGroupRepository;
 	
 	@Autowired
 	private TokenService tokenService;
@@ -46,8 +51,11 @@ public class AuthenticationController {
     public ResponseEntity register(@RequestBody @Valid RegisterDTO data){
         if(this.repository.findByLogin(data.login()) != null) return ResponseEntity.badRequest().build();
 
+        UserGroup group = new UserGroup();
+        userGroupRepository.save(group);
+        
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
-        User newUser = new User(data.login(), encryptedPassword, data.role());
+        User newUser = new User(data.login(), encryptedPassword, data.role(), group);
 
         this.repository.save(newUser);
 

@@ -1,9 +1,14 @@
 package com.mobisoft.mobisoftapi.base;
 
+import com.mobisoft.mobisoftapi.models.User;
+import com.mobisoft.mobisoftapi.models.UserGroup;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Data;
 
@@ -42,4 +47,8 @@ public abstract class Base {
     
     @Column(name="additional", nullable = true)
     private String additional;
+    
+    @ManyToOne
+    @JoinColumn(name = "group_id", nullable = false)
+    private UserGroup userGroup;
 }

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.mobisoft.mobisoftapi.configs.exceptions.CostumerNotFoundException;
 import com.mobisoft.mobisoftapi.dtos.costumers.CostumerDTO;
 import com.mobisoft.mobisoftapi.models.Costumer;
-import com.mobisoft.mobisoftapi.models.Supplier;
+import com.mobisoft.mobisoftapi.models.UserGroup;
 import com.mobisoft.mobisoftapi.repositories.CostumerRepository;
 
 @Service
@@ -16,8 +16,13 @@ public class CostumerService {
 
 	@Autowired
 	private CostumerRepository costumerRepository;
+	
+	@Autowired
+	private UserService userService;
 
 	public Costumer createCostumer(CostumerDTO costumerDTO) {
+		UserGroup userGroup = userService.getLoggedUser().getGroup();
+		
 		Costumer costumer = new Costumer();
 		costumer.setName(costumerDTO.getName());
 		costumer.setCpfOrCnpj(costumerDTO.getCpfOrCnpj());
@@ -33,6 +38,7 @@ public class CostumerService {
 		costumer.setNetworkType(costumerDTO.getNetworkType());
 		costumer.setPersonType(costumerDTO.getPersonType());
 		costumer.setNotes(costumerDTO.getNotes());
+		costumer.setUserGroup(userGroup);
 
 		return costumerRepository.save(costumer);
 	}

@@ -10,6 +10,8 @@ import com.mobisoft.mobisoftapi.configs.exceptions.CategoryNotFoundException;
 import com.mobisoft.mobisoftapi.dtos.category.CategoryDTO;
 import com.mobisoft.mobisoftapi.models.Category;
 import com.mobisoft.mobisoftapi.models.Supplier;
+import com.mobisoft.mobisoftapi.models.User;
+import com.mobisoft.mobisoftapi.models.UserGroup;
 import com.mobisoft.mobisoftapi.repositories.CategoryRepository;
 
 @Service
@@ -17,6 +19,9 @@ public class CategoryService {
 
 	@Autowired
 	private CategoryRepository categoryRepository;
+	
+	@Autowired
+	private UserService userService;
 
 	public Category findById(Long id) {
 		Optional<Category> category = categoryRepository.findById(id);
@@ -24,8 +29,10 @@ public class CategoryService {
 	}
 
 	public Category create(CategoryDTO categoryDTO) {
+		UserGroup userGroup = userService.getLoggedUser().getGroup();
 		Category category = new Category();
 		category.setDescription(categoryDTO.getDescription());
+		category.setUserGroup(userGroup);
 
 		return categoryRepository.save(category);
 	}
