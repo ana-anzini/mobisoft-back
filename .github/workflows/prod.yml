@@ -21,6 +21,6 @@ jobs:
             - name: Login Docker Hub
               run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
             - name: Build docker image
-              run: docker build -t danieleleaoe/deploy_ghactions .
+              run: docker build -t anabeanzini/mobisoftapi .
             - name: Push image docker
-              run: docker push anabeanzini/mobisoftapi .
+              run: docker push anabeanzini/mobisoftapi
