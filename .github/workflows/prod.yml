@@ -25,7 +25,7 @@ jobs:
       - name: Push image docker
         run: docker push anabeanzini/mobisoftapi
 
-    deploy:
+  deploy:
       needs: build
       runs-on: self-hosted
       steps:
