@@ -40,6 +40,10 @@ public class FinancialService {
 	public Financial findById(Long id) {
 		return financialRepository.findById(id).orElseThrow(() -> new FinancialNotFoundException(id));
 	}
+	
+	public Financial findByProjectId(Long projectId) {
+		return financialRepository.findByProjectId(projectId);
+	}
 
 	public Financial updateFinancial(Long id, FinancialDTO financialDTO) {
 		Project project = projectService.getProjectById(financialDTO.getProjectId());
@@ -65,5 +69,9 @@ public class FinancialService {
 		Financial existingFinancial = financialRepository.findById(id)
 				.orElseThrow(() -> new FinancialNotFoundException(id));
 		financialRepository.delete(existingFinancial);
+	}
+	
+	public void save(Financial financial) {
+	    financialRepository.save(financial);
 	}
 }

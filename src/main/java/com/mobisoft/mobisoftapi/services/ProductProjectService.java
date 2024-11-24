@@ -1,5 +1,6 @@
 package com.mobisoft.mobisoftapi.services;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.mobisoft.mobisoftapi.configs.exceptions.ProductProjectNotFoundException;
 import com.mobisoft.mobisoftapi.dtos.productproject.ProductProjectDTO;
+import com.mobisoft.mobisoftapi.models.Financial;
 import com.mobisoft.mobisoftapi.models.Product;
 import com.mobisoft.mobisoftapi.models.ProductProject;
 import com.mobisoft.mobisoftapi.models.Project;
@@ -24,14 +26,29 @@ public class ProductProjectService {
 	@Autowired
 	private ProductService productService;
 	
+	@Autowired
+	private FinancialService financialService;
+	
 	public ProductProject createProductProject(ProductProjectDTO productProjectDTO) {
 		ProductProject productProject = new ProductProject();
 		Project project = projectService.getProjectById(productProjectDTO.getProjectId());
 		Product product = productService.getProductById(productProjectDTO.getProductId());
+		Financial financial = financialService.findByProjectId(project.getId());
 		
 		productProject.setProject(project);
 		productProject.setProduct(product);
 		productProject.setProductValue(productProjectDTO.getProductValue());
+		
+		if (financial == null) {
+			Financial newFinancial = new Financial();
+			newFinancial.setTotalCusts(productProjectDTO.getProductValue());
+			newFinancial.setProject(project);
+			financialService.save(newFinancial);
+		} else {
+			BigDecimal totalCusts = financial.getTotalCusts().add(productProjectDTO.getProductValue());
+			financial.setTotalCusts(totalCusts);
+			financialService.save(financial);
+		}
 		
 		return productProjectRepository.save(productProject);
 	}

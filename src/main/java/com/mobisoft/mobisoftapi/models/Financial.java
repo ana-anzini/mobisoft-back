@@ -30,13 +30,13 @@ public class Financial {
 	@Column(name = "id")
 	private Long id;
 	
-    @Column(name="installments_number", nullable = false)
+    @Column(name="installments_number", nullable = true)
     private int installmentsNumber;
     
-    @Column(name="first_payment", nullable = false)
+    @Column(name="first_payment", nullable = true)
     private Calendar firstPayment;
     
-    @Column(name="payment_type", nullable = false)
+    @Column(name="payment_type", nullable = true)
     @Enumerated(EnumType.ORDINAL)
     private PaymentType paymentType;
     
@@ -46,21 +46,25 @@ public class Financial {
     @Column(name="additional_expenses", nullable = true)
     private BigDecimal additionalExpenses;
     
-    @Column(name="freight", nullable = false)
+    @Column(name="freight", nullable = true)
     private BigDecimal freight;
     
-    @Column(name="total_value", nullable = false)
+    @Column(name="total_value", nullable = true)
     private BigDecimal totalValue;
     
     @Column(name="total_custs", nullable = false)
     private BigDecimal totalCusts;
     
-    @Column(name="total_projectdesigner", nullable = false)
+    @Column(name="total_projectdesigner", nullable = true)
     private BigDecimal totalProjectDesigner;
     
-    @Column(name="total_seller", nullable = false)
+    @Column(name="total_seller", nullable = true)
     private BigDecimal totalSeller;
     
-    @Column(name="total_profit", nullable = false)
+    @Column(name="total_profit", nullable = true)
     private BigDecimal totalProfit;
+    
+    @ManyToOne
+    @JoinColumn(name = "project_id", nullable = false)
+    private Project project;
 }
