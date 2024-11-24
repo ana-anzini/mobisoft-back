@@ -11,7 +11,7 @@ RUN mvn package -DskipTests
 FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
 
-COPY --from=builder /app/target/mobisoftapi-1.0.0.jar /app/app.jar
+COPY --from=builder /target/mobisoftapi-1.0.0.jar /app/app.jar
 
 EXPOSE 8080
 
