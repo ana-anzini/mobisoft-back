@@ -1,10 +1,14 @@
 package com.mobisoft.mobisoftapi.services;
 
+import java.math.BigDecimal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mobisoft.mobisoftapi.configs.exceptions.FinancialNotFoundException;
 import com.mobisoft.mobisoftapi.dtos.financial.FinancialDTO;
+import com.mobisoft.mobisoftapi.models.Administration;
+import com.mobisoft.mobisoftapi.models.Deliveries;
 import com.mobisoft.mobisoftapi.models.Financial;
 import com.mobisoft.mobisoftapi.models.Project;
 import com.mobisoft.mobisoftapi.repositories.FinancialRepository;
@@ -17,6 +21,12 @@ public class FinancialService {
 
 	@Autowired
 	private ProjectService projectService;
+	
+	@Autowired
+	private AdministrationService administrationService;
+	
+	@Autowired
+	private DeliveriesService deliveryService;
 
 	public Financial createFinancial(FinancialDTO financialDTO) {
 		Project project = projectService.getProjectById(financialDTO.getProjectId());
@@ -54,6 +64,23 @@ public class FinancialService {
 		existingFinancial.setAdditionalExpenses(financialDTO.getAdditionalExpenses());
 
 		return financialRepository.save(existingFinancial);
+	}
+	
+	public Financial calculateTotalProject(Long projectId) {
+		Financial existingFinancial = financialRepository.findByProjectId(projectId);
+		Deliveries delivery = deliveryService.findByProjectId(projectId); 
+		Administration administrationValues = administrationService.findByUserGroup();
+		BigDecimal totalPercentage = null;
+		BigDecimal totalValue = null;
+		
+		totalPercentage = administrationValues.getAdditionalAssembler().add(administrationValues.getAdditionalFinancial())
+				.add(administrationValues.getAdditionalProjectDesigner()).add(administrationValues.getAdditionalSeller())
+				.add(administrationValues.getTax()).add(delivery.getFreight());
+		
+		totalValue = totalPercentage.divide(BigDecimal.valueOf(100));
+		existingFinancial.setTotalValue(totalValue);
+		
+		return null;
 	}
 
 	public void deleteFinancial(Long id) {
