@@ -1,5 +1,6 @@
 package com.mobisoft.mobisoftapi.dtos.delivery;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 
 import com.mobisoft.mobisoftapi.enums.project.StatusType;
@@ -16,4 +17,5 @@ public class DeliveryDTO {
     private String neighborhood;
     private String additional;
     private Calendar deliveryDate;
+    private BigDecimal freight;
 }

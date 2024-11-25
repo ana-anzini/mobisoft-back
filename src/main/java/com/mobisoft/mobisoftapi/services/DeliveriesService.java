@@ -42,9 +42,13 @@ public class DeliveriesService {
 	public Deliveries findById(Long id) {
 		return deliveriesRepository.findById(id).orElseThrow(() -> new DeliveryNotFoundException(id));
 	}
+	
+	public Deliveries findByProjectId(Long projectId) {
+		return deliveriesRepository.findByProjectId(projectId);
+	}
 
-	public Deliveries updateDelivery(Long id, DeliveryDTO DeliveryDTO) {
-		Deliveries existingDelivery = findById(id);
+	public Deliveries updateDelivery(Long projectId, DeliveryDTO DeliveryDTO) {
+		Deliveries existingDelivery = deliveriesRepository.findByProjectId(projectId);
 		existingDelivery.setAddressClient(DeliveryDTO.isAddressClient());
 		existingDelivery.setCep(DeliveryDTO.getCep());
 		existingDelivery.setAddress(DeliveryDTO.getAddress());
@@ -52,6 +56,7 @@ public class DeliveriesService {
 		existingDelivery.setNeighborhood(DeliveryDTO.getNeighborhood());
 		existingDelivery.setAdditional(DeliveryDTO.getAdditional());
 		existingDelivery.setDeliveryDate(DeliveryDTO.getDeliveryDate());
+		existingDelivery.setFreight(DeliveryDTO.getFreight());
 
 		return deliveriesRepository.save(existingDelivery);
 	}

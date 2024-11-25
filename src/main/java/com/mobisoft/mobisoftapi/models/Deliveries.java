@@ -1,5 +1,6 @@
 package com.mobisoft.mobisoftapi.models;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 
 import com.mobisoft.mobisoftapi.enums.project.StatusType;
@@ -48,6 +49,9 @@ public class Deliveries {
 	
     @Column(name="delivery_date", nullable = false)
     private Calendar deliveryDate;
+    
+    @Column(name="freight", nullable = true)
+    private BigDecimal freight;
     
     @ManyToOne
     @JoinColumn(name = "project_id", nullable = false)

@@ -8,4 +8,5 @@ import com.mobisoft.mobisoftapi.models.Deliveries;
 @Repository
 public interface DeliveriesRepository extends JpaRepository<Deliveries, Long>{
 
+	Deliveries findByProjectId(Long projectId);
 }

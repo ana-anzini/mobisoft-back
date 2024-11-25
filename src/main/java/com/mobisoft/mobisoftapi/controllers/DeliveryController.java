@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mobisoft.mobisoftapi.dtos.delivery.DeliveryDTO;
 import com.mobisoft.mobisoftapi.models.Deliveries;
+import com.mobisoft.mobisoftapi.models.Financial;
 import com.mobisoft.mobisoftapi.services.DeliveriesService;
 
 @RestController
@@ -36,6 +37,12 @@ public class DeliveryController {
         List<Deliveries> deliveries = deliveriesService.getAllDeliveries();
         return ResponseEntity.ok(deliveries);
     }
+    
+    @GetMapping("find/{projectId}")
+    public ResponseEntity<Deliveries> getDelivery(@PathVariable Long projectId) {
+        Deliveries delivery = deliveriesService.findByProjectId(projectId);
+        return ResponseEntity.ok(delivery);
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Deliveries> getDeliveryById(@PathVariable Long id) {
@@ -43,9 +50,9 @@ public class DeliveryController {
         return ResponseEntity.ok(delivery);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Deliveries> updateDelivery(@PathVariable Long id, @RequestBody DeliveryDTO DeliveryDTO) {
-        Deliveries updatedDelivery = deliveriesService.updateDelivery(id, DeliveryDTO);
+    @PutMapping("/{projectId}")
+    public ResponseEntity<Deliveries> updateDelivery(@PathVariable Long projectId, @RequestBody DeliveryDTO DeliveryDTO) {
+        Deliveries updatedDelivery = deliveriesService.updateDelivery(projectId, DeliveryDTO);
         return ResponseEntity.ok(updatedDelivery);
     }
 

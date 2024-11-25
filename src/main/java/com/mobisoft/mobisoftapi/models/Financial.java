@@ -46,9 +46,6 @@ public class Financial {
     @Column(name="additional_expenses", nullable = true)
     private BigDecimal additionalExpenses;
     
-    @Column(name="freight", nullable = true)
-    private BigDecimal freight;
-    
     @Column(name="total_value", nullable = true)
     private BigDecimal totalValue;
     

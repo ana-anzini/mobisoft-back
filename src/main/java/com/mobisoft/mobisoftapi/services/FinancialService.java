@@ -27,7 +27,6 @@ public class FinancialService {
 		financial.setPaymentType(financialDTO.getPaymentType());
 		financial.setDiscount(financialDTO.getDiscount());
 		financial.setAdditionalExpenses(financialDTO.getAdditionalExpenses());
-		financial.setFreight(financialDTO.getFreight());
 		financial.setTotalValue(financialDTO.getTotalValue());
 		financial.setTotalCusts(financialDTO.getTotalCusts());
 		financial.setTotalProjectDesigner(financialDTO.getTotalProjectDesigner());
