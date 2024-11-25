@@ -29,7 +29,7 @@ public class SecurityConfigurations {
         return  httpSecurity
         		.cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
-                    config.setAllowedOrigins(List.of("http://localhost:3000")); 
+                    config.setAllowedOrigins(List.of("http://localhost:3000", "https://mobisoft-frontend.vercel.app/", "https://mobisoft.site/")); 
                     config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE")); 
                     config.setAllowedHeaders(List.of("*"));
                     config.setAllowCredentials(true);
