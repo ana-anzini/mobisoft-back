@@ -29,7 +29,6 @@ public class FinancialService {
 	private DeliveriesService deliveryService;
 
 	public Financial createFinancial(FinancialDTO financialDTO) {
-		Project project = projectService.getProjectById(financialDTO.getProjectId());
 		Financial financial = new Financial();
 
 		financial.setInstallmentsNumber(financialDTO.getInstallmentsNumber());
@@ -73,14 +72,38 @@ public class FinancialService {
 		BigDecimal totalPercentage = null;
 		BigDecimal totalValue = null;
 		
+		//Taxas
+		BigDecimal totalTax = administrationValues.getTax().divide(BigDecimal.valueOf(100));
+		BigDecimal totalProfit = administrationValues.getAdditionalFinancial().divide(BigDecimal.valueOf(100));
+		BigDecimal totalProjectDesigner = administrationValues.getAdditionalProjectDesigner().divide(BigDecimal.valueOf(100));
+		BigDecimal totalSeller = administrationValues.getAdditionalSeller().divide(BigDecimal.valueOf(100));
+		BigDecimal totalAssembler = administrationValues.getAdditionalAssembler().divide(BigDecimal.valueOf(100));
+		
 		totalPercentage = administrationValues.getAdditionalAssembler().add(administrationValues.getAdditionalFinancial())
 				.add(administrationValues.getAdditionalProjectDesigner()).add(administrationValues.getAdditionalSeller())
 				.add(administrationValues.getTax()).add(delivery.getFreight());
 		
+		totalPercentage = BigDecimal.valueOf(100).subtract(totalPercentage);
 		totalValue = totalPercentage.divide(BigDecimal.valueOf(100));
-		existingFinancial.setTotalValue(totalValue);
+		totalPercentage = existingFinancial.getTotalCusts().divide(totalValue);
+		existingFinancial.setTotalValue(totalPercentage);
 		
-		return null;
+		totalTax = totalPercentage.multiply(totalTax);
+	    existingFinancial.setTotalTax(totalTax);
+	    
+	    totalProfit = totalPercentage.multiply(totalProfit);
+	    existingFinancial.setTotalProfit(totalProfit);
+	    
+	    totalProjectDesigner = totalPercentage.multiply(totalProjectDesigner);
+	    existingFinancial.setTotalProjectDesigner(totalProjectDesigner);
+	    
+	    totalSeller = totalPercentage.multiply(totalSeller);
+	    existingFinancial.setTotalSeller(totalSeller);
+	    
+	    totalAssembler = totalPercentage.multiply(totalAssembler);
+	    existingFinancial.setTotalSeller(totalSeller);
+		
+		return existingFinancial;
 	}
 
 	public void deleteFinancial(Long id) {

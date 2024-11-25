@@ -61,6 +61,9 @@ public class Financial {
     @Column(name="total_profit", nullable = true)
     private BigDecimal totalProfit;
     
+    @Column(name="total_tax", nullable = true)
+    private BigDecimal totalTax;
+    
     @ManyToOne
     @JoinColumn(name = "project_id", nullable = false)
     private Project project;
