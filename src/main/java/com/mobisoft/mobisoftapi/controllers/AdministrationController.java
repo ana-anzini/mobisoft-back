@@ -30,9 +30,9 @@ public class AdministrationController {
         return ResponseEntity.status(HttpStatus.CREATED).body(newAdministration);
     }
     
-    @PutMapping("/{id}")
-    public ResponseEntity<Optional<Administration>> updateAdministration(@PathVariable Long id, @RequestBody AdministrationDTO administrationDTO) {
-        Optional<Administration> updateAdministration = administrationService.update(id, administrationDTO);
+    @PutMapping
+    public ResponseEntity<Optional<Administration>> updateAdministration(@RequestBody AdministrationDTO administrationDTO) {
+        Optional<Administration> updateAdministration = administrationService.update(administrationDTO);
         return ResponseEntity.ok(updateAdministration);
     }
     

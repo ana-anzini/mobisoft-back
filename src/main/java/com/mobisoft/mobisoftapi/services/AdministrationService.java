@@ -42,15 +42,15 @@ public class AdministrationService {
 		return administrationRepository.save(administration);
 	}
 
-	public Optional<Administration> update(Long id, AdministrationDTO administrationDTO) {
-	    return administrationRepository.findById(id)
-	        .map(existingAdministration -> {
-	            existingAdministration.setAdditionalSeller(administrationDTO.getAdditionalSeller());
-	            existingAdministration.setAdditionalProjectDesigner(administrationDTO.getAdditionalProjectDesigner());
-	            existingAdministration.setAdditionalFinancial(administrationDTO.getAdditionalFinancial());
-	            existingAdministration.setAdditionalAssembler(administrationDTO.getAdditionalAssembler());
-	            existingAdministration.setTax(administrationDTO.getTax());
-	            return administrationRepository.save(existingAdministration);
-	        });
-	}
+	public Optional<Administration> update(AdministrationDTO administrationDTO) {
+        return Optional.of(findByUserGroup())
+            .map(existingAdministration -> {
+                existingAdministration.setAdditionalSeller(administrationDTO.getAdditionalSeller());
+                existingAdministration.setAdditionalProjectDesigner(administrationDTO.getAdditionalProjectDesigner());
+                existingAdministration.setAdditionalFinancial(administrationDTO.getAdditionalFinancial());
+                existingAdministration.setAdditionalAssembler(administrationDTO.getAdditionalAssembler());
+                existingAdministration.setTax(administrationDTO.getTax());
+                return administrationRepository.save(existingAdministration);
+            });
+    }
 }

@@ -1,6 +1,7 @@
 package com.mobisoft.mobisoftapi.services;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -66,29 +67,32 @@ public class FinancialService {
 	}
 	
 	public Financial calculateTotalProject(Long projectId) {
-		Financial existingFinancial = financialRepository.findByProjectId(projectId);
-		Deliveries delivery = deliveryService.findByProjectId(projectId); 
-		Administration administrationValues = administrationService.findByUserGroup();
-		BigDecimal totalPercentage = null;
-		BigDecimal totalValue = null;
-		
-		//Taxas
-		BigDecimal totalTax = administrationValues.getTax().divide(BigDecimal.valueOf(100));
-		BigDecimal totalProfit = administrationValues.getAdditionalFinancial().divide(BigDecimal.valueOf(100));
-		BigDecimal totalProjectDesigner = administrationValues.getAdditionalProjectDesigner().divide(BigDecimal.valueOf(100));
-		BigDecimal totalSeller = administrationValues.getAdditionalSeller().divide(BigDecimal.valueOf(100));
-		BigDecimal totalAssembler = administrationValues.getAdditionalAssembler().divide(BigDecimal.valueOf(100));
-		
-		totalPercentage = administrationValues.getAdditionalAssembler().add(administrationValues.getAdditionalFinancial())
-				.add(administrationValues.getAdditionalProjectDesigner()).add(administrationValues.getAdditionalSeller())
-				.add(administrationValues.getTax()).add(delivery.getFreight());
-		
-		totalPercentage = BigDecimal.valueOf(100).subtract(totalPercentage);
-		totalValue = totalPercentage.divide(BigDecimal.valueOf(100));
-		totalPercentage = existingFinancial.getTotalCusts().divide(totalValue);
-		existingFinancial.setTotalValue(totalPercentage);
-		
-		totalTax = totalPercentage.multiply(totalTax);
+	    Financial existingFinancial = financialRepository.findByProjectId(projectId);
+	    Deliveries delivery = deliveryService.findByProjectId(projectId); 
+	    Administration administrationValues = administrationService.findByUserGroup();
+	    BigDecimal totalPercentage;
+	    BigDecimal totalValue;
+	    
+	    // Taxas
+	    BigDecimal totalTax = administrationValues.getTax().divide(BigDecimal.valueOf(100), 10, RoundingMode.HALF_UP);
+	    BigDecimal totalProfit = administrationValues.getAdditionalFinancial().divide(BigDecimal.valueOf(100), 10, RoundingMode.HALF_UP);
+	    BigDecimal totalProjectDesigner = administrationValues.getAdditionalProjectDesigner().divide(BigDecimal.valueOf(100), 10, RoundingMode.HALF_UP);
+	    BigDecimal totalSeller = administrationValues.getAdditionalSeller().divide(BigDecimal.valueOf(100), 10, RoundingMode.HALF_UP);
+	    BigDecimal totalAssembler = administrationValues.getAdditionalAssembler().divide(BigDecimal.valueOf(100), 10, RoundingMode.HALF_UP);
+	    
+	    totalPercentage = administrationValues.getAdditionalAssembler()
+	            .add(administrationValues.getAdditionalFinancial())
+	            .add(administrationValues.getAdditionalProjectDesigner())
+	            .add(administrationValues.getAdditionalSeller())
+	            .add(administrationValues.getTax())
+	            .add(delivery.getFreight());
+	    
+	    totalPercentage = BigDecimal.valueOf(100).subtract(totalPercentage);
+	    totalValue = totalPercentage.divide(BigDecimal.valueOf(100), 10, RoundingMode.HALF_UP);
+	    totalPercentage = existingFinancial.getTotalCusts().divide(totalValue, 10, RoundingMode.HALF_UP);
+	    existingFinancial.setTotalValue(totalPercentage);
+	    
+	    totalTax = totalPercentage.multiply(totalTax);
 	    existingFinancial.setTotalTax(totalTax);
 	    
 	    totalProfit = totalPercentage.multiply(totalProfit);
@@ -101,9 +105,9 @@ public class FinancialService {
 	    existingFinancial.setTotalSeller(totalSeller);
 	    
 	    totalAssembler = totalPercentage.multiply(totalAssembler);
-	    existingFinancial.setTotalSeller(totalSeller);
-		
-		return existingFinancial;
+	    existingFinancial.setTotalSeller(totalAssembler);
+	    
+	    return existingFinancial;
 	}
 
 	public void deleteFinancial(Long id) {
