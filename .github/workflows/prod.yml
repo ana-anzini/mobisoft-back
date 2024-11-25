@@ -1,12 +1,13 @@
-name: Deploy
+name: Deploy Application
 
 on:
-  push: 
+  push:
     branches: [main]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -16,23 +17,29 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
+
       - name: Build project
         run: mvn clean install -DskipTests
+
       - name: Login Docker Hub
-        run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
-      - name: Build docker image
-        run: docker build -t anabeanzini/mobisoftapi .
-      - name: Push image docker
-        run: docker push anabeanzini/mobisoftapi
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build Docker image
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/mobisoftapi .
+
+      - name: Push Docker image
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/mobisoftapi
 
   deploy:
       needs: build
       runs-on: self-hosted
       steps:
         - name: Pull image from docker hub
-          run: sudo docker pull anabeanzini/mobisoftapi:latest
-        - name: Run docker container
-          run: docker run -d -p 8080:8080 --name mobisoftapi anabeanzini/mobisoftapi
+          run: sudo docker pull ${{ secrets.DOCKER_USERNAME }}/mobisoftapi:latest
+
+        - name: Remove docker container
+          run: sudo docker rm -f mobisoftapi
+
         - name: Run docker container
           run: sudo docker run -d -p 8080:8080 -e DATABASE_USERNAME=${{secrets.DATABASE_USERNAME}} -e DATABASE_PASSWORD='${{secrets.DATABASE_PASSWORD}}' -e DATABASE_URL=${{secrets.DATABASE_URL}} --name mobisoftapi ${{ secrets.DOCKER_USERNAME }}/mobisoftapi:latest
-  
+      
