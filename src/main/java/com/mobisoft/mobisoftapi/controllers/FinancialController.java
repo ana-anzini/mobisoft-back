@@ -40,12 +40,6 @@ public class FinancialController {
         Financial financial = financialService.findByProjectId(projectId);
         return ResponseEntity.ok(financial);
     }
-    
-    @GetMapping("/findTotalValues/{projectId}")
-    public ResponseEntity<Financial> getCalculatedValues(@PathVariable Long projectId) {
-        Financial financial = financialService.calculateTotalProject(projectId);
-        return ResponseEntity.ok(financial);
-    }
 
     @PutMapping("/{projectId}")
     public ResponseEntity<Financial> updateFinancial(@PathVariable Long projectId, @RequestBody FinancialDTO financialDTO) {
