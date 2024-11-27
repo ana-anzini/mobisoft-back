@@ -36,7 +36,7 @@ public class CategoryServiceTest {
     private CategoryRepository categoryRepository;
 
     @Mock
-    private UserService userService; // Mock do UserService
+    private UserService userService;
 
     @BeforeEach
     void setUp() {
