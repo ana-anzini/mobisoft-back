@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 
 import com.mobisoft.mobisoftapi.enums.project.StatusType;
+import com.mobisoft.mobisoftapi.models.UserGroup;
 
 import lombok.Data;
 
@@ -18,4 +19,5 @@ public class DeliveryDTO {
     private String additional;
     private Calendar deliveryDate;
     private BigDecimal freight;
+    private UserGroup userGroup;
 }
