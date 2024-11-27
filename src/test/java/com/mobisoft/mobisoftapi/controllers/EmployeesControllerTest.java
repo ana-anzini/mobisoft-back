@@ -45,7 +45,6 @@ class EmployeesControllerTest {
         employee.setCtps("CTPS12345");
         employee.setSalary("5000");
         employee.setAdmission(admissionDate);
-        employee.setCreateUser(true);
 
         employeesDTO = new EmployeesDTO();
         employeesDTO.setEmployeesType(EmployeesType.ASSEMBLER);
@@ -54,7 +53,6 @@ class EmployeesControllerTest {
         employeesDTO.setCtps("CTPS12345");
         employeesDTO.setSalary("5000");
         employeesDTO.setAdmission(admissionDate);
-        employeesDTO.setCreateUser(true);
     }
 
     @Test
