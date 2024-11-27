@@ -48,7 +48,8 @@ public class SecurityConfigurations {
     
     public static final String [] ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED = {
             "/auth/login",
-            "/auth/register"
+            "/auth/register",
+            "auth/isAuthenticated"
     };
     
     public static final String [] ENDPOINTS_TO_ADMIN = {

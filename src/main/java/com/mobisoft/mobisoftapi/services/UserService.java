@@ -9,7 +9,7 @@ import com.mobisoft.mobisoftapi.models.User;
 @Service
 public class UserService {
 
-	User getLoggedUser() {
+	public User getLoggedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || authentication.getPrincipal().equals("anonymousUser")) {
             throw new RuntimeException("Usuário não autenticado");

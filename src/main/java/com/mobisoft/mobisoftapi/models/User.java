@@ -34,15 +34,17 @@ public class User implements UserDetails {
     private String id;
     private String login;
     private String password;
+    private String name;
     private UserRole role;
     
     @ManyToOne
     @JoinColumn(name = "group_id")
     private UserGroup group;
     
-    public User(String login, String password, UserRole role, UserGroup group){
+    public User(String login, String password, String name, UserRole role, UserGroup group){
         this.login = login;
         this.password = password;
+        this.name = name;
         this.role = role;
         this.group = group;
     }
