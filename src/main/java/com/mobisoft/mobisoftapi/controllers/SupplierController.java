@@ -33,8 +33,8 @@ public class SupplierController {
 	}
     
 	@GetMapping
-    public ResponseEntity<List<SupplierDTO>> getAllSuppliers() {
-        List<SupplierDTO> suppliers = supplierService.getAllSuppliers();
+    public ResponseEntity<List<Supplier>> getAllSuppliers() {
+        List<Supplier> suppliers = supplierService.getAllSuppliers();
         return ResponseEntity.ok(suppliers);
     }
 

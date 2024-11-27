@@ -10,5 +10,8 @@ import com.mobisoft.mobisoftapi.models.Employees;
 
 @Repository
 public interface EmployeesRepository extends JpaRepository<Employees, Long> {
+	
 	List<Employees> findByEmployeesType(EmployeesType employeesType);
+	
+	List<Employees> findByUserGroupId(Long userGroupId);
 }

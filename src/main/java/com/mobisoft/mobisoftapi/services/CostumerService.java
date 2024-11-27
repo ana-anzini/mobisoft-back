@@ -48,7 +48,8 @@ public class CostumerService {
 	}
 
 	public List<Costumer> getAllCostumers() {
-		return costumerRepository.findAll();
+		UserGroup userGroup = userService.getLoggedUser().getGroup();
+		return costumerRepository.findByUserGroupId(userGroup.getId());
 	}
 
 	public Costumer updateCostumer(Long id, CostumerDTO costumerDTO) {

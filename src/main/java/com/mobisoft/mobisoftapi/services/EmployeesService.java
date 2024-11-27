@@ -9,7 +9,6 @@ import com.mobisoft.mobisoftapi.configs.exceptions.EmployeesNotFoundException;
 import com.mobisoft.mobisoftapi.dtos.employees.EmployeesDTO;
 import com.mobisoft.mobisoftapi.enums.employees.EmployeesType;
 import com.mobisoft.mobisoftapi.models.Employees;
-import com.mobisoft.mobisoftapi.models.Supplier;
 import com.mobisoft.mobisoftapi.models.UserGroup;
 import com.mobisoft.mobisoftapi.repositories.EmployeesRepository;
 
@@ -47,7 +46,8 @@ public class EmployeesService {
 	}
 
 	public List<Employees> getAllEmployees() {
-		return employeesRepository.findAll();
+		UserGroup userGroup = userService.getLoggedUser().getGroup();
+		return employeesRepository.findByUserGroupId(userGroup.getId());
 	}
 
 	public Employees findById(Long id) {

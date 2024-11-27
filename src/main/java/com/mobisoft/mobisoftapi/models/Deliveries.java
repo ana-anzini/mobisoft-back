@@ -3,12 +3,8 @@ package com.mobisoft.mobisoftapi.models;
 import java.math.BigDecimal;
 import java.util.Calendar;
 
-import com.mobisoft.mobisoftapi.enums.project.StatusType;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -56,4 +52,8 @@ public class Deliveries {
     @ManyToOne
     @JoinColumn(name = "project_id", nullable = false)
     private Project project;
+    
+    @ManyToOne
+    @JoinColumn(name = "group_id", nullable = false)
+    private UserGroup userGroup;
 }

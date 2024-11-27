@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mobisoft.mobisoftapi.dtos.project.ProjectDTO;
 import com.mobisoft.mobisoftapi.models.Project;
 import com.mobisoft.mobisoftapi.services.ProjectService;
+import com.mobisoft.mobisoftapi.services.UserService;
 
 @RestController
 @RequestMapping("/projects")

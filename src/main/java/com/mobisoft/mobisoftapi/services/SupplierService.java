@@ -50,8 +50,9 @@ public class SupplierService {
 		return supplierRepository.save(supplier);
 	}
 
-	public List<SupplierDTO> getAllSuppliers() {
-		return supplierRepository.findAllSuppliersWithCategoryDescription();
+	public List<Supplier> getAllSuppliers() {
+		UserGroup userGroup = userService.getLoggedUser().getGroup();
+		return supplierRepository.findByUserGroupId(userGroup.getId());
 	}
 
 	public Supplier updateSupplier(Long id, SupplierDTO supplierDTO) {

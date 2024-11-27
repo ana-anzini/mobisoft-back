@@ -51,7 +51,8 @@ public class ProjectService {
 	}
 
 	public List<Project> getAllProjects() {
-		return projectRepository.findAll();
+		UserGroup userGroup = userService.getLoggedUser().getGroup();
+		return projectRepository.findByUserGroupId(userGroup.getId());
 	}
 
 	public Project updateProject(Long id, ProjectDTO projectDTO) {

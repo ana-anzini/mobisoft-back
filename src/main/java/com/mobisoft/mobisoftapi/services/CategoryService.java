@@ -51,7 +51,8 @@ public class CategoryService {
 	}
 
 	public List<Category> findAll() {
-		return categoryRepository.findAll();
+		UserGroup userGroup = userService.getLoggedUser().getGroup();
+		return categoryRepository.findByUserGroupId(userGroup.getId());
 	}
 
 	public void deleteCategories(List<Long> ids) {

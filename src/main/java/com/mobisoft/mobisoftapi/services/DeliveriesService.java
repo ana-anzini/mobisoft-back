@@ -9,6 +9,7 @@ import com.mobisoft.mobisoftapi.configs.exceptions.DeliveryNotFoundException;
 import com.mobisoft.mobisoftapi.dtos.delivery.DeliveryDTO;
 import com.mobisoft.mobisoftapi.models.Deliveries;
 import com.mobisoft.mobisoftapi.models.Project;
+import com.mobisoft.mobisoftapi.models.UserGroup;
 import com.mobisoft.mobisoftapi.repositories.DeliveriesRepository;
 
 @Service
@@ -19,6 +20,9 @@ public class DeliveriesService {
 	
 	@Autowired
 	private ProjectService projectService;
+	
+	@Autowired
+	private UserService userService;
 
 	public Deliveries createDelivery(DeliveryDTO DeliveryDTO) {
 		Project project = projectService.getProjectById(DeliveryDTO.getProjectId());
@@ -36,7 +40,8 @@ public class DeliveriesService {
 	}
 
 	public List<Deliveries> getAllDeliveries() {
-		return deliveriesRepository.findAll();
+		UserGroup userGroup = userService.getLoggedUser().getGroup();
+		return deliveriesRepository.findByUserGroupId(userGroup.getId());
 	}
 
 	public Deliveries findById(Long id) {

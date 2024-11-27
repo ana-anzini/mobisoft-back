@@ -44,7 +44,8 @@ public class ProductService {
 	}
 
 	public List<Product> getAllProducts() {
-		return productRepository.findAll();
+		UserGroup userGroup = userService.getLoggedUser().getGroup();
+		return productRepository.findByUserGroupId(userGroup.getId());
 	}
 
 	public Product getProductById(Long id) {

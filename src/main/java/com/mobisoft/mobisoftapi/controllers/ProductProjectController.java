@@ -1,5 +1,6 @@
 package com.mobisoft.mobisoftapi.controllers;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +18,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mobisoft.mobisoftapi.dtos.productproject.ProductProjectDTO;
+import com.mobisoft.mobisoftapi.dtos.productproject.ProductProjectDetailsDTO;
 import com.mobisoft.mobisoftapi.dtos.products.ProductDTO;
 import com.mobisoft.mobisoftapi.models.Product;
 import com.mobisoft.mobisoftapi.models.ProductProject;
+import com.mobisoft.mobisoftapi.services.FinancialService;
 import com.mobisoft.mobisoftapi.services.ProductProjectService;
 import com.mobisoft.mobisoftapi.services.ProductService;
 
@@ -29,6 +32,9 @@ public class ProductProjectController {
 
 	@Autowired
     private ProductProjectService productProjectService;
+	
+	@Autowired
+	private FinancialService financialService;
 
     @PostMapping
     public ResponseEntity<ProductProject> createProductProject(@RequestBody ProductProjectDTO productProjectDTO) {
@@ -64,5 +70,13 @@ public class ProductProjectController {
     public ResponseEntity<List<ProductProject>> getAllProductsByProject(@PathVariable Long projectId) {
         List<ProductProject> productProjects = productProjectService.getProductsByProject(projectId);
         return ResponseEntity.ok(productProjects);
+    }
+    
+    @GetMapping("/findTotal/{projectId}")
+    public ResponseEntity<ProductProjectDetailsDTO> getAllProductsAndTotal(@PathVariable Long projectId) {
+        List<ProductProject> productProjects = productProjectService.getProductsByProject(projectId);
+        BigDecimal totalCosts = financialService.findByProjectId(projectId).getTotalValue();
+        ProductProjectDetailsDTO projectDetailsDTO = new ProductProjectDetailsDTO(productProjects, totalCosts);
+        return ResponseEntity.ok(projectDetailsDTO);
     }
 }
