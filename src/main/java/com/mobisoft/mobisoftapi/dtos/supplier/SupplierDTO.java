@@ -2,8 +2,10 @@ package com.mobisoft.mobisoftapi.dtos.supplier;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 public class SupplierDTO {
     private Long id;
