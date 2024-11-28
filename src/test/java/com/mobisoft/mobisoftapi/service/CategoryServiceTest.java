@@ -1,22 +1,7 @@
 package com.mobisoft.mobisoftapi.service;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.mobisoft.mobisoftapi.configs.exceptions.CategoryNotFoundException;
 import com.mobisoft.mobisoftapi.dtos.category.CategoryDTO;
@@ -27,9 +12,15 @@ import com.mobisoft.mobisoftapi.repositories.CategoryRepository;
 import com.mobisoft.mobisoftapi.services.CategoryService;
 import com.mobisoft.mobisoftapi.services.UserService;
 
-public class CategoryServiceTest {
-	
-	@InjectMocks
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.*;
+
+import java.util.*;
+
+class CategoryServiceTest {
+
+    @InjectMocks
     private CategoryService categoryService;
 
     @Mock
@@ -38,39 +29,94 @@ public class CategoryServiceTest {
     @Mock
     private UserService userService;
 
+    @Mock
+    private UserGroup userGroup;
+
+    @Mock
+    private Category category;
+
+    private CategoryDTO categoryDTO;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+
+        // Mock do User e UserGroup
+        User mockUser = mock(User.class);
+        when(userService.getLoggedUser()).thenReturn(mockUser);
+
+        UserGroup mockUserGroup = mock(UserGroup.class);
+        when(mockUser.getGroup()).thenReturn(mockUserGroup);
+
+        // Inicializando o CategoryDTO para ser usado nos testes
+        categoryDTO = new CategoryDTO();
+        categoryDTO.setDescription("Category Test");
     }
 
     @Test
-    void testFindById_Success() {
-        Category category = new Category();
-        category.setId(1L);
-        category.setDescription("Test Category");
+    void testUpdateCategoryNotFound() {
+        // Mock de categoria não encontrada
+        Long categoryId = 1L;
+        when(categoryRepository.findById(categoryId)).thenReturn(Optional.empty());
 
-        when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
+        // Executando a atualização e verificando a exceção
+        assertThrows(CategoryNotFoundException.class, () -> {
+            categoryService.update(categoryId, categoryDTO);
+        });
+    }
 
-        Category result = categoryService.findById(1L);
+    @Test
+    void testDeleteCategory() {
+        // Mock de categoria existente
+        Long categoryId = 1L;
+        when(categoryRepository.findById(categoryId)).thenReturn(Optional.of(category));
+
+        // Executando a exclusão da categoria
+        categoryService.delete(categoryId);
+
+        // Verificando a exclusão
+        verify(categoryRepository, times(1)).delete(any(Category.class));
+    }
+
+    @Test
+    void testDeleteCategoryNotFound() {
+        // Mock de categoria não encontrada
+        Long categoryId = 1L;
+        when(categoryRepository.findById(categoryId)).thenReturn(Optional.empty());
+
+        // Executando a exclusão e verificando a exceção
+        assertThrows(CategoryNotFoundException.class, () -> {
+            categoryService.delete(categoryId);
+        });
+    }
+
+    @Test
+    void testFindAllCategories() {
+        // Mock de categorias retornadas do repositório
+        List<Category> categories = new ArrayList<>();
+        categories.add(category);
+        when(categoryRepository.findByUserGroupId(anyLong())).thenReturn(categories);
+
+        // Executando a busca por todas as categorias
+        List<Category> result = categoryService.findAll();
+
+        // Verificando os resultados
         assertNotNull(result);
-        assertEquals("Test Category", result.getDescription());
+        assertEquals(1, result.size());
     }
 
     @Test
-    void testDelete_Success() {
-        Category category = new Category();
-        category.setId(1L);
+    void testDeleteCategories() {
+        // Mock de categorias a serem excluídas
+        List<Long> ids = Arrays.asList(1L, 2L);
+        List<Category> categories = new ArrayList<>();
+        categories.add(category);
+        when(categoryRepository.findAllById(ids)).thenReturn(categories);
 
-        when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
-        doNothing().when(categoryRepository).delete(category);
+        // Executando a exclusão de várias categorias
+        categoryService.deleteCategories(ids);
 
-        assertDoesNotThrow(() -> categoryService.delete(1L));
-    }
-
-    @Test
-    void testDelete_NotFound() {
-        when(categoryRepository.findById(1L)).thenReturn(Optional.empty());
-
-        assertThrows(CategoryNotFoundException.class, () -> categoryService.delete(1L));
+        // Verificando a exclusão
+        verify(categoryRepository, times(1)).deleteAll(categories);
     }
 }
