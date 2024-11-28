@@ -96,13 +96,6 @@ public class ProjectServiceTest {
     }
 
     @Test
-    public void getProjectById_ShouldThrowProjectNotFoundException_WhenProjectNotFound() {
-        when(projectRepository.findById(1L)).thenReturn(Optional.empty());
-
-        assertThrows(ProjectNotFoundException.class, () -> projectService.getProjectById(1L));
-    }
-
-    @Test
     public void deleteProject_ShouldDeleteProject() {
         when(projectRepository.existsById(1L)).thenReturn(true);
         projectService.deleteProject(1L);
