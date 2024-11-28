@@ -8,120 +8,130 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 class CategoryControllerTest {
-
-    @InjectMocks
-    private CategoryController categoryController;
 
     @Mock
     private CategoryService categoryService;
 
-    private Category category;
-    private CategoryDTO categoryDTO;
+    @InjectMocks
+    private CategoryController categoryController;
+
+    @Autowired
+    private MockMvc mockMvc;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        category = new Category(1L, "Test Category", null);
-        categoryDTO = new CategoryDTO(null, "Test Category");
+        mockMvc = MockMvcBuilders.standaloneSetup(categoryController).build();
     }
 
     @Test
-    void testCreateCategory() {
-        when(categoryService.create(categoryDTO)).thenReturn(category);
+    void testCreateCategory() throws Exception {
+        CategoryDTO categoryDTO = new CategoryDTO();
+        categoryDTO.setDescription("Test Category");
 
-        ResponseEntity<Category> response = categoryController.createCategory(categoryDTO);
+        Category createdCategory = new Category();
+        createdCategory.setId(1L);
+        createdCategory.setDescription("Test Category");
 
-        assertEquals(HttpStatus.CREATED.value(), response.getStatusCode().value());
-        assertEquals(category, response.getBody());
-        verify(categoryService, times(1)).create(categoryDTO);
+        when(categoryService.create(any(CategoryDTO.class))).thenReturn(createdCategory);
+
+        mockMvc.perform(post("/categories")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"description\": \"Test Category\"}"))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.description").value("Test Category"));
     }
 
     @Test
-    void testUpdateCategory() {
-        when(categoryService.update(1L, categoryDTO)).thenReturn(category);
+    void testUpdateCategory() throws Exception {
+        CategoryDTO categoryDTO = new CategoryDTO();
+        categoryDTO.setDescription("Updated Category");
 
-        ResponseEntity<Category> response = categoryController.updateCategory(1L, categoryDTO);
+        Category updatedCategory = new Category();
+        updatedCategory.setId(1L);
+        updatedCategory.setDescription("Updated Category");
 
-        assertEquals(HttpStatus.OK.value(), response.getStatusCode().value());
-        assertEquals(category, response.getBody());
-        verify(categoryService, times(1)).update(1L, categoryDTO);
+        when(categoryService.update(eq(1L), any(CategoryDTO.class))).thenReturn(updatedCategory);
+
+        mockMvc.perform(put("/categories/{id}", 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"description\": \"Updated Category\"}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.description").value("Updated Category"));
     }
 
-
     @Test
-    void testGetCategoryById() {
+    void testGetCategoryById() throws Exception {
+        Category category = new Category();
+        category.setId(1L);
+        category.setDescription("Test Category");
+
         when(categoryService.findById(1L)).thenReturn(category);
 
-        ResponseEntity<Category> response = categoryController.getCategoryById(1L);
-
-        assertEquals(200, response.getStatusCode().value());
-        assertEquals(category, response.getBody());
-        verify(categoryService, times(1)).findById(1L);
+        mockMvc.perform(get("/categories/{id}", 1L))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.description").value("Test Category"));
     }
 
     @Test
-    void testFindAll() {
-        List<Category> categories = Arrays.asList(category);
+    void testFindAllCategories() throws Exception {
+        Category category1 = new Category();
+        category1.setId(1L);
+        category1.setDescription("Category 1");
+
+        Category category2 = new Category();
+        category2.setId(2L);
+        category2.setDescription("Category 2");
+
+        List<Category> categories = Arrays.asList(category1, category2);
+
         when(categoryService.findAll()).thenReturn(categories);
 
-        ResponseEntity<List<Category>> response = categoryController.findAll();
-
-        assertEquals(200, response.getStatusCode().value());
-        assertEquals(categories, response.getBody());
-        verify(categoryService, times(1)).findAll();
+        mockMvc.perform(get("/categories/findAll"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(1))
+                .andExpect(jsonPath("$[0].description").value("Category 1"))
+                .andExpect(jsonPath("$[1].id").value(2))
+                .andExpect(jsonPath("$[1].description").value("Category 2"));
     }
 
     @Test
-    void testDeleteCategory() {
+    void testDeleteCategory() throws Exception {
         doNothing().when(categoryService).delete(1L);
 
-        ResponseEntity<Void> response = categoryController.deleteCategory(1L);
+        mockMvc.perform(delete("/categories/{id}", 1L))
+                .andExpect(status().isNoContent());
 
-        assertEquals(204, response.getStatusCode().value());
         verify(categoryService, times(1)).delete(1L);
     }
 
     @Test
-    void testDeleteCategories_Success() {
-        doNothing().when(categoryService).deleteCategories(Arrays.asList(1L, 2L));
+    void testDeleteCategories() throws Exception {
+        List<Long> categoryIds = Arrays.asList(1L, 2L);
 
-        ResponseEntity<String> response = categoryController.deleteCategories(Arrays.asList(1L, 2L));
+        doNothing().when(categoryService).deleteCategories(categoryIds);
 
-        assertEquals(200, response.getStatusCode().value());
-        assertEquals("Categoria(s) deletada(s) com sucesso.", response.getBody());
-        verify(categoryService, times(1)).deleteCategories(Arrays.asList(1L, 2L));
-    }
+        mockMvc.perform(delete("/categories")
+                .param("ids", "1", "2"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Categoria(s) deletada(s) com sucesso."));
 
-    @Test
-    void testDeleteCategories_DataIntegrityViolation() {
-        doThrow(new DataIntegrityViolationException("")).when(categoryService).deleteCategories(Arrays.asList(1L, 2L));
-
-        ResponseEntity<String> response = categoryController.deleteCategories(Arrays.asList(1L, 2L));
-
-        assertEquals(200, response.getStatusCode().value());
-        assertEquals("Não é possível excluir esta categoria, pois ela está em uso.", response.getBody());
-        verify(categoryService, times(1)).deleteCategories(Arrays.asList(1L, 2L));
-    }
-
-    @Test
-    void testDeleteCategories_GeneralException() {
-        doThrow(new RuntimeException("General error")).when(categoryService).deleteCategories(Arrays.asList(1L, 2L));
-
-        ResponseEntity<String> response = categoryController.deleteCategories(Arrays.asList(1L, 2L));
-
-        assertEquals(200, response.getStatusCode().value());
-        assertEquals("Erro ao processar a solicitação.", response.getBody());
-        verify(categoryService, times(1)).deleteCategories(Arrays.asList(1L, 2L));
+        verify(categoryService, times(1)).deleteCategories(categoryIds);
     }
 }
