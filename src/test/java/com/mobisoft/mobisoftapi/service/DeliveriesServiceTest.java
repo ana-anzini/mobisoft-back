@@ -48,6 +48,12 @@ class DeliveriesServiceTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        User mockUser = mock(User.class);
+        UserGroup mockGroup = mock(UserGroup.class);
+
+        when(userService.getLoggedUser()).thenReturn(mockUser);
+        when(mockUser.getGroup()).thenReturn(mockGroup);
+        when(mockGroup.getId()).thenReturn(1L);
     }
 
     @Test
