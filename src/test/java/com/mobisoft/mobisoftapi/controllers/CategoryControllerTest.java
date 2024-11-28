@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
@@ -105,4 +106,41 @@ class CategoryControllerTest {
         assertEquals("Categoria(s) deletada(s) com sucesso.", response.getBody());
         verify(categoryService, times(1)).deleteCategories(categoryIds);
     }
+    
+    @Test
+    void testDeleteCategories_Success() {
+        List<Long> categoryIds = Arrays.asList(1L, 2L);
+        doNothing().when(categoryService).deleteCategories(categoryIds);
+
+        ResponseEntity<String> response = categoryController.deleteCategories(categoryIds);
+
+        assertEquals(200, response.getStatusCode().value());
+        assertEquals("Categoria(s) deletada(s) com sucesso.", response.getBody());
+        verify(categoryService, times(1)).deleteCategories(categoryIds);
+    }
+
+    @Test
+    void testDeleteCategories_DataIntegrityViolationException() {
+        List<Long> categoryIds = Arrays.asList(1L, 2L);
+        doThrow(new DataIntegrityViolationException("Categoria está em uso")).when(categoryService).deleteCategories(categoryIds);
+
+        ResponseEntity<String> response = categoryController.deleteCategories(categoryIds);
+
+        assertEquals(200, response.getStatusCode().value());
+        assertEquals("Não é possível excluir esta categoria, pois ela está em uso.", response.getBody());
+        verify(categoryService, times(1)).deleteCategories(categoryIds);
+    }
+
+    @Test
+    void testDeleteCategories_GenericException() {
+        List<Long> categoryIds = Arrays.asList(1L, 2L);
+        doThrow(new RuntimeException("Erro desconhecido")).when(categoryService).deleteCategories(categoryIds);
+
+        ResponseEntity<String> response = categoryController.deleteCategories(categoryIds);
+
+        assertEquals(200, response.getStatusCode().value());
+        assertEquals("Erro ao processar a solicitação.", response.getBody());
+        verify(categoryService, times(1)).deleteCategories(categoryIds);
+    }
+
 }
