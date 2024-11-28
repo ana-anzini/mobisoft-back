@@ -5,6 +5,7 @@ import com.mobisoft.mobisoftapi.dtos.products.ProductDTO;
 import com.mobisoft.mobisoftapi.models.Category;
 import com.mobisoft.mobisoftapi.models.Product;
 import com.mobisoft.mobisoftapi.models.Supplier;
+import com.mobisoft.mobisoftapi.models.User;
 import com.mobisoft.mobisoftapi.models.UserGroup;
 import com.mobisoft.mobisoftapi.repositories.ProductRepository;
 import com.mobisoft.mobisoftapi.services.CategoryService;
@@ -73,6 +74,26 @@ class ProductServiceTest {
         // Mockando o comportamento do repositório
         when(productRepository.findById(1L)).thenReturn(Optional.of(product));
         when(productRepository.save(any(Product.class))).thenReturn(product);  // Assegura que o produto não será null ao salvar
+    }
+
+    @Test
+    void testCreateProduct() {
+        // Mockando o comportamento do getLoggedUser para retornar um usuário com um grupo
+        User loggedUser = new User();
+        when(userService.getLoggedUser()).thenReturn(loggedUser);  // Mockando a resposta do getLoggedUser()
+
+        // Mockando os dados do DTO
+        when(productDTO.getDescription()).thenReturn("New Product");
+        when(productDTO.getProductValue()).thenReturn(new BigDecimal("200.00"));
+        when(productDTO.getSupplierId()).thenReturn(1L);
+        when(productDTO.getCategoryId()).thenReturn(1L);
+
+        // Mockando as dependências
+        when(supplierService.findById(1L)).thenReturn(supplier);  // Garantir que supplier não é null
+        when(categoryService.findById(1L)).thenReturn(category);  // Garantir que category não é null
+
+        // Verificando se o produto foi salvo após a criação
+        verify(productRepository, times(1)).save(any(Product.class));
     }
 
     @Test

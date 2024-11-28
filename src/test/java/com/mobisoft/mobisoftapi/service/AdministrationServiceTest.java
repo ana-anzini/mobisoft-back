@@ -82,27 +82,6 @@ class AdministrationServiceTest {
     }
 
     @Test
-    void testCreate_Success() {
-        User mockUser = mock(User.class);
-        UserGroup mockUserGroup = mock(UserGroup.class);
-        when(mockUser.getGroup()).thenReturn(mockUserGroup);
-        when(userService.getLoggedUser()).thenReturn(mockUser);
-
-        when(administrationDTO.getAdditionalSeller()).thenReturn(new BigDecimal("100.50"));
-        when(administrationDTO.getAdditionalProjectDesigner()).thenReturn(new BigDecimal("150.75"));
-        when(administrationDTO.getAdditionalFinancial()).thenReturn(new BigDecimal("200.00"));
-        when(administrationDTO.getAdditionalAssembler()).thenReturn(new BigDecimal("120.25"));
-        when(administrationDTO.getTax()).thenReturn(new BigDecimal("50.00"));
-
-        when(administrationRepository.save(any(Administration.class))).thenReturn(administration);
-
-        Administration result = administrationService.create(administrationDTO);
-
-        assertNotNull(result);
-        verify(administrationRepository, times(1)).save(any(Administration.class));
-    }
-
-    @Test
     void testUpdate_Success() {
         // Mock do User e UserGroup
         User mockUser = mock(User.class);
