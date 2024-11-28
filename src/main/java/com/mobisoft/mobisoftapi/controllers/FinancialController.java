@@ -46,6 +46,12 @@ public class FinancialController {
         Financial financial = financialService.calculateTotalProject(projectId);
         return ResponseEntity.ok(financial);
     }
+    
+    @PostMapping("/createFinancialValues/{projectId}")
+    public ResponseEntity<Financial> calculateValues(@PathVariable Long projectId) {
+        Financial financial = financialService.calculateTotalProject(projectId);
+        return ResponseEntity.ok(financial);
+    }
 
     @PutMapping("/{projectId}")
     public ResponseEntity<Financial> updateFinancial(@PathVariable Long projectId, @RequestBody FinancialDTO financialDTO) {

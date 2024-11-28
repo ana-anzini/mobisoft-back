@@ -25,6 +25,7 @@ public class DeliveriesService {
 	private UserService userService;
 
 	public Deliveries createDelivery(DeliveryDTO DeliveryDTO) {
+		UserGroup userGroup = userService.getLoggedUser().getGroup();
 		Project project = projectService.getProjectById(DeliveryDTO.getProjectId());
 		Deliveries delivery = new Deliveries();
 		delivery.setAddressClient(DeliveryDTO.isAddressClient());
@@ -35,6 +36,7 @@ public class DeliveriesService {
 		delivery.setAdditional(DeliveryDTO.getAdditional());
 		delivery.setDeliveryDate(DeliveryDTO.getDeliveryDate());
 		delivery.setProject(project);
+		delivery.setUserGroup(userGroup);
 
 		return deliveriesRepository.save(delivery);
 	}

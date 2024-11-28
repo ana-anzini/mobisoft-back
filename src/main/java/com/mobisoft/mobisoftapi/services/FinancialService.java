@@ -73,6 +73,10 @@ public class FinancialService {
 	    BigDecimal totalPercentage;
 	    BigDecimal totalValue;
 	    
+	    if (existingFinancial == null || administrationValues == null || delivery == null) {
+	        throw new FinancialNotFoundException(projectId);
+	    }
+	    
 	    // Taxas
 	    BigDecimal totalTax = administrationValues.getTax().divide(BigDecimal.valueOf(100), 10, RoundingMode.HALF_UP);
 	    BigDecimal totalProfit = administrationValues.getAdditionalFinancial().divide(BigDecimal.valueOf(100), 10, RoundingMode.HALF_UP);
@@ -80,12 +84,16 @@ public class FinancialService {
 	    BigDecimal totalSeller = administrationValues.getAdditionalSeller().divide(BigDecimal.valueOf(100), 10, RoundingMode.HALF_UP);
 	    BigDecimal totalAssembler = administrationValues.getAdditionalAssembler().divide(BigDecimal.valueOf(100), 10, RoundingMode.HALF_UP);
 	    
+	    BigDecimal freight = (delivery != null && delivery.getFreight() != null) 
+	            ? delivery.getFreight() 
+	            : BigDecimal.ZERO;
+	    
 	    totalPercentage = administrationValues.getAdditionalAssembler()
 	            .add(administrationValues.getAdditionalFinancial())
 	            .add(administrationValues.getAdditionalProjectDesigner())
 	            .add(administrationValues.getAdditionalSeller())
 	            .add(administrationValues.getTax())
-	            .add(delivery.getFreight());
+	            .add(freight);
 	    
 	    totalPercentage = BigDecimal.valueOf(100).subtract(totalPercentage);
 	    totalValue = totalPercentage.divide(BigDecimal.valueOf(100), 10, RoundingMode.HALF_UP);
