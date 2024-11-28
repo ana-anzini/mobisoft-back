@@ -2,6 +2,7 @@ package com.mobisoft.mobisoftapi.controllers;
 
 import com.mobisoft.mobisoftapi.dtos.productproject.ProductProjectDTO;
 import com.mobisoft.mobisoftapi.dtos.productproject.ProductProjectDetailsDTO;
+import com.mobisoft.mobisoftapi.models.Financial;
 import com.mobisoft.mobisoftapi.models.Product;
 import com.mobisoft.mobisoftapi.models.ProductProject;
 import com.mobisoft.mobisoftapi.models.Project;
@@ -102,5 +103,35 @@ class ProductProjectControllerTest {
         assertEquals(200, response.getStatusCode().value());
         assertEquals("Produto(s) deletada(s) com sucesso.", response.getBody());
         verify(productProjectService, times(1)).deleteProductProjects(Arrays.asList(1L, 2L));
+    }
+    
+    @Test
+    void testGetAllProductsAndTotal() {
+        // Dados simulados
+        List<ProductProject> productProjects = Arrays.asList(productProject); // Lista de produtos do projeto
+        BigDecimal totalCosts = BigDecimal.valueOf(200.00); // Total de custos calculado
+        
+        // Simulando o comportamento dos serviços
+        when(productProjectService.getProductsByProject(1L)).thenReturn(productProjects);
+        
+        // Criando uma instância de Financial mockada para evitar o NullPointerException
+        Financial financialMock = mock(Financial.class);
+        when(financialMock.getTotalValue()).thenReturn(totalCosts);
+        
+        // Simulando que financialService.findByProjectId retorna um objeto Financial válido
+        when(financialService.findByProjectId(1L)).thenReturn(financialMock);
+
+        // Chamando o método do controller
+        ResponseEntity<ProductProjectDetailsDTO> response = productProjectController.getAllProductsAndTotal(1L);
+
+        // Verificando as assertivas
+        assertEquals(200, response.getStatusCode().value()); // Verificando se o status HTTP é 200 OK
+        assertNotNull(response.getBody()); // Verificando se o corpo da resposta não é nulo
+        assertEquals(totalCosts, response.getBody().getTotalValue()); // Verificando se o total de custos está correto
+        assertEquals(productProjects, response.getBody().getProducts()); // Verificando se os projetos de produto estão corretos
+        
+        // Verificando se os serviços foram chamados corretamente
+        verify(productProjectService, times(1)).getProductsByProject(1L);
+        verify(financialService, times(1)).findByProjectId(1L);
     }
 }
