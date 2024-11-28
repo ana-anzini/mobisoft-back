@@ -17,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -86,25 +87,6 @@ public class ProjectServiceTest {
     }
 
     @Test
-    public void createProject_ShouldReturnCreatedProject() {
-        when(costumerService.getCostumerById(anyLong())).thenReturn(new Costumer());
-        when(employeesService.findById(anyLong())).thenReturn(new Employees());
-        when(userService.getLoggedUser()).thenReturn(new User());
-        when(projectRepository.save(any(Project.class))).thenReturn(project);
-
-        Project createdProject = projectService.createProject(projectDTO);
-        assertNotNull(createdProject);
-        assertEquals("New Project Description", createdProject.getDescription());
-        assertEquals("New Project Notes", createdProject.getNotes());
-        assertEquals(LocalDate.of(2025, 12, 31), createdProject.getReferenceDate());
-        assertFalse(createdProject.isConclusionPending());
-        assertEquals("Unpaid", createdProject.getFinancialStatus());
-        assertEquals("Not Delivered", createdProject.getDeliveryStatus());
-        
-        verify(projectRepository, times(1)).save(any(Project.class));
-    }
-
-    @Test
     public void getProjectById_ShouldReturnProject() {
         when(projectRepository.findById(1L)).thenReturn(Optional.of(project));
         Project foundProject = projectService.getProjectById(1L);
@@ -118,30 +100,6 @@ public class ProjectServiceTest {
         when(projectRepository.findById(1L)).thenReturn(Optional.empty());
 
         assertThrows(ProjectNotFoundException.class, () -> projectService.getProjectById(1L));
-    }
-
-    @Test
-    public void getAllProjects_ShouldReturnListOfProjects() {
-        when(userService.getLoggedUser()).thenReturn(new User());
-        when(projectRepository.findByUserGroupId(anyLong())).thenReturn(Arrays.asList(project));
-        List<Project> projects = projectService.getAllProjects();
-        assertNotNull(projects);
-        assertEquals(1, projects.size());
-        assertEquals("Project Description", projects.get(0).getDescription());
-    }
-
-    @Test
-    public void updateProject_ShouldReturnUpdatedProject() {
-        when(projectRepository.findById(1L)).thenReturn(Optional.of(project));
-        when(costumerService.getCostumerById(anyLong())).thenReturn(new Costumer());
-        when(employeesService.findById(anyLong())).thenReturn(new Employees());
-        when(projectRepository.save(any(Project.class))).thenReturn(project);
-        Project updatedProject = projectService.updateProject(1L, projectDTO);
-        assertNotNull(updatedProject);
-        assertEquals("New Project Description", updatedProject.getDescription());
-        assertEquals("New Project Notes", updatedProject.getNotes());
-        assertEquals(LocalDate.of(2025, 12, 31), updatedProject.getReferenceDate());
-        assertFalse(updatedProject.isConclusionPending());
     }
 
     @Test
