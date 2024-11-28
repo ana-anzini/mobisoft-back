@@ -1,25 +1,24 @@
 package com.mobisoft.mobisoftapi.service;
 
-import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
-
+import com.mobisoft.mobisoftapi.configs.exceptions.ProductProjectNotFoundException;
 import com.mobisoft.mobisoftapi.dtos.productproject.ProductProjectDTO;
 import com.mobisoft.mobisoftapi.models.Financial;
 import com.mobisoft.mobisoftapi.models.Product;
 import com.mobisoft.mobisoftapi.models.ProductProject;
 import com.mobisoft.mobisoftapi.models.Project;
 import com.mobisoft.mobisoftapi.repositories.ProductProjectRepository;
-import com.mobisoft.mobisoftapi.services.FinancialService;
 import com.mobisoft.mobisoftapi.services.ProductProjectService;
 import com.mobisoft.mobisoftapi.services.ProductService;
+import com.mobisoft.mobisoftapi.services.FinancialService;
 import com.mobisoft.mobisoftapi.services.ProjectService;
-import com.mobisoft.mobisoftapi.configs.exceptions.ProductProjectNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
-
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ProductProjectServiceTest {
 
@@ -38,138 +37,143 @@ class ProductProjectServiceTest {
     @Mock
     private FinancialService financialService;
 
-    @Mock
-    private ProductProject productProject;
-
-    @Mock
     private ProductProjectDTO productProjectDTO;
-
-    @Mock
-    private Project project;
-
-    @Mock
+    private ProductProject productProject;
     private Product product;
-
-    @Mock
+    private Project project;
     private Financial financial;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+
+        project = new Project();
+        project.setId(1L);
+
+        product = new Product();
+        product.setId(1L);
+
+        financial = new Financial();
+        financial.setTotalCusts(new BigDecimal("100.00"));
+
+        productProjectDTO = new ProductProjectDTO();
+        productProjectDTO.setProductId(1L);
+        productProjectDTO.setProjectId(1L);
+        productProjectDTO.setProductValue(new BigDecimal("200.00"));
+
+        productProject = new ProductProject();
+        productProject.setId(1L);
+        productProject.setProduct(product);
+        productProject.setProject(project);
+        productProject.setProductValue(new BigDecimal("200.00"));
     }
 
     @Test
-    void testCreateProductProject() {
-        when(productProjectDTO.getProjectId()).thenReturn(1L);
-        when(productProjectDTO.getProductId()).thenReturn(1L);
-        when(productProjectDTO.getProductValue()).thenReturn(BigDecimal.TEN);
-        when(projectService.getProjectById(1L)).thenReturn(project);
-        when(productService.getProductById(1L)).thenReturn(product);
-        when(financialService.findByProjectId(1L)).thenReturn(financial);
+    void testCreateProductProject_Success() {
+        when(projectService.getProjectById(anyLong())).thenReturn(project);
+        when(productService.getProductById(anyLong())).thenReturn(product);
+        when(financialService.findByProjectId(anyLong())).thenReturn(null);
         when(productProjectRepository.save(any(ProductProject.class))).thenReturn(productProject);
 
         ProductProject result = productProjectService.createProductProject(productProjectDTO);
 
         assertNotNull(result);
-        verify(financialService, times(1)).save(any(Financial.class));
+        assertEquals(productProjectDTO.getProductValue(), result.getProductValue());
         verify(productProjectRepository, times(1)).save(any(ProductProject.class));
+        verify(financialService, times(1)).save(any(Financial.class));
     }
 
     @Test
-    void testCreateProductProjectWithNewFinancial() {
-        when(productProjectDTO.getProjectId()).thenReturn(1L);
-        when(productProjectDTO.getProductId()).thenReturn(1L);
-        when(productProjectDTO.getProductValue()).thenReturn(BigDecimal.TEN);
-        when(projectService.getProjectById(1L)).thenReturn(project);
-        when(productService.getProductById(1L)).thenReturn(product);
-        when(financialService.findByProjectId(1L)).thenReturn(null);
-
+    void testCreateProductProject_ExistingFinancial_Success() {
+        when(projectService.getProjectById(anyLong())).thenReturn(project);
+        when(productService.getProductById(anyLong())).thenReturn(product);
+        when(financialService.findByProjectId(anyLong())).thenReturn(financial);
         when(productProjectRepository.save(any(ProductProject.class))).thenReturn(productProject);
 
         ProductProject result = productProjectService.createProductProject(productProjectDTO);
 
         assertNotNull(result);
-        verify(financialService, times(1)).save(any(Financial.class));
+        assertEquals(productProjectDTO.getProductValue(), result.getProductValue());
         verify(productProjectRepository, times(1)).save(any(ProductProject.class));
+        verify(financialService, times(1)).save(any(Financial.class));
+        assertEquals(new BigDecimal("300.00"), financial.getTotalCusts());
     }
 
     @Test
-    void testFindById() {
-        Long id = 1L;
-        when(productProjectRepository.findById(id)).thenReturn(Optional.of(productProject));
+    void testFindById_Success() {
+        when(productProjectRepository.findById(anyLong())).thenReturn(Optional.of(productProject));
 
-        ProductProject result = productProjectService.findById(id);
+        ProductProject result = productProjectService.findById(1L);
 
         assertNotNull(result);
-        verify(productProjectRepository, times(1)).findById(id);
+        assertEquals(1L, result.getId());
+        verify(productProjectRepository, times(1)).findById(anyLong());
     }
 
     @Test
-    void testFindByIdThrowsException() {
-        Long id = 1L;
-        when(productProjectRepository.findById(id)).thenReturn(Optional.empty());
+    void testFindById_NotFound() {
+        when(productProjectRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThrows(ProductProjectNotFoundException.class, () -> productProjectService.findById(id));
+        assertThrows(ProductProjectNotFoundException.class, () -> productProjectService.findById(1L));
+
+        verify(productProjectRepository, times(1)).findById(anyLong());
     }
 
     @Test
-    void testUpdateProductProject() {
-        Long id = 1L;
-        when(productProjectDTO.getProjectId()).thenReturn(1L);
-        when(productProjectDTO.getProductId()).thenReturn(1L);
-        when(productProjectDTO.getProductValue()).thenReturn(BigDecimal.TEN);
-        when(projectService.getProjectById(1L)).thenReturn(project);
-        when(productService.getProductById(1L)).thenReturn(product);
+    void testUpdateProductProject_Success() {
+        ProductProjectDTO updateDTO = new ProductProjectDTO();
+        updateDTO.setProductId(1L);
+        updateDTO.setProjectId(1L);
+        updateDTO.setProductValue(new BigDecimal("300.00"));
 
-        when(productProjectRepository.findById(id)).thenReturn(Optional.of(productProject));
+        when(projectService.getProjectById(anyLong())).thenReturn(project);
+        when(productService.getProductById(anyLong())).thenReturn(product);
+        when(productProjectRepository.findById(anyLong())).thenReturn(Optional.of(productProject));
         when(productProjectRepository.save(any(ProductProject.class))).thenReturn(productProject);
 
-        ProductProject result = productProjectService.updateProductProject(id, productProjectDTO);
+        ProductProject result = productProjectService.updateProductProject(1L, updateDTO);
 
         assertNotNull(result);
+        assertEquals(updateDTO.getProductValue(), result.getProductValue());
         verify(productProjectRepository, times(1)).save(any(ProductProject.class));
     }
 
     @Test
-    void testDeleteProductProject() {
-        Long id = 1L;
-        when(productProjectRepository.findById(id)).thenReturn(Optional.of(productProject));
+    void testDeleteProductProject_Success() {
+        when(productProjectRepository.findById(anyLong())).thenReturn(Optional.of(productProject));
 
-        productProjectService.deleteProductProject(id);
+        productProjectService.deleteProductProject(1L);
 
-        verify(productProjectRepository, times(1)).delete(productProject);
+        verify(productProjectRepository, times(1)).delete(any(ProductProject.class));
     }
 
     @Test
-    void testDeleteProductProjectThrowsException() {
-        Long id = 1L;
-        when(productProjectRepository.findById(id)).thenReturn(Optional.empty());
+    void testDeleteProductProject_NotFound() {
+        when(productProjectRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThrows(ProductProjectNotFoundException.class, () -> productProjectService.deleteProductProject(id));
+        assertThrows(ProductProjectNotFoundException.class, () -> productProjectService.deleteProductProject(1L));
+
+        verify(productProjectRepository, never()).delete(any(ProductProject.class));
     }
 
     @Test
-    void testDeleteProductProjects() {
-        List<Long> ids = Arrays.asList(1L, 2L);
-        List<ProductProject> productProjects = Arrays.asList(productProject, productProject);
-        when(productProjectRepository.findAllById(ids)).thenReturn(productProjects);
+    void testDeleteProductProjects_Success() {
+        when(productProjectRepository.findAllById(anyList())).thenReturn(List.of(productProject));
 
-        productProjectService.deleteProductProjects(ids);
+        productProjectService.deleteProductProjects(List.of(1L));
 
-        verify(productProjectRepository, times(1)).deleteAll(productProjects);
+        verify(productProjectRepository, times(1)).deleteAll(anyList());
     }
 
     @Test
-    void testGetProductsByProject() {
-        Long projectId = 1L;
-        List<ProductProject> productProjects = Arrays.asList(productProject, productProject);
-        when(projectService.getProjectById(projectId)).thenReturn(project);
-        when(productProjectRepository.findByProject(project)).thenReturn(productProjects);
+    void testGetProductsByProject_Success() {
+        when(projectService.getProjectById(anyLong())).thenReturn(project);
+        when(productProjectRepository.findByProject(any(Project.class))).thenReturn(List.of(productProject));
 
-        List<ProductProject> result = productProjectService.getProductsByProject(projectId);
+        List<ProductProject> result = productProjectService.getProductsByProject(1L);
 
         assertNotNull(result);
-        assertEquals(2, result.size());
-        verify(productProjectRepository, times(1)).findByProject(project);
+        assertFalse(result.isEmpty());
+        verify(productProjectRepository, times(1)).findByProject(any(Project.class));
     }
 }
