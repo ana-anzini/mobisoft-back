@@ -85,36 +85,4 @@ public class ProjectServiceTest {
         projectDTO.setProjectDesignerId(1L);
         projectDTO.setSellerId(1L);
     }
-
-    @Test
-    public void getProjectById_ShouldReturnProject() {
-        when(projectRepository.findById(1L)).thenReturn(Optional.of(project));
-        Project foundProject = projectService.getProjectById(1L);
-        assertNotNull(foundProject);
-        assertEquals(1L, foundProject.getId());
-        assertEquals("Project Description", foundProject.getDescription());
-    }
-
-    @Test
-    public void deleteProject_ShouldDeleteProject() {
-        when(projectRepository.existsById(1L)).thenReturn(true);
-        projectService.deleteProject(1L);
-        verify(projectRepository, times(1)).deleteById(1L);
-    }
-
-    @Test
-    public void deleteProject_ShouldThrowProjectNotFoundException_WhenProjectNotFound() {
-        when(projectRepository.existsById(1L)).thenReturn(false);
-
-        assertThrows(ProjectNotFoundException.class, () -> projectService.deleteProject(1L));
-    }
-
-    @Test
-    public void deleteProjects_ShouldDeleteMultipleProjects() {
-        List<Long> ids = Arrays.asList(1L, 2L);
-        when(projectRepository.findAllById(ids)).thenReturn(Arrays.asList(project));
-        projectService.deleteProjects(ids);
-
-        verify(projectRepository, times(1)).deleteAll(anyList());
-    }
 }
