@@ -2,6 +2,8 @@ package com.mobisoft.mobisoftapi.services;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,9 +47,15 @@ public class ProductProjectService {
 			newFinancial.setProject(project);
 			financialService.save(newFinancial);
 		} else {
-			BigDecimal totalCusts = financial.getTotalCusts().add(productProjectDTO.getProductValue());
-			financial.setTotalCusts(totalCusts);
-			financialService.save(financial);
+			List<ProductProject> productProjects = productProjectRepository.findByProject(project);
+	        BigDecimal recalculatedTotal = productProjects.stream()
+	                .map(ProductProject::getProductValue)
+	                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+	        recalculatedTotal = recalculatedTotal.add(productProjectDTO.getProductValue());
+
+	        financial.setTotalCusts(recalculatedTotal);
+	        financialService.save(financial);
 		}
 		
 		return productProjectRepository.save(productProject);
@@ -77,8 +85,26 @@ public class ProductProjectService {
 	}
 	
 	public void deleteProductProjects(List<Long> ids) {
-		List<ProductProject> productProjects = productProjectRepository.findAllById(ids);
-		productProjectRepository.deleteAll(productProjects);
+	    List<ProductProject> productProjects = productProjectRepository.findAllById(ids);
+	    
+	    Set<Project> projects = productProjects.stream()
+	            .map(ProductProject::getProject)
+	            .collect(Collectors.toSet());
+
+	    productProjectRepository.deleteAll(productProjects);
+	    
+	    for (Project project : projects) {
+	        List<ProductProject> remainingProductProjects = productProjectRepository.findByProject(project);
+	        BigDecimal recalculatedTotal = remainingProductProjects.stream()
+	                .map(ProductProject::getProductValue)
+	                .reduce(BigDecimal.ZERO, BigDecimal::add);
+	        
+	        Financial financial = financialService.findByProjectId(project.getId());
+	        if (financial != null) {
+	            financial.setTotalCusts(recalculatedTotal);
+	            financialService.save(financial);
+	        }
+	    }
 	}
 	
 	public List<ProductProject> getProductsByProject(Long projectId) {
