@@ -78,6 +78,11 @@ public class AuthenticationController {
         newAdministration.setAdditionalSeller(BigDecimal.valueOf(10));
         newAdministration.setTax(BigDecimal.valueOf(7));
         newAdministration.setUserGroup(group);
+        newAdministration.setCompanyName("MOZINI MOVEIS SOB MEDIDA E SERVIÇOS");
+        newAdministration.setSocialReason("Mozini Móveis Sob Medida LTDA");
+        newAdministration.setAddress("Rua Monsenhor Gercino, 1021");
+        newAdministration.setPhone("(47) 9241-83503");
+        newAdministration.setEmail("contato@facilitmoveis.com.br");
         administrationRepository.save(newAdministration);
 
         return ResponseEntity.ok().build();
