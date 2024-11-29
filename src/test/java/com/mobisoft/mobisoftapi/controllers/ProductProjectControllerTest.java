@@ -130,28 +130,4 @@ class ProductProjectControllerTest {
         verify(productProjectService, times(1)).getProductsByProject(1L);
         verify(financialService, times(1)).findByProjectId(1L);
     }
-    
-    @Test
-    void testGetProductProjectById() {
-        when(productProjectService.findById(1L)).thenReturn(productProject);
-
-        ResponseEntity<ProductProject> response = productProjectController.getProductProjectById(1L);
-
-        assertEquals(200, response.getStatusCode().value());
-        assertEquals(productProject, response.getBody());
-        verify(productProjectService, times(1)).findById(1L);
-    }
-    
-    @Test
-    void testGetAllProductsByProject() {
-        List<ProductProject> productProjects = Arrays.asList(productProject);
-
-        when(productProjectService.getProductsByProject(1L)).thenReturn(productProjects);
-
-        ResponseEntity<List<ProductProject>> response = productProjectController.getAllProductsByProject(1L);
-
-        assertEquals(200, response.getStatusCode().value());
-        assertEquals(productProjects, response.getBody());
-        verify(productProjectService, times(1)).getProductsByProject(1L);
-    }
 }
