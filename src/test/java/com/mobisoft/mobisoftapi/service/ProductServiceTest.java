@@ -101,49 +101,38 @@ class ProductServiceTest {
 
     @Test
     void testUpdateProduct() {
-        // Mockando o comportamento do repositório para retornar um produto existente
         when(productRepository.findById(1L)).thenReturn(Optional.of(product));
 
-        // Mockando os dados do DTO
         when(productDTO.getDescription()).thenReturn("Updated Product");
         when(productDTO.getProductValue()).thenReturn(new BigDecimal("150.00"));
         when(productDTO.getSupplierId()).thenReturn(1L);
         when(productDTO.getCategoryId()).thenReturn(1L);
 
-        // Mockando as dependências
-        when(supplierService.findById(1L)).thenReturn(supplier); // Garantir que supplier não é null
-        when(categoryService.findById(1L)).thenReturn(category); // Garantir que category não é null
+        when(supplierService.findById(1L)).thenReturn(supplier);
+        when(categoryService.findById(1L)).thenReturn(category);
 
-        // Chamando o método a ser testado
         Product updatedProduct = productService.updateProduct(1L, productDTO);
 
-        // Verificando os resultados
-        assertNotNull(updatedProduct); // Verificando se o produto não é null após a atualização
-        assertEquals("Updated Product", updatedProduct.getDescription()); // Verificando a descrição
-        assertEquals(new BigDecimal("150.00"), updatedProduct.getProductValue()); // Verificando o valor do produto
+        assertNotNull(updatedProduct);
+        assertEquals("Updated Product", updatedProduct.getDescription());
+        assertEquals(new BigDecimal("150.00"), updatedProduct.getProductValue());
 
-        // Verificando se o produto foi salvo após a atualização
         verify(productRepository, times(1)).save(updatedProduct);
     }
 
     @Test
     void testDeleteProduct() {
-        // Mockando o comportamento do repositório
         when(productRepository.findById(1L)).thenReturn(Optional.of(product));
 
-        // Chamando o método a ser testado
         productService.deleteProduct(1L);
 
-        // Verificando os resultados
         verify(productRepository, times(1)).delete(product);
     }
 
     @Test
     void testDeleteProduct_NotFound() {
-        // Mockando o comportamento do repositório para não encontrar o produto
         when(productRepository.findById(1L)).thenReturn(Optional.empty());
 
-        // Chamando o método a ser testado e verificando se lança exceção
         assertThrows(ProductNotFoundException.class, () -> productService.deleteProduct(1L));
         verify(productRepository, never()).delete(any(Product.class));
     }

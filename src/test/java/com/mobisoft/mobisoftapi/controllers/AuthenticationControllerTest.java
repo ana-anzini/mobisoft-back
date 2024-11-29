@@ -55,18 +55,15 @@ class AuthenticationControllerTest {
 
     @Test
     void testRegister_UserAlreadyExists() {
-        // Certifique-se de inicializar o RegisterDTO corretamente
-        RegisterDTO registerDTO = new RegisterDTO("userLogin", "userPassword", "User Name", UserRole.ADMIN); // Inicialização do objeto
+        RegisterDTO registerDTO = new RegisterDTO("userLogin", "userPassword", "User Name", UserRole.ADMIN);
 
-        // Simula o caso em que o usuário já existe
-        when(userRepository.findByLogin(registerDTO.login())).thenReturn(mockUser); // User já existe
+        when(userRepository.findByLogin(registerDTO.login())).thenReturn(mockUser);
 
         ResponseEntity response = authenticationController.register(registerDTO);
 
-        // Verifica se a resposta é 400, indicando que o usuário já existe
         assertEquals(400, response.getStatusCode().value());
-        verify(userRepository, times(1)).findByLogin(registerDTO.login()); // Verifica se a consulta foi realizada
-        verify(userRepository, never()).save(any(User.class)); // Verifica que o usuário NÃO foi salvo
+        verify(userRepository, times(1)).findByLogin(registerDTO.login());
+        verify(userRepository, never()).save(any(User.class));
     }
 
     @Test
