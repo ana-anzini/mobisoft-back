@@ -107,30 +107,26 @@ class ProductProjectControllerTest {
     
     @Test
     void testGetAllProductsAndTotal() {
-        // Dados simulados
-        List<ProductProject> productProjects = Arrays.asList(productProject); // Lista de produtos do projeto
-        BigDecimal totalCosts = BigDecimal.valueOf(200.00); // Total de custos calculado
+        List<ProductProject> productProjects = Arrays.asList(productProject);
+        BigDecimal totalCosts = BigDecimal.valueOf(200.00);
         
-        // Simulando o comportamento dos serviços
         when(productProjectService.getProductsByProject(1L)).thenReturn(productProjects);
         
-        // Criando uma instância de Financial mockada para evitar o NullPointerException
         Financial financialMock = mock(Financial.class);
-        when(financialMock.getTotalValue()).thenReturn(totalCosts);
         
-        // Simulando que financialService.findByProjectId retorna um objeto Financial válido
+        when(financialMock.getTotalCusts()).thenReturn(totalCosts);
+        
         when(financialService.findByProjectId(1L)).thenReturn(financialMock);
 
-        // Chamando o método do controller
         ResponseEntity<ProductProjectDetailsDTO> response = productProjectController.getAllProductsAndTotal(1L);
 
-        // Verificando as assertivas
-        assertEquals(200, response.getStatusCode().value()); // Verificando se o status HTTP é 200 OK
-        assertNotNull(response.getBody()); // Verificando se o corpo da resposta não é nulo
-        assertEquals(totalCosts, response.getBody().getTotalValue()); // Verificando se o total de custos está correto
-        assertEquals(productProjects, response.getBody().getProducts()); // Verificando se os projetos de produto estão corretos
+        assertEquals(200, response.getStatusCode().value());
+        assertNotNull(response.getBody());
+
+        assertEquals(totalCosts, response.getBody().getTotalValue());
         
-        // Verificando se os serviços foram chamados corretamente
+        assertEquals(productProjects, response.getBody().getProducts()); 
+        
         verify(productProjectService, times(1)).getProductsByProject(1L);
         verify(financialService, times(1)).findByProjectId(1L);
     }
