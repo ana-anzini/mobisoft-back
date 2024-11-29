@@ -112,6 +112,50 @@ class AdministrationServiceTest {
         verify(administrationRepository, times(1)).save(existingAdministration);
     }
 
+    @Test
+    void testCreate() {
+        AdministrationDTO administrationDTO = new AdministrationDTO();
+        administrationDTO.setAdditionalSeller(new BigDecimal("2.0"));
+        administrationDTO.setAdditionalProjectDesigner(new BigDecimal("3.0"));
+        administrationDTO.setAdditionalFinancial(new BigDecimal("5.0"));
+        administrationDTO.setAdditionalAssembler(new BigDecimal("1.0"));
+        administrationDTO.setTax(new BigDecimal("10.0"));
+        administrationDTO.setCompanyName("Test Company");
+        administrationDTO.setSocialReason("Test Social Reason");
+        administrationDTO.setAddress("123 Test St.");
+        administrationDTO.setPhone("1234567890");
+        administrationDTO.setEmail("test@company.com");
+
+        User user = mock(User.class);
+        when(userService.getLoggedUser()).thenReturn(user);
+        when(user.getGroup()).thenReturn(userGroup);
+
+        Administration savedAdministration = new Administration();
+        savedAdministration.setId(1L);
+        savedAdministration.setAdditionalSeller(administrationDTO.getAdditionalSeller());
+        savedAdministration.setAdditionalProjectDesigner(administrationDTO.getAdditionalProjectDesigner());
+        savedAdministration.setAdditionalFinancial(administrationDTO.getAdditionalFinancial());
+        savedAdministration.setAdditionalAssembler(administrationDTO.getAdditionalAssembler());
+        savedAdministration.setTax(administrationDTO.getTax());
+        savedAdministration.setUserGroup(userGroup);
+        savedAdministration.setCompanyName(administrationDTO.getCompanyName());
+        savedAdministration.setSocialReason(administrationDTO.getSocialReason());
+        savedAdministration.setAddress(administrationDTO.getAddress());
+        savedAdministration.setPhone(administrationDTO.getPhone());
+        savedAdministration.setEmail(administrationDTO.getEmail());
+
+        when(administrationRepository.save(any(Administration.class))).thenReturn(savedAdministration);
+
+        Administration result = administrationService.create(administrationDTO);
+
+        assertNotNull(result);
+        assertEquals(administrationDTO.getCompanyName(), result.getCompanyName());
+        assertEquals(administrationDTO.getSocialReason(), result.getSocialReason());
+        assertEquals(administrationDTO.getPhone(), result.getPhone());
+        assertEquals(administrationDTO.getEmail(), result.getEmail());
+
+        verify(administrationRepository, times(1)).save(any(Administration.class));
+    }
 
     @Test
     void testUpdate_NotFound() {
