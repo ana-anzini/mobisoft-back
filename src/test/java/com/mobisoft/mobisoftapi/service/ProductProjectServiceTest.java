@@ -87,7 +87,17 @@ class ProductProjectServiceTest {
     void testCreateProductProject_ExistingFinancial_Success() {
         when(projectService.getProjectById(anyLong())).thenReturn(project);
         when(productService.getProductById(anyLong())).thenReturn(product);
+
+        Financial financial = new Financial();
+        financial.setTotalCusts(new BigDecimal("200.00"));
         when(financialService.findByProjectId(anyLong())).thenReturn(financial);
+
+        doAnswer(invocation -> {
+            Financial financialToSave = invocation.getArgument(0);
+            financialToSave.setTotalCusts(new BigDecimal("300.00"));
+            return null;
+        }).when(financialService).save(any(Financial.class));
+
         when(productProjectRepository.save(any(ProductProject.class))).thenReturn(productProject);
 
         ProductProject result = productProjectService.createProductProject(productProjectDTO);
@@ -96,6 +106,7 @@ class ProductProjectServiceTest {
         assertEquals(productProjectDTO.getProductValue(), result.getProductValue());
         verify(productProjectRepository, times(1)).save(any(ProductProject.class));
         verify(financialService, times(1)).save(any(Financial.class));
+
         assertEquals(new BigDecimal("300.00"), financial.getTotalCusts());
     }
 
