@@ -149,11 +149,11 @@ class FinancialServiceTest {
     @Test
     void testCalculateTotalProject() {
         Long projectId = 1L;
-        
+
         when(financialRepository.findByProjectId(projectId)).thenReturn(financial);
         when(administrationService.findByUserGroup()).thenReturn(administration);
         when(deliveriesService.findByProjectId(projectId)).thenReturn(deliveries);
-        
+
         when(administration.getTax()).thenReturn(new BigDecimal("10.0"));
         when(administration.getAdditionalFinancial()).thenReturn(new BigDecimal("5.0"));
         when(administration.getAdditionalProjectDesigner()).thenReturn(new BigDecimal("3.0"));
@@ -168,6 +168,17 @@ class FinancialServiceTest {
 
         assertNotNull(result);
         verify(financialRepository, times(1)).findByProjectId(projectId);
+        verify(administrationService, times(1)).findByUserGroup();
+        verify(deliveriesService, times(1)).findByProjectId(projectId);
+
+        when(financialRepository.findByProjectId(projectId)).thenReturn(null);
+        assertThrows(FinancialNotFoundException.class, () -> financialService.calculateTotalProject(projectId));
+
+        when(administrationService.findByUserGroup()).thenReturn(null);
+        assertThrows(FinancialNotFoundException.class, () -> financialService.calculateTotalProject(projectId));
+
+        when(deliveriesService.findByProjectId(projectId)).thenReturn(null);
+        assertThrows(FinancialNotFoundException.class, () -> financialService.calculateTotalProject(projectId));
     }
     
     @Test
