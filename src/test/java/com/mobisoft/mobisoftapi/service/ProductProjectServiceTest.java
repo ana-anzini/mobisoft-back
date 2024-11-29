@@ -88,9 +88,9 @@ class ProductProjectServiceTest {
         when(projectService.getProjectById(anyLong())).thenReturn(project);
         when(productService.getProductById(anyLong())).thenReturn(product);
 
-        Financial financial = new Financial();
-        financial.setTotalCusts(new BigDecimal("200.00"));
-        when(financialService.findByProjectId(anyLong())).thenReturn(financial);
+        Financial existingFinancial = new Financial();
+        existingFinancial.setTotalCusts(new BigDecimal("200.00"));
+        when(financialService.findByProjectId(anyLong())).thenReturn(existingFinancial);
 
         doAnswer(invocation -> {
             Financial financialToSave = invocation.getArgument(0);
@@ -107,7 +107,9 @@ class ProductProjectServiceTest {
         verify(productProjectRepository, times(1)).save(any(ProductProject.class));
         verify(financialService, times(1)).save(any(Financial.class));
 
-        assertEquals(new BigDecimal("300.00"), financial.getTotalCusts());
+        assertEquals(new BigDecimal("300.00"), existingFinancial.getTotalCusts());
+
+        verify(financialService, times(1)).save(existingFinancial);
     }
 
     @Test
