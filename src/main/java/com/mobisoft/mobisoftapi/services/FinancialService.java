@@ -92,12 +92,12 @@ public class FinancialService {
 	            .add(administrationValues.getAdditionalFinancial())
 	            .add(administrationValues.getAdditionalProjectDesigner())
 	            .add(administrationValues.getAdditionalSeller())
-	            .add(administrationValues.getTax())
-	            .add(freight);
+	            .add(administrationValues.getTax());
 	    
 	    totalPercentage = BigDecimal.valueOf(100).subtract(totalPercentage);
 	    totalValue = totalPercentage.divide(BigDecimal.valueOf(100), 10, RoundingMode.HALF_UP);
 	    totalPercentage = existingFinancial.getTotalCusts().divide(totalValue, 10, RoundingMode.HALF_UP);
+	    totalPercentage = totalPercentage.add(freight);
 	    existingFinancial.setTotalValue(totalPercentage);
 	    
 	    totalTax = totalPercentage.multiply(totalTax);
