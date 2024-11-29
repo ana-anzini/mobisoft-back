@@ -8,7 +8,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -45,4 +44,19 @@ public class Administration {
     @OneToOne
     @JoinColumn(name = "group_id", nullable = false)
     private UserGroup userGroup;
+    
+    @Column(name = "company_name", nullable = true)
+    private String companyName;
+    
+    @Column(name = "social_reason", nullable = true)
+    private String socialReason;
+    
+    @Column(name = "address", nullable = true)
+    private String address;
+    
+    @Column(name = "phone", nullable = true)
+    private String phone;
+    
+    @Column(name = "email", nullable = true)
+    private String email;
 }

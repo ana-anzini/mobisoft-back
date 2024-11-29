@@ -39,6 +39,11 @@ public class AdministrationService {
 		administration.setAdditionalAssembler(administrationDTO.getAdditionalAssembler());
 		administration.setTax(administrationDTO.getTax());
 		administration.setUserGroup(userGroup);
+		administration.setCompanyName(administrationDTO.getCompanyName());
+	    administration.setSocialReason(administrationDTO.getSocialReason());
+	    administration.setAddress(administrationDTO.getAddress());
+	    administration.setPhone(administrationDTO.getPhone());
+	    administration.setEmail(administrationDTO.getEmail());
 		return administrationRepository.save(administration);
 	}
 
@@ -50,6 +55,11 @@ public class AdministrationService {
                 existingAdministration.setAdditionalFinancial(administrationDTO.getAdditionalFinancial());
                 existingAdministration.setAdditionalAssembler(administrationDTO.getAdditionalAssembler());
                 existingAdministration.setTax(administrationDTO.getTax());
+                existingAdministration.setCompanyName(administrationDTO.getCompanyName());
+                existingAdministration.setSocialReason(administrationDTO.getSocialReason());
+                existingAdministration.setAddress(administrationDTO.getAddress());
+                existingAdministration.setPhone(administrationDTO.getPhone());
+                existingAdministration.setEmail(administrationDTO.getEmail());
                 return administrationRepository.save(existingAdministration);
             });
     }

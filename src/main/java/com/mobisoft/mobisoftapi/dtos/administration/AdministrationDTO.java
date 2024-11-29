@@ -15,4 +15,9 @@ public class AdministrationDTO {
     private BigDecimal additionalAssembler;
     private BigDecimal tax;
     private UserGroup userGroup;
+    private String companyName;
+    private String socialReason;
+    private String address;
+    private String phone;
+    private String email;
 }
