@@ -88,6 +88,10 @@ public class FinancialService {
 	            ? delivery.getFreight() 
 	            : BigDecimal.ZERO;
 	    
+	    BigDecimal extrasDespenses = (existingFinancial != null && existingFinancial.getAdditionalExpenses() != null) 
+	    		? existingFinancial.getAdditionalExpenses() 
+	    				: BigDecimal.ZERO;
+	    
 	    totalPercentage = administrationValues.getAdditionalAssembler()
 	            .add(administrationValues.getAdditionalFinancial())
 	            .add(administrationValues.getAdditionalProjectDesigner())
@@ -97,7 +101,7 @@ public class FinancialService {
 	    totalPercentage = BigDecimal.valueOf(100).subtract(totalPercentage);
 	    totalValue = totalPercentage.divide(BigDecimal.valueOf(100), 10, RoundingMode.HALF_UP);
 	    totalPercentage = existingFinancial.getTotalCusts().divide(totalValue, 10, RoundingMode.HALF_UP);
-	    totalPercentage = totalPercentage.add(freight);
+	    totalPercentage = totalPercentage.add(freight).add(extrasDespenses);
 	    existingFinancial.setTotalValue(totalPercentage);
 	    
 	    totalTax = totalPercentage.multiply(totalTax);
