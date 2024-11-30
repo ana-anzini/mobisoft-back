@@ -114,7 +114,7 @@ class ProductProjectControllerTest {
         
         Financial financialMock = mock(Financial.class);
         
-        when(financialMock.getTotalCusts()).thenReturn(totalCosts);
+        when(financialMock.getTotalValue()).thenReturn(totalCosts);
         
         when(financialService.findByProjectId(1L)).thenReturn(financialMock);
 
@@ -125,8 +125,8 @@ class ProductProjectControllerTest {
 
         assertEquals(totalCosts, response.getBody().getTotalValue());
         
-        assertEquals(productProjects, response.getBody().getProducts()); 
-        
+        assertEquals(productProjects, response.getBody().getProducts());
+
         verify(productProjectService, times(1)).getProductsByProject(1L);
         verify(financialService, times(1)).findByProjectId(1L);
     }
