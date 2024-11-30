@@ -6,6 +6,7 @@
 1. Clone o Repositório: Primeiro, clone o repositório para a sua máquina local. Abra o terminal e execute o comando abaixo:
 ```bash
 git clone https://github.com/ana-anzini/mobisoft-backend.git
+```
 
 3. Importar o Projeto:
 No IntelliJ, na tela inicial, clique em Open (Abrir).
