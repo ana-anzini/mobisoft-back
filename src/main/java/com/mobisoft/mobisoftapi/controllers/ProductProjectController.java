@@ -75,7 +75,7 @@ public class ProductProjectController {
     @GetMapping("/findTotal/{projectId}")
     public ResponseEntity<ProductProjectDetailsDTO> getAllProductsAndTotal(@PathVariable Long projectId) {
         List<ProductProject> productProjects = productProjectService.getProductsByProject(projectId);
-        BigDecimal totalCosts = financialService.findByProjectId(projectId).getTotalCusts();
+        BigDecimal totalCosts = financialService.findByProjectId(projectId).getTotalValue();
         ProductProjectDetailsDTO projectDetailsDTO = new ProductProjectDetailsDTO(productProjects, totalCosts);
         return ResponseEntity.ok(projectDetailsDTO);
     }

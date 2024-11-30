@@ -119,6 +119,8 @@ public class FinancialService {
 	    totalAssembler = totalPercentage.multiply(totalAssembler);
 	    existingFinancial.setTotalSeller(totalAssembler);
 	    
+	    financialRepository.save(existingFinancial);
+	    
 	    return existingFinancial;
 	}
 
