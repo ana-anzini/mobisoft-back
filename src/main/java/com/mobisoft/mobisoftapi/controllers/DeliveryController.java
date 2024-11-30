@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mobisoft.mobisoftapi.dtos.delivery.DeliveryDTO;
@@ -56,9 +57,9 @@ public class DeliveryController {
         return ResponseEntity.ok(updatedDelivery);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteDelivery(@PathVariable Long id) {
-        deliveriesService.deleteDelivery(id);
+    @DeleteMapping
+    public ResponseEntity<Void> deleteDelivery(@RequestParam List<Long> ids) {
+        deliveriesService.deleteDeliveries(ids);
         return ResponseEntity.noContent().build();
     }
 }

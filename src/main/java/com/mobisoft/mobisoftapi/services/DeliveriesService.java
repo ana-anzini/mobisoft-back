@@ -9,6 +9,7 @@ import com.mobisoft.mobisoftapi.configs.exceptions.DeliveryNotFoundException;
 import com.mobisoft.mobisoftapi.dtos.delivery.DeliveryDTO;
 import com.mobisoft.mobisoftapi.models.Deliveries;
 import com.mobisoft.mobisoftapi.models.Project;
+import com.mobisoft.mobisoftapi.models.Supplier;
 import com.mobisoft.mobisoftapi.models.UserGroup;
 import com.mobisoft.mobisoftapi.repositories.DeliveriesRepository;
 
@@ -71,5 +72,10 @@ public class DeliveriesService {
 	public void deleteDelivery(Long id) {
 		Deliveries delivery = findById(id);
 		deliveriesRepository.delete(delivery);
+	}
+	
+	public void deleteDeliveries(List<Long> ids) {
+		List<Deliveries> deliveries = deliveriesRepository.findAllById(ids);
+		deliveriesRepository.deleteAll(deliveries);
 	}
 }

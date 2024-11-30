@@ -130,11 +130,12 @@ class DeliveryControllerTest {
 
     @Test
     void testDeleteDelivery() {
-        doNothing().when(deliveriesService).deleteDelivery(1L);
+        doNothing().when(deliveriesService).deleteDeliveries(anyList());
 
-        ResponseEntity<Void> response = deliveryController.deleteDelivery(1L);
+        ResponseEntity<Void> response = deliveryController.deleteDelivery(Arrays.asList(1L));
 
         assertEquals(204, response.getStatusCode().value());
-        verify(deliveriesService, times(1)).deleteDelivery(1L);
+
+        verify(deliveriesService, times(1)).deleteDeliveries(Arrays.asList(1L));
     }
 }
