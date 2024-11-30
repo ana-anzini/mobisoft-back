@@ -13,4 +13,4 @@ No IntelliJ, na tela inicial, clique em Open (Abrir).
 Navegue até o diretório onde você clonou o repositório, selecione a pasta do projeto mobisoft-backend e clique em OK.
 
 4. Rodar o Projeto:
-5. Para rodar o projeto, clique no botão de execução (ícone de "play") no canto superior direito com o arquivo principal da classe @SpringBootApplication.
+Para rodar o projeto, clique no botão de execução (ícone de "play") no canto superior direito com o arquivo principal da classe @SpringBootApplication.
