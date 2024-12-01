@@ -56,9 +56,9 @@ public class EmployeesController {
     public ResponseEntity<String> deleteEmployees(@RequestParam List<Long> ids) {
         try {
             employeesService.deleteEmployees(ids);
-            return ResponseEntity.ok("Produto(s) deletada(s) com sucesso.");
+            return ResponseEntity.ok("Funcionário(s) deletada(s) com sucesso.");
         } catch (DataIntegrityViolationException e) {
-            return ResponseEntity.ok("Não é possível excluir este produto, pois ele está em uso.");
+            return ResponseEntity.ok("Não é possível excluir este funcionário, pois ele está em um(s) projeto(s).");
         } catch (Exception e) {
             return ResponseEntity.ok("Erro ao processar a solicitação.");
         }
