@@ -2,13 +2,8 @@ package com.mobisoft.mobisoftapi.controllers;
 
 import com.mobisoft.mobisoftapi.dtos.employees.EmployeesDTO;
 import com.mobisoft.mobisoftapi.enums.employees.EmployeesType;
-import com.mobisoft.mobisoftapi.enums.user.UserRole;
 import com.mobisoft.mobisoftapi.models.Employees;
-import com.mobisoft.mobisoftapi.models.User;
-import com.mobisoft.mobisoftapi.models.UserGroup;
 import com.mobisoft.mobisoftapi.services.EmployeesService;
-import com.mobisoft.mobisoftapi.services.UserService;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -32,14 +27,9 @@ class EmployeesControllerTest {
 
     @Mock
     private EmployeesService employeesService;
-    
-    @Mock
-    private UserService userService;
 
     private Employees employee;
     private EmployeesDTO employeesDTO;
-    private User mockUser;
-    private UserGroup mockGroup;
 
     @BeforeEach
     void setUp() {
@@ -64,13 +54,6 @@ class EmployeesControllerTest {
         employeesDTO.setCtps("CTPS12345");
         employeesDTO.setSalary("5000");
         employeesDTO.setAdmission(admissionDate);
-        
-        mockUser = mock(User.class);
-        mockGroup = mock(UserGroup.class);
-
-        when(userService.getLoggedUser()).thenReturn(mockUser);
-        when(mockUser.getGroup()).thenReturn(mockGroup);
-        when(mockGroup.getId()).thenReturn(1L);
     }
 
     @Test
@@ -117,6 +100,18 @@ class EmployeesControllerTest {
         assertEquals(employee, response.getBody());
         verify(employeesService, times(1)).updateEmployee(1L, employeesDTO);
     }
+
+    @Test
+    void testFindByType() {
+        List<Employees> employeesList = Arrays.asList(employee);
+        when(employeesService.findByEmployeesType(EmployeesType.ASSEMBLER)).thenReturn(employeesList);
+
+        ResponseEntity<List<Employees>> response = employeesController.findByType(EmployeesType.ASSEMBLER);
+
+        assertEquals(200, response.getStatusCode().value());
+        assertEquals(employeesList, response.getBody());
+        verify(employeesService, times(1)).findByEmployeesType(EmployeesType.ASSEMBLER);
+    }
     
     @Test
     void testDeleteEmployees() {
@@ -129,22 +124,5 @@ class EmployeesControllerTest {
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals("Funcionário(s) deletada(s) com sucesso.", response.getBody());
         verify(employeesService, times(1)).deleteEmployees(ids);
-    }
-    
-    @Test
-    void testFindByType() {
-        EmployeesType type = EmployeesType.ASSEMBLER;
-        List<Employees> mockEmployeesList = List.of(employee);
-
-        when(employeesService.findByEmployeesTypeAndUserGroupId(type, mockGroup.getId()))
-                .thenReturn(mockEmployeesList);
-
-        ResponseEntity<List<Employees>> response = employeesController.findByType(type);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(mockEmployeesList, response.getBody());
-
-        verify(userService, times(1)).getLoggedUser();
-        verify(employeesService, times(1)).findByEmployeesTypeAndUserGroupId(type, mockGroup.getId());
     }
 }

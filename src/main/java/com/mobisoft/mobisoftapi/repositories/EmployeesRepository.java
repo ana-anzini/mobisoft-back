@@ -14,6 +14,4 @@ public interface EmployeesRepository extends JpaRepository<Employees, Long> {
 	List<Employees> findByEmployeesType(EmployeesType employeesType);
 	
 	List<Employees> findByUserGroupId(Long userGroupId);
-	
-	List<Employees> findByEmployeesTypeAndUserGroupId(EmployeesType employeesType, Long userGroupId);
 }
