@@ -37,6 +37,7 @@ public class DeliveriesService {
 		delivery.setAdditional(DeliveryDTO.getAdditional());
 		delivery.setDeliveryDate(DeliveryDTO.getDeliveryDate());
 		delivery.setProject(project);
+		delivery.setFreight(DeliveryDTO.getFreight());
 		delivery.setUserGroup(userGroup);
 
 		return deliveriesRepository.save(delivery);
