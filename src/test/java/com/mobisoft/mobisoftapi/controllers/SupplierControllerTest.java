@@ -105,11 +105,14 @@ class SupplierControllerTest {
 
     @Test
     void testDeleteSuppliers() {
-        doNothing().when(supplierService).deleteSuppliers(Arrays.asList(1L, 2L));
+        List<Long> ids = Arrays.asList(1L, 2L);
 
-        ResponseEntity<String> response = supplierController.deleteSuppliers(Arrays.asList(1L, 2L));
+        doNothing().when(supplierService).deleteSuppliers(ids);
 
-        assertEquals(204, response.getStatusCode().value());
-        verify(supplierService, times(1)).deleteSuppliers(Arrays.asList(1L, 2L));
+        ResponseEntity<String> response = supplierController.deleteSuppliers(ids);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Fornecedor(es) deletado(s) com sucesso.", response.getBody());
+        verify(supplierService, times(1)).deleteSuppliers(ids);
     }
 }

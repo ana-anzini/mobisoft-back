@@ -10,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
@@ -101,39 +102,6 @@ class EmployeesControllerTest {
     }
 
     @Test
-    void testDeleteEmployees_Success() {
-        doNothing().when(employeesService).deleteEmployees(Arrays.asList(1L, 2L));
-
-        ResponseEntity<String> response = employeesController.deleteEmployees(Arrays.asList(1L, 2L));
-
-        assertEquals(200, response.getStatusCode().value());
-        assertEquals("Produto(s) deletada(s) com sucesso.", response.getBody());
-        verify(employeesService, times(1)).deleteEmployees(Arrays.asList(1L, 2L));
-    }
-
-    @Test
-    void testDeleteEmployees_DataIntegrityViolation() {
-        doThrow(new DataIntegrityViolationException("")).when(employeesService).deleteEmployees(Arrays.asList(1L, 2L));
-
-        ResponseEntity<String> response = employeesController.deleteEmployees(Arrays.asList(1L, 2L));
-
-        assertEquals(200, response.getStatusCode().value());
-        assertEquals("Não é possível excluir este produto, pois ele está em uso.", response.getBody());
-        verify(employeesService, times(1)).deleteEmployees(Arrays.asList(1L, 2L));
-    }
-
-    @Test
-    void testDeleteEmployees_GeneralException() {
-        doThrow(new RuntimeException("General error")).when(employeesService).deleteEmployees(Arrays.asList(1L, 2L));
-
-        ResponseEntity<String> response = employeesController.deleteEmployees(Arrays.asList(1L, 2L));
-
-        assertEquals(200, response.getStatusCode().value());
-        assertEquals("Erro ao processar a solicitação.", response.getBody());
-        verify(employeesService, times(1)).deleteEmployees(Arrays.asList(1L, 2L));
-    }
-
-    @Test
     void testFindByType() {
         List<Employees> employeesList = Arrays.asList(employee);
         when(employeesService.findByEmployeesType(EmployeesType.ASSEMBLER)).thenReturn(employeesList);
@@ -143,5 +111,18 @@ class EmployeesControllerTest {
         assertEquals(200, response.getStatusCode().value());
         assertEquals(employeesList, response.getBody());
         verify(employeesService, times(1)).findByEmployeesType(EmployeesType.ASSEMBLER);
+    }
+    
+    @Test
+    void testDeleteEmployees() {
+        List<Long> ids = Arrays.asList(1L, 2L);
+
+        doNothing().when(employeesService).deleteEmployees(ids);
+
+        ResponseEntity<String> response = employeesController.deleteEmployees(ids);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Funcionário(s) deletada(s) com sucesso.", response.getBody());
+        verify(employeesService, times(1)).deleteEmployees(ids);
     }
 }

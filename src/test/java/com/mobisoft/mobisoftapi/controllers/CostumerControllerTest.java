@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
@@ -87,12 +88,15 @@ class CostumerControllerTest {
     }
 
     @Test
-    void testDeleteCostumer() {
-        doNothing().when(costumerService).deleteCostumers(Arrays.asList(1L, 2L));
+    void testDeleteCostumer_Success() {
+        List<Long> ids = Arrays.asList(1L, 2L);
 
-        ResponseEntity<String> response = costumerController.deleteCostumer(Arrays.asList(1L, 2L));
+        doNothing().when(costumerService).deleteCostumers(ids);
 
-        assertEquals(204, response.getStatusCode().value());
-        verify(costumerService, times(1)).deleteCostumers(Arrays.asList(1L, 2L));
+        ResponseEntity<String> response = costumerController.deleteCostumer(ids);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Cliente(s) deletada(s) com sucesso.", response.getBody());
+        verify(costumerService, times(1)).deleteCostumers(ids);
     }
 }
