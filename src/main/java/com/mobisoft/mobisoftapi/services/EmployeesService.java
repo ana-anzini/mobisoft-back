@@ -89,4 +89,8 @@ public class EmployeesService {
 	public List<Employees> findByEmployeesType(EmployeesType employeesType) {
 		return employeesRepository.findByEmployeesType(employeesType);
 	}
+	
+	public List<Employees> findByEmployeesTypeAndUserGroupId(EmployeesType employeesType, Long userGroupId) {
+		return employeesRepository.findByEmployeesTypeAndUserGroupId(employeesType, userGroupId);
+	}
 }

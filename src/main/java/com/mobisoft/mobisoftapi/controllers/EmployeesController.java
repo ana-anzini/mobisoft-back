@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mobisoft.mobisoftapi.dtos.employees.EmployeesDTO;
 import com.mobisoft.mobisoftapi.enums.employees.EmployeesType;
 import com.mobisoft.mobisoftapi.models.Employees;
+import com.mobisoft.mobisoftapi.models.UserGroup;
 import com.mobisoft.mobisoftapi.services.EmployeesService;
+import com.mobisoft.mobisoftapi.services.UserService;
 
 @RestController
 @RequestMapping("/employees")
@@ -27,6 +29,9 @@ public class EmployeesController {
 
     @Autowired
     private EmployeesService employeesService;
+    
+    @Autowired
+    private UserService userService;
 
     @PostMapping
     public ResponseEntity<Employees> createEmployee(@RequestBody EmployeesDTO employeesDTO) {
@@ -66,7 +71,8 @@ public class EmployeesController {
     
     @GetMapping("/findByType")
     public ResponseEntity<List<Employees>> findByType(@RequestParam EmployeesType type) {
-        List<Employees> employees = employeesService.findByEmployeesType(type);
+    	UserGroup userGroup = userService.getLoggedUser().getGroup();
+        List<Employees> employees = employeesService.findByEmployeesTypeAndUserGroupId(type, userGroup.getId());
         return ResponseEntity.ok(employees);
     }
 }
