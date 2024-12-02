@@ -107,7 +107,7 @@ class SupplierControllerTest {
     void testDeleteSuppliers() {
         doNothing().when(supplierService).deleteSuppliers(Arrays.asList(1L, 2L));
 
-        ResponseEntity<Void> response = supplierController.deleteSuppliers(Arrays.asList(1L, 2L));
+        ResponseEntity<String> response = supplierController.deleteSuppliers(Arrays.asList(1L, 2L));
 
         assertEquals(204, response.getStatusCode().value());
         verify(supplierService, times(1)).deleteSuppliers(Arrays.asList(1L, 2L));

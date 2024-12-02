@@ -3,6 +3,7 @@ package com.mobisoft.mobisoftapi.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -51,8 +52,14 @@ public class CostumerController {
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteCostumer(@RequestParam List<Long> ids) {
-        costumerService.deleteCostumers(ids);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<String> deleteCostumer(@RequestParam List<Long> ids) {
+        try {
+        	costumerService.deleteCostumers(ids);
+            return ResponseEntity.ok("Cliente(s) deletada(s) com sucesso.");
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.ok("Não é possível excluir este cliente, pois ele está em um(s) projeto(s).");
+        } catch (Exception e) {
+            return ResponseEntity.ok("Erro ao processar a solicitação.");
+        }
     }
 }

@@ -90,7 +90,7 @@ class CostumerControllerTest {
     void testDeleteCostumer() {
         doNothing().when(costumerService).deleteCostumers(Arrays.asList(1L, 2L));
 
-        ResponseEntity<Void> response = costumerController.deleteCostumer(Arrays.asList(1L, 2L));
+        ResponseEntity<String> response = costumerController.deleteCostumer(Arrays.asList(1L, 2L));
 
         assertEquals(204, response.getStatusCode().value());
         verify(costumerService, times(1)).deleteCostumers(Arrays.asList(1L, 2L));
