@@ -3,6 +3,7 @@ package com.mobisoft.mobisoftapi.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -51,8 +52,14 @@ public class SupplierController {
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteSuppliers(@RequestParam List<Long> ids) {
-        supplierService.deleteSuppliers(ids);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<String> deleteSuppliers(@RequestParam List<Long> ids) {
+    	try {
+    		supplierService.deleteSuppliers(ids);
+    		return ResponseEntity.ok("Fornecedor(es) deletado(s) com sucesso.");
+    	} catch (DataIntegrityViolationException e) {
+            return ResponseEntity.ok("Não é possível excluir este fornecedor, pois ele está em um(s) projeto(s).");
+        } catch (Exception e) {
+            return ResponseEntity.ok("Erro ao processar a solicitação.");
+        }        
     }
 }
