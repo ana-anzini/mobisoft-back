@@ -43,7 +43,7 @@ public class ProductProjectService {
 		
 		if (financial == null) {
 			Financial newFinancial = new Financial();
-			newFinancial.setTotalCusts(productProjectDTO.getProductValue());
+			newFinancial.setTotalCusts(product.getProductValue());
 			newFinancial.setProject(project);
 			financialService.save(newFinancial);
 		} else {
