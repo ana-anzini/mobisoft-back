@@ -85,8 +85,12 @@ class ProductProjectServiceTest {
 
     @Test
     void testCreateProductProject_ExistingFinancial_Success() {
-        when(projectService.getProjectById(anyLong())).thenReturn(project);
-        when(productService.getProductById(anyLong())).thenReturn(product);
+        Project mockProject = mock(Project.class);
+        when(projectService.getProjectById(anyLong())).thenReturn(mockProject);
+
+        Product mockProduct = mock(Product.class);
+        when(productService.getProductById(anyLong())).thenReturn(mockProduct);
+        when(mockProduct.getProductValue()).thenReturn(new BigDecimal("100.00"));
 
         Financial existingFinancial = new Financial();
         existingFinancial.setTotalCusts(new BigDecimal("200.00"));
@@ -98,12 +102,18 @@ class ProductProjectServiceTest {
             return null;
         }).when(financialService).save(any(Financial.class));
 
+        ProductProject anotherProductProject = new ProductProject();
+        anotherProductProject.setProductValue(new BigDecimal("50.00"));
+        when(productProjectRepository.findByProject(mockProject))
+            .thenReturn(List.of(anotherProductProject));
+
         when(productProjectRepository.save(any(ProductProject.class))).thenReturn(productProject);
 
         ProductProject result = productProjectService.createProductProject(productProjectDTO);
 
         assertNotNull(result);
         assertEquals(productProjectDTO.getProductValue(), result.getProductValue());
+
         verify(productProjectRepository, times(1)).save(any(ProductProject.class));
         verify(financialService, times(1)).save(any(Financial.class));
 
