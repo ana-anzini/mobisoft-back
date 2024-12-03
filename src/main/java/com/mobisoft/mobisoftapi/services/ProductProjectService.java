@@ -39,7 +39,7 @@ public class ProductProjectService {
 		
 		productProject.setProject(project);
 		productProject.setProduct(product);
-		productProject.setProductValue(productProjectDTO.getProductValue());
+		productProject.setProductValue(product.getProductValue());
 		
 		if (financial == null) {
 			Financial newFinancial = new Financial();
@@ -52,7 +52,7 @@ public class ProductProjectService {
 	                .map(ProductProject::getProductValue)
 	                .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-	        recalculatedTotal = recalculatedTotal.add(productProjectDTO.getProductValue());
+	        recalculatedTotal = recalculatedTotal.add(product.getProductValue());
 
 	        financial.setTotalCusts(recalculatedTotal);
 	        financialService.save(financial);
