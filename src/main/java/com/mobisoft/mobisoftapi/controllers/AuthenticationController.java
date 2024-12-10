@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,9 +19,11 @@ import com.mobisoft.mobisoftapi.dtos.auth.AuthenticationDTO;
 import com.mobisoft.mobisoftapi.dtos.auth.RegisterDTO;
 import com.mobisoft.mobisoftapi.dtos.auth.LoginResponseDTO;
 import com.mobisoft.mobisoftapi.models.Administration;
+import com.mobisoft.mobisoftapi.models.Category;
 import com.mobisoft.mobisoftapi.models.User;
 import com.mobisoft.mobisoftapi.models.UserGroup;
 import com.mobisoft.mobisoftapi.repositories.AdministrationRepository;
+import com.mobisoft.mobisoftapi.repositories.CategoryRepository;
 import com.mobisoft.mobisoftapi.repositories.UserGroupRepository;
 import com.mobisoft.mobisoftapi.repositories.UserRepository;
 import com.mobisoft.mobisoftapi.services.TokenService;
@@ -49,6 +52,9 @@ public class AuthenticationController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private CategoryRepository categoryRepository;
 
 	@PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data){
@@ -84,7 +90,12 @@ public class AuthenticationController {
         newAdministration.setPhone("(47) 9241-83503");
         newAdministration.setEmail("contato@facilitmoveis.com.br");
         administrationRepository.save(newAdministration);
-
+        
+        categoryRepository.saveAll(List.of(
+            new Category("MDF", group),
+            new Category("Vidro", group)
+        ));
+        
         return ResponseEntity.ok().build();
     }
 	

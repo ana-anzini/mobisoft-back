@@ -125,4 +125,32 @@ class EmployeesControllerTest {
         assertEquals("Funcionário(s) deletada(s) com sucesso.", response.getBody());
         verify(employeesService, times(1)).deleteEmployees(ids);
     }
+    
+    @Test
+    void testDeleteEmployeesDataIntegrityViolation() {
+        List<Long> ids = Arrays.asList(1L, 2L);
+
+        doThrow(new DataIntegrityViolationException("Integrity violation"))
+                .when(employeesService).deleteEmployees(ids);
+
+        ResponseEntity<String> response = employeesController.deleteEmployees(ids);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Não é possível excluir este funcionário, pois ele está em um(s) projeto(s).", response.getBody());
+        verify(employeesService, times(1)).deleteEmployees(ids);
+    }
+
+    @Test
+    void testDeleteEmployeesGenericException() {
+        List<Long> ids = Arrays.asList(1L, 2L);
+
+        doThrow(new RuntimeException("Unexpected error"))
+                .when(employeesService).deleteEmployees(ids);
+
+        ResponseEntity<String> response = employeesController.deleteEmployees(ids);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Erro ao processar a solicitação.", response.getBody());
+        verify(employeesService, times(1)).deleteEmployees(ids);
+    }
 }
