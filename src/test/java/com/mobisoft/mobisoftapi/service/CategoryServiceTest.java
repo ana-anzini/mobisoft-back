@@ -104,4 +104,55 @@ class CategoryServiceTest {
 
         verify(categoryRepository, times(1)).deleteAll(categories);
     }
+    
+    @Test
+    void testCreateCategory() {
+        when(userService.getLoggedUser().getGroup()).thenReturn(userGroup);
+
+        categoryDTO.setCode("CAT123");
+        categoryDTO.setDescription("New Category");
+
+        when(categoryRepository.save(any(Category.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        Category result = categoryService.create(categoryDTO);
+
+        assertNotNull(result);
+        assertEquals("CAT123", result.getCode());
+        assertEquals("New Category", result.getDescription());
+        assertEquals(userGroup, result.getUserGroup());
+        verify(categoryRepository, times(1)).save(any(Category.class));
+    }
+
+    @Test
+    void testFindByIdCategoryExists() {
+        Long categoryId = 1L;
+        when(categoryRepository.findById(categoryId)).thenReturn(Optional.of(category));
+
+        Category result = categoryService.findById(categoryId);
+
+        assertNotNull(result);
+        verify(categoryRepository, times(1)).findById(categoryId);
+    }
+
+    @Test
+    void testFindByIdCategoryNotFound() {
+        Long categoryId = 1L;
+        when(categoryRepository.findById(categoryId)).thenReturn(Optional.empty());
+
+        assertThrows(NoSuchElementException.class, () -> {
+            categoryService.findById(categoryId);
+        });
+    }
+
+    @Test
+    void testFindByCode() {
+        String code = "CAT123";
+        when(categoryRepository.findByCode(code)).thenReturn(category);
+
+        Category result = categoryService.findByCode(code);
+
+        assertNotNull(result);
+        assertEquals(category, result);
+        verify(categoryRepository, times(1)).findByCode(code);
+    }
 }
