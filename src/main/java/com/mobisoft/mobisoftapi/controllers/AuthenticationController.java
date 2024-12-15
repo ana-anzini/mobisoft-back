@@ -92,8 +92,8 @@ public class AuthenticationController {
         administrationRepository.save(newAdministration);
         
         categoryRepository.saveAll(List.of(
-            new Category("MDF", group),
-            new Category("Vidro", group)
+            new Category("MDF", "MDF", group),
+            new Category("Vidro", "Vidro", group)
         ));
         
         return ResponseEntity.ok().build();

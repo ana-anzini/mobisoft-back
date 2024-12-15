@@ -34,7 +34,8 @@ public class Category {
     @JoinColumn(name = "group_id", nullable = false)
     private UserGroup userGroup;
     
-    public Category(String description, UserGroup userGroup) {
+    public Category(String code, String description, UserGroup userGroup) {
+    	this.code = code;
         this.description = description;
         this.userGroup = userGroup;
     }
