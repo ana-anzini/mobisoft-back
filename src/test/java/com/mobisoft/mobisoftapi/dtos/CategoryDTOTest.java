@@ -36,7 +36,7 @@ public class CategoryDTOTest {
 
     @Test
     void testCategoryDTOParameterizedConstructor() {
-        CategoryDTO newCategoryDTO = new CategoryDTO(1L, "Test Category");
+        CategoryDTO newCategoryDTO = new CategoryDTO(1L, "Test Category", "123");
 
         assertNotNull(newCategoryDTO);
         assertEquals(1L, newCategoryDTO.getId());

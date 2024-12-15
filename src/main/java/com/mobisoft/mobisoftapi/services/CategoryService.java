@@ -9,8 +9,6 @@ import org.springframework.stereotype.Service;
 import com.mobisoft.mobisoftapi.configs.exceptions.CategoryNotFoundException;
 import com.mobisoft.mobisoftapi.dtos.category.CategoryDTO;
 import com.mobisoft.mobisoftapi.models.Category;
-import com.mobisoft.mobisoftapi.models.Supplier;
-import com.mobisoft.mobisoftapi.models.User;
 import com.mobisoft.mobisoftapi.models.UserGroup;
 import com.mobisoft.mobisoftapi.repositories.CategoryRepository;
 
@@ -33,6 +31,7 @@ public class CategoryService {
 		Category category = new Category();
 		category.setDescription(categoryDTO.getDescription());
 		category.setUserGroup(userGroup);
+		category.setCode(categoryDTO.getCode());
 
 		return categoryRepository.save(category);
 	}
@@ -42,6 +41,7 @@ public class CategoryService {
 				.orElseThrow(() -> new CategoryNotFoundException(id));
 
 		existingCategory.setDescription(categoryDTO.getDescription());
+		existingCategory.setCode(categoryDTO.getCode());
 		return categoryRepository.save(existingCategory);
 	}
 
@@ -58,5 +58,9 @@ public class CategoryService {
 	public void deleteCategories(List<Long> ids) {
 		List<Category> categories = categoryRepository.findAllById(ids);
 		categoryRepository.deleteAll(categories);
+	}
+	
+	public Category findByCode(String code) {
+		return categoryRepository.findByCode(code);
 	}
 }

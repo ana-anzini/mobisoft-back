@@ -20,4 +20,5 @@ public class SupplierDTO {
     private String additional;
     private Long categoryId;
     private String categoryDescription;
+    private String code;
 }

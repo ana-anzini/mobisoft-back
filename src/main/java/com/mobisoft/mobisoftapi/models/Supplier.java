@@ -2,6 +2,7 @@ package com.mobisoft.mobisoftapi.models;
 
 import com.mobisoft.mobisoftapi.base.Base;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -18,4 +19,7 @@ public class Supplier extends Base {
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
+    
+    @Column(name="code", nullable = false)
+    private String code;
 }

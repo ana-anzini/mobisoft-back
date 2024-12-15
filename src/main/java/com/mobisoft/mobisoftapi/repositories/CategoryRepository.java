@@ -11,4 +11,6 @@ import com.mobisoft.mobisoftapi.models.Category;
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 	
 	List<Category> findByUserGroupId(Long userGroupId);
+	
+	Category findByCode(String code);
 }

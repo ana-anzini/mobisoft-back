@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.mobisoft.mobisoftapi.dtos.products.ProductDTO;
 import com.mobisoft.mobisoftapi.models.Product;
@@ -72,6 +73,22 @@ public class ProductController {
             return ResponseEntity.ok("Não é possível excluir este produto, pois ele está em uso.");
         } catch (Exception e) {
             return ResponseEntity.ok("Erro ao processar a solicitação.");
+        }
+    }
+    
+    @PostMapping("/import")
+    public ResponseEntity<String> importProducts(@RequestParam("file") MultipartFile file) {
+        if (file.isEmpty()) {
+            return ResponseEntity.badRequest().body("O arquivo CSV não pode estar vazio.");
+        }
+
+        try {
+            productService.importProductsFromCSV(file);
+            return ResponseEntity.ok("Produtos importados com sucesso.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(500).body("Erro ao importar produtos: " + e.getMessage());
         }
     }
 }

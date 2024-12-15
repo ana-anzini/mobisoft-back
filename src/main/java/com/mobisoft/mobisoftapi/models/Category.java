@@ -24,6 +24,9 @@ public class Category {
 	@Column(name = "id")
 	private Long id;
 	
+	@Column(name="code", nullable = false)
+    private String code;
+	
     @Column(name="description", nullable = false)
     private String description;
     

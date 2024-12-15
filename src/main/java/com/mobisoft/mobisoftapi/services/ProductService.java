@@ -1,9 +1,15 @@
 package com.mobisoft.mobisoftapi.services;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.mobisoft.mobisoftapi.configs.exceptions.ProductNotFoundException;
 import com.mobisoft.mobisoftapi.dtos.products.ProductDTO;
@@ -79,5 +85,53 @@ public class ProductService {
 	public void deleteProducts(List<Long> ids) {
 		List<Product> products = productRepository.findAllById(ids);
 		productRepository.deleteAll(products);
+	}
+	
+	@Transactional
+	public void importProductsFromCSV(MultipartFile file) {
+	    List<Product> products = new ArrayList();
+	    UserGroup userGroup = userService.getLoggedUser().getGroup();
+
+	    try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
+	        String line;
+	        int lineNumber = 0;
+
+	        while ((line = reader.readLine()) != null) {
+	            lineNumber++;
+	            if (lineNumber == 1) {
+	                continue;
+	            }
+
+	            String[] values = line.split(",");
+
+	            if (values.length < 2) {
+	                throw new IllegalArgumentException("CSV inválido na linha " + lineNumber);
+	            }
+
+	            String categoryCode = values[0].trim();
+	            Category category = categoryService.findByCode(categoryCode);
+	            
+	            String supplierCode = values[1].trim();
+	            Supplier supplier = supplierService.findByCode(supplierCode);
+	            
+	            String productDescription = values[2].trim();
+	            String value = values[3].trim();
+
+	            Product product = new Product();
+	            product.setDescription(productDescription);
+	            product.setCategory(category);
+	            product.setSupplier(supplier);
+	            product.setProductValue(new BigDecimal(value));
+	            product.setUserGroup(userGroup);
+
+	            products.add(product);
+	        }
+
+	        productRepository.saveAll(products);
+	    } catch (IOException e) {
+	        throw new RuntimeException("Erro ao processar o arquivo CSV", e);
+	    } catch (NumberFormatException e) {
+	        throw new IllegalArgumentException("Erro ao converter dados do CSV", e);
+	    }
 	}
 }

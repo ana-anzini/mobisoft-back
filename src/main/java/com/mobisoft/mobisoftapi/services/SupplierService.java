@@ -46,6 +46,7 @@ public class SupplierService {
 		supplier.setNeighborhood(supplierDTO.getNeighborhood());
 		supplier.setAdditional(supplierDTO.getAdditional());
 		supplier.setUserGroup(userGroup);
+		supplier.setCode(supplierDTO.getCode());
 
 		return supplierRepository.save(supplier);
 	}
@@ -67,6 +68,7 @@ public class SupplierService {
 		existingSupplier.setNeighborhood(supplierDTO.getNeighborhood());
 		existingSupplier.setAdditional(supplierDTO.getAdditional());
 		existingSupplier.setCategory(categoryService.findById(supplierDTO.getCategoryId()));
+		existingSupplier.setCode(supplierDTO.getCode());
 
 		return supplierRepository.save(existingSupplier);
 	}
@@ -74,5 +76,9 @@ public class SupplierService {
 	public void deleteSuppliers(List<Long> ids) {
 		List<Supplier> suppliers = supplierRepository.findAllById(ids);
 		supplierRepository.deleteAll(suppliers);
+	}
+	
+	public Supplier findByCode(String code) {
+		return supplierRepository.findByCode(code);
 	}
 }
