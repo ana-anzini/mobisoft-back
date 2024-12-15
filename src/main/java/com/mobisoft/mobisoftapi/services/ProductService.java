@@ -89,7 +89,7 @@ public class ProductService {
 	
 	@Transactional
 	public void importProductsFromCSV(MultipartFile file) {
-	    List<Product> products = new ArrayList();
+	    List<Product> products = new ArrayList<>();
 	    UserGroup userGroup = userService.getLoggedUser().getGroup();
 
 	    try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream()))) {
@@ -104,16 +104,22 @@ public class ProductService {
 
 	            String[] values = line.split(",");
 
-	            if (values.length < 2) {
+	            if (values.length < 4) {
 	                throw new IllegalArgumentException("CSV inválido na linha " + lineNumber);
 	            }
 
 	            String categoryCode = values[0].trim();
 	            Category category = categoryService.findByCode(categoryCode);
-	            
+	            if (category == null) {
+	                throw new IllegalArgumentException("Categoria não encontrada para o código: " + categoryCode + " (linha " + lineNumber + ")");
+	            }
+
 	            String supplierCode = values[1].trim();
 	            Supplier supplier = supplierService.findByCode(supplierCode);
-	            
+	            if (supplier == null) {
+	                throw new IllegalArgumentException("Fornecedor não encontrado para o código: " + supplierCode + " (linha " + lineNumber + ")");
+	            }
+
 	            String productDescription = values[2].trim();
 	            String value = values[3].trim();
 
